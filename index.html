@@ -401,9 +401,9 @@
                 </div>
                 
                 <div>
-                    <label class="block text-sm font-bold mb-2 text-slate-700 dark:text-slate-300">Mulai Tagihan Dari Bulan:</label>
+                    <label class="block text-sm font-bold mb-2 text-slate-700 dark:text-slate-300">Buat Tagihan Untuk Bulan:</label>
                     <select id="genSppStartBulan" required class="w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 font-bold text-primary dark:text-primary-light text-lg focus:ring-2 focus:ring-primary"></select>
-                    <p class="text-[11px] text-slate-500 mt-2"><em>*Bulan sebelumnya tidak akan dibuatkan tagihan.</em></p>
+                    <p class="text-[11px] text-slate-500 mt-2"><em>*Sistem hanya akan membuat tagihan untuk 1 bulan yang dipilih. Bulan depan, silakan generate lagi.</em></p>
                 </div>
 
                 <div class="flex gap-2 pt-2">
@@ -1077,7 +1077,6 @@
     let currentDetailNis = null;
 
     function renderSpp() {
-        // 1. Update Dropdown Filter Kelas
         const kelasSet = new Set(db.spp.map(s => s.kelas)); 
         const kelasSel = document.getElementById('sppFilterKelas');
         const prevKelas = kelasSel.value; 
@@ -1087,12 +1086,10 @@
         document.getElementById('tahunAjaranInput').value = db.tahunAjaran; 
         document.getElementById('nominalSppDefault').value = db.nominalSppDefault;
 
-        // 2. Ambil Filter
         const kw = document.getElementById('searchSpp').value.toLowerCase(); 
         const fK = kelasSel.value; 
         const fS = document.getElementById('sppFilterStatus').value;
 
-        // 3. Kelompokkan Data per Murid (NIS)
         const grouped = {};
         db.spp.forEach(s => {
             if (!grouped[s.nis]) {
@@ -1101,27 +1098,21 @@
             grouped[s.nis].tagihan.push(s);
         });
 
-        // 4. Filter & Hitung Total per Murid
         let listMurid = Object.values(grouped).filter(m => {
-            // Filter Pencarian & Kelas
             if (kw && !m.nama.toLowerCase().includes(kw) && !m.nis.toLowerCase().includes(kw)) return false;
             if (fK && m.kelas !== fK) return false;
             
-            // Hitung status
             m.totalBelum = m.tagihan.filter(t => t.status === 'Belum').length;
             m.totalNominalBelum = m.tagihan.filter(t => t.status === 'Belum').reduce((sum, t) => sum + t.nominal, 0);
             
-            // Filter Status (Lunas / Belum)
             if (fS === 'Belum' && m.totalBelum === 0) return false;
             if (fS === 'Lunas' && m.totalBelum > 0) return false;
             
             return true;
         });
 
-        // 5. Urutkan berdasarkan Kelas lalu Nama
         listMurid.sort((a, b) => String(a.kelas).localeCompare(String(b.kelas)) || String(a.nama).localeCompare(String(b.nama)));
 
-        // 6. Render Tabel
         const tbody = document.getElementById('tabelSppBody');
         if (!listMurid.length) { 
             tbody.innerHTML = '<tr><td colspan="5" class="p-8 text-center text-slate-400">Belum ada data SPP yang cocok.</td></tr>'; 
@@ -1157,7 +1148,6 @@
             }).join('');
         }
 
-        // 7. Update Ringkasan Bawah (Tunggakan Keseluruhan)
         const totalT = db.spp.filter(s => s.status === 'Belum').reduce((sum, s) => sum + s.nominal, 0);
         document.getElementById('sppSummary').innerHTML = `Tunggakan: ${formatRupiah(totalT)}`; 
         document.getElementById('heroTunggakan').innerText = formatRupiah(totalT);
@@ -1182,7 +1172,6 @@
             btnLunasi.innerText = `Lunasi Semua (${totalBelum} Bln)`;
         }
 
-        // Urutkan bulan sesuai Tahun Ajaran
         const dynList = getDynamicBulanList();
         sppList.sort((a, b) => a.tahun - b.tahun || dynList.indexOf(a.bulan) - dynList.indexOf(b.bulan));
 
@@ -1224,7 +1213,6 @@
             item.tanggalBayar = null; toast(`SPP ${item.bulan} ${item.nama} Batal`);
         }
         saveData(); 
-        // Jika modal sedang terbuka, refresh isi modalnya
         if (currentDetailNis) openSppDetail(currentDetailNis); 
     }
 
@@ -1247,25 +1235,23 @@
         });
 
         saveData();
-        openSppDetail(currentDetailNis); // Refresh modal
+        openSppDetail(currentDetailNis); 
         toast(`Berhasil melunasi ${count} tagihan`);
     }
 
     function updateNominalDefault() { const val = parseInt(document.getElementById('nominalSppDefault').value); if (!val || val < 0) return toast('Nominal salah', 'error'); db.nominalSppDefault = val; saveData(); toast('Default diperbarui'); }
     function updateTahunAjaran() { const val = document.getElementById('tahunAjaranInput').value.trim(); if (!/^\d{4}\/\d{4}$/.test(val)) return alert('Format: 2025/2026'); db.tahunAjaran = val; saveData(); toast('Tahun ajaran disimpan'); }
 
-    // --- FUNGSI GENERATE SPP DINAMIS ---
+    // --- FUNGSI GENERATE SPP (HANYA 1 BULAN) ---
     function openGenerateSppModal() {
         document.getElementById('genTahunAjaranDisplay').innerText = db.tahunAjaran;
         const select = document.getElementById('genSppStartBulan');
         const dynList = getDynamicBulanList();
         
-        // Cari tahu bulan sekarang (sesuai kalender asli)
         const currentMonthName = ALL_MONTHS[new Date().getMonth()];
         
         select.innerHTML = dynList.map(b => `<option value="${b}">${b}</option>`).join('');
         
-        // Jika bulan sekarang ada di dalam tahun ajaran, pilih otomatis
         if (dynList.includes(currentMonthName)) {
             select.value = currentMonthName;
         }
@@ -1283,38 +1269,35 @@
         
         const startBulanStr = document.getElementById('genSppStartBulan').value;
         const dynList = getDynamicBulanList();
-        const startIndex = dynList.indexOf(startBulanStr);
         
         const [ta1, ta2] = db.tahunAjaran.split('/'); 
         const y1 = parseInt(ta1), y2 = parseInt(ta2); 
         let created = 0;
 
-        db.murid.forEach(m => { 
-            for (let i = startIndex; i < 12; i++) { 
-                const bulan = dynList[i];
-                
-                // Logika penentuan tahun (kalender Masehi)
-                const monthNum = ALL_MONTHS.indexOf(bulan) + 1; // 1-12
-                const startMonthNum = db.bulanAwalTahunAjaran || 7;
-                const tahun = monthNum >= startMonthNum ? y1 : y2;
+        const monthNum = ALL_MONTHS.indexOf(startBulanStr) + 1; 
+        const startMonthNum = db.bulanAwalTahunAjaran || 7;
+        const tahun = monthNum >= startMonthNum ? y1 : y2;
 
-                if (!db.spp.find(s => String(s.nis) === String(m.nis) && s.bulan === bulan && s.tahun === tahun)) {
-                    db.spp.push({ 
-                        id: Date.now() + Math.floor(Math.random() * 100000) + i, 
-                        nis: m.nis, nama: m.nama, kelas: m.kelas, bulan, tahun, 
-                        nominal: db.nominalSppDefault || 50000, status: 'Belum', tanggalBayar: null, kasId: null 
-                    }); 
-                    created++;
-                }
-            } 
+        // LOOPING HANYA 1 BULAN (Bulan yang dipilih saja)
+        db.murid.forEach(m => { 
+            if (!db.spp.find(s => String(s.nis) === String(m.nis) && s.bulan === startBulanStr && s.tahun === tahun)) {
+                db.spp.push({ 
+                    id: Date.now() + Math.floor(Math.random() * 100000), 
+                    nis: m.nis, nama: m.nama, kelas: m.kelas, bulan: startBulanStr, tahun: tahun, 
+                    nominal: db.nominalSppDefault || 50000, status: 'Belum', tanggalBayar: null, kasId: null 
+                }); 
+                created++;
+            }
         });
         
         closeGenerateSpp();
-        if (created === 0) toast('Semua tagihan dari bulan tersebut sudah ada', 'info'); 
-        else { saveData(); toast(`Berhasil membuat ${created} tagihan SPP baru`); }
+        if (created === 0) {
+            toast(`Tagihan bulan ${startBulanStr} ${tahun} sudah ada semua`, 'info'); 
+        } else { 
+            saveData(); 
+            toast(`Berhasil membuat ${created} tagihan untuk bulan ${startBulanStr} ${tahun} saja`); 
+        }
     }
-
-    // --- FUNGSI LAINNYA ---
 
     function openBulkNominal() {
         const kelasSel = document.getElementById('bulkTargetKelas'); kelasSel.innerHTML = '<option value="">Semua Kelas</option>' + Array.from(new Set(db.spp.map(s => s.kelas))).sort().map(k => `<option value="${escapeHtml(k)}">${escapeHtml(k)}</option>`).join('');
