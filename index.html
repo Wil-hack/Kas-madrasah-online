@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="theme-color" content="#064e3b">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <title>Madrasah Manager Enterprise Cloud</title>
+    <title>Madrasah Manager Enterprise</title>
     
     <!-- Fonts & Libraries -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -14,32 +14,6 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-    
-    <!-- Firebase SDK (Modular v10) -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-        import { getFirestore, doc, getDoc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-
-        // --- KONFIGURASI FIREBASE ANDA ---
-        // Ganti dengan konfigurasi dari Firebase Console Anda
-        const firebaseConfig = {
-            apiKey: "AIzaSyD-CONTOH-API-KEY-ANDA",
-            authDomain: "project-anda.firebaseapp.com",
-            projectId: "project-anda",
-            storageBucket: "project-anda.appspot.com",
-            messagingSenderId: "1234567890",
-            appId: "1:123:web:abc"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const dbCloud = getFirestore(app);
-
-        window.fbAuth = auth;
-        window.fbDb = dbCloud;
-        window.fbMethods = { signInWithEmailAndPassword, signOut, doc, getDoc, setDoc, onSnapshot };
-    </script>
     
     <script>
         tailwind.config = {
@@ -110,7 +84,7 @@
                     </div>
                     <div>
                         <h1 id="appNameDisplay" class="text-sm md:text-base font-extrabold tracking-tight text-slate-900 dark:text-white leading-tight">Madrasah Manager</h1>
-                        <p class="text-[10px] md:text-xs font-medium text-slate-500 dark:text-slate-400">Sistem Keuangan Terpadu Cloud</p>
+                        <p class="text-[10px] md:text-xs font-medium text-slate-500 dark:text-slate-400">Sistem Keuangan Terpadu</p>
                     </div>
                 </div>
                 
@@ -121,6 +95,7 @@
                             <span id="notifBadge" class="hidden absolute top-0 right-0 bg-red-500 text-white text-[9px] font-bold rounded-full min-w-[16px] h-[16px] flex items-center justify-center px-1 ring-2 ring-white dark:ring-slate-800">0</span>
                         </button>
                         
+                        <!-- NOTIFIKASI RAPI -->
                         <div id="notifPanel" class="hidden fixed md:absolute top-[60px] md:top-full left-4 right-4 md:left-auto md:right-0 md:mt-2 w-auto md:w-80 bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-700 z-50 max-h-[70vh] md:max-h-96 overflow-y-auto animate-fade-in">
                             <div class="p-3 border-b border-slate-100 dark:border-slate-700 flex justify-between items-center sticky top-0 bg-white/95 dark:bg-slate-800/95 backdrop-blur rounded-t-2xl z-10">
                                 <h4 class="font-bold text-sm">Tunggakan SPP</h4>
@@ -146,10 +121,16 @@
         <!-- MAIN CONTENT -->
         <main class="max-w-7xl mx-auto px-4 py-6 w-full flex-grow space-y-6" onclick="closeNotifOnOutside(event)">
             
-            <!-- STATUS CLOUD SYNC -->
-            <div id="syncStatusBanner" class="bg-emerald-50 dark:bg-emerald-900/30 border border-emerald-200 dark:border-emerald-700 rounded-2xl p-3 flex items-center justify-between text-xs font-semibold text-emerald-800 dark:text-emerald-300">
-                <span id="syncStatusText">Menghubungkan ke Cloud Firestore...</span>
-                <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+            <!-- PERINGATAN BACKUP -->
+            <div id="backupWarning" class="hidden bg-amber-50 dark:bg-amber-900/30 border border-amber-200 dark:border-amber-700 rounded-2xl p-4 flex items-start gap-3 animate-fade-in">
+                <div class="text-amber-500 mt-0.5">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                </div>
+                <div class="flex-1">
+                    <h4 class="text-sm font-bold text-amber-800 dark:text-amber-400">Peringatan Backup!</h4>
+                    <p class="text-xs text-amber-700 dark:text-amber-500 mt-1">Anda belum melakukan backup data selama lebih dari 7 hari. Unduh backup JSON sekarang agar data aman jika HP di-reset.</p>
+                </div>
+                <button onclick="backupJSON()" class="text-xs font-bold bg-amber-500 hover:bg-amber-600 text-white px-3 py-1.5 rounded-lg transition">Backup Sekarang</button>
             </div>
 
             <!-- HERO DASHBOARD -->
@@ -272,7 +253,7 @@
                         <h3 class="text-base font-bold">Rekap Pembayaran SPP Murid</h3>
                         <div class="flex items-center gap-2">
                             <input type="text" id="tahunAjaranInput" onchange="updateTahunAjaran()" class="px-2 py-1.5 rounded-lg border text-xs w-24 text-center font-bold">
-                            <button onclick="generateSppForAll()" class="bg-primary text-white px-4 py-2 rounded-xl text-xs font-bold shadow-md shadow-primary/20 theme-transition">Generate SPP</button>
+                            <button onclick="openGenerateSppModal()" class="bg-primary text-white px-4 py-2 rounded-xl text-xs font-bold shadow-md shadow-primary/20 theme-transition">Generate SPP</button>
                         </div>
                     </div>
 
@@ -285,7 +266,15 @@
 
                     <div class="overflow-x-auto">
                         <table class="w-full text-left">
-                            <thead><tr class="bg-slate-50 dark:bg-slate-900/50 text-xs uppercase text-slate-500 border-b"><th class="p-3">Nama</th><th class="p-3 hidden sm:table-cell">Kelas</th><th class="p-3">Bulan</th><th class="p-3 text-right">Nominal</th><th class="p-3 text-center">Status</th><th class="p-3 text-center">Aksi</th></tr></thead>
+                            <thead>
+                                <tr class="bg-slate-50 dark:bg-slate-900/50 text-xs uppercase text-slate-500 border-b">
+                                    <th class="p-4">Nama & NIS</th>
+                                    <th class="p-4 hidden sm:table-cell">Kelas</th>
+                                    <th class="p-4 text-center">Status Total</th>
+                                    <th class="p-4 text-right">Tunggakan</th>
+                                    <th class="p-4 text-center">Aksi</th>
+                                </tr>
+                            </thead>
                             <tbody id="tabelSppBody" class="divide-y divide-slate-100 dark:divide-slate-700/50 text-sm"></tbody>
                         </table>
                     </div>
@@ -340,7 +329,9 @@
                         <input type="month" id="lapBulan" onchange="renderLaporan()" class="px-3 py-2 rounded-xl border text-sm font-bold">
                     </div>
                     
-                    <div id="lapContent" class="space-y-6"></div>
+                    <div id="lapContent" class="space-y-6">
+                        <!-- Diisi oleh JS -->
+                    </div>
                 </div>
             </div>
 
@@ -396,6 +387,86 @@
         </div>
     </div>
 
+    <!-- Modal Generate SPP -->
+    <div id="generateSppModal" class="hidden fixed inset-0 bg-slate-900/60 z-[60] flex items-end md:items-center justify-center p-0 md:p-4 backdrop-blur-sm">
+        <div class="bg-white dark:bg-slate-800 rounded-t-3xl md:rounded-3xl shadow-2xl w-full max-w-md">
+            <div class="p-5 border-b flex justify-between items-center">
+                <h3 class="font-extrabold text-lg">Generate Tagihan SPP</h3>
+                <button onclick="closeGenerateSpp()" class="text-slate-400 text-2xl">&times;</button>
+            </div>
+            <form onsubmit="applyGenerateSpp(event)" class="p-5 space-y-4">
+                <div class="bg-primary-light/50 dark:bg-primary-dark/20 p-3 rounded-xl border border-primary/20">
+                    <p class="text-xs font-bold text-primary mb-1">Tahun Ajaran Aktif</p>
+                    <p id="genTahunAjaranDisplay" class="text-lg font-extrabold text-primary">2025/2026</p>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-bold mb-2 text-slate-700 dark:text-slate-300">Mulai Tagihan Dari Bulan:</label>
+                    <select id="genSppStartBulan" required class="w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 font-bold text-primary dark:text-primary-light text-lg focus:ring-2 focus:ring-primary"></select>
+                    <p class="text-[11px] text-slate-500 mt-2"><em>*Bulan sebelumnya tidak akan dibuatkan tagihan.</em></p>
+                </div>
+
+                <div class="flex gap-2 pt-2">
+                    <button type="button" onclick="closeGenerateSpp()" class="flex-1 bg-slate-100 dark:bg-slate-700 py-3 rounded-xl font-bold">Batal</button>
+                    <button type="submit" class="flex-1 bg-primary text-white py-3 rounded-xl font-bold shadow-md theme-transition">Proses</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Detail SPP Murid -->
+    <div id="sppDetailModal" class="hidden fixed inset-0 bg-slate-900/60 z-[60] flex items-end md:items-center justify-center p-0 md:p-4 backdrop-blur-sm">
+        <div class="bg-white dark:bg-slate-800 rounded-t-3xl md:rounded-3xl shadow-2xl w-full max-w-lg max-h-[90vh] flex flex-col">
+            <div class="p-5 border-b flex justify-between items-center sticky top-0 bg-white dark:bg-slate-800 z-10 rounded-t-3xl">
+                <div>
+                    <h3 id="sppDetailTitle" class="font-extrabold text-lg">Nama Murid</h3>
+                    <p id="sppDetailSubtitle" class="text-xs text-slate-500 mt-0.5">Kelas - NIS</p>
+                </div>
+                <button onclick="closeSppDetail()" class="text-slate-400 bg-slate-100 dark:bg-slate-700 rounded-full p-2 leading-none">&times;</button>
+            </div>
+            
+            <div class="p-5 overflow-y-auto flex-grow">
+                <div id="sppDetailBody" class="grid grid-cols-2 sm:grid-cols-3 gap-2"></div>
+            </div>
+            
+            <div class="p-4 border-t bg-slate-50 dark:bg-slate-900 rounded-b-3xl flex gap-2">
+                <button onclick="closeSppDetail()" class="flex-1 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 py-3 rounded-xl font-bold text-sm">Tutup</button>
+                <button id="btnLunasiSemua" onclick="lunasiSemuaSpp()" class="flex-1 bg-primary text-white py-3 rounded-xl font-bold text-sm shadow-md theme-transition">Lunasi Semua</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Atur Massal SPP -->
+    <div id="bulkNominalModal" class="hidden fixed inset-0 bg-slate-900/60 z-[60] flex items-end md:items-center justify-center p-0 md:p-4 backdrop-blur-sm">
+        <div class="bg-white dark:bg-slate-800 rounded-t-3xl md:rounded-3xl shadow-2xl w-full max-w-md">
+            <div class="p-5 border-b flex justify-between items-center"><h3 class="font-extrabold text-lg">Massal SPP</h3><button onclick="closeBulkNominal()" class="text-slate-400 text-2xl">&times;</button></div>
+            <form onsubmit="applyBulkNominal(event)" class="p-5 space-y-4">
+                <select id="bulkTargetKelas" onchange="previewBulkNominal()" class="w-full px-3 py-2 rounded-xl border dark:bg-slate-900 dark:border-slate-700"><option value="">Semua Kelas</option></select>
+                <select id="bulkTargetStatus" onchange="previewBulkNominal()" class="w-full px-3 py-2 rounded-xl border dark:bg-slate-900 dark:border-slate-700"><option value="">Semua Status</option><option value="Belum">Belum</option><option value="Lunas">Lunas</option></select>
+                <input type="number" id="bulkNominalBaru" onchange="previewBulkNominal()" oninput="previewBulkNominal()" required class="w-full px-3 py-2 rounded-xl border dark:bg-slate-900 dark:border-slate-700 font-bold">
+                <div id="bulkPreview" class="bg-amber-50 dark:bg-amber-900/30 text-amber-900 dark:text-amber-400 p-3 rounded-xl text-xs">Isi nominal...</div>
+                <div class="flex gap-2 pt-2"><button type="button" onclick="closeBulkNominal()" class="flex-1 bg-slate-100 dark:bg-slate-700 py-3 rounded-xl font-bold">Batal</button><button type="submit" class="flex-1 bg-primary text-white py-3 rounded-xl font-bold theme-transition">Terapkan</button></div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Kategori Modal -->
+    <div id="kategoriModal" class="hidden fixed inset-0 bg-slate-900/60 z-[60] flex items-end md:items-center justify-center p-0 md:p-4 backdrop-blur-sm">
+        <div class="bg-white dark:bg-slate-800 rounded-t-3xl md:rounded-3xl shadow-2xl w-full max-w-md max-h-[90vh] overflow-y-auto">
+            <div class="p-5 border-b flex justify-between items-center sticky top-0 bg-white dark:bg-slate-800 z-10 rounded-t-3xl">
+                <h3 class="font-extrabold text-lg">Kategori</h3>
+                <button onclick="closeKelolaKategori()" class="text-slate-400 bg-slate-100 dark:bg-slate-700 rounded-full p-2 leading-none">&times;</button>
+            </div>
+            <div class="p-5">
+                <form onsubmit="addKategori(event)" class="flex gap-2 mb-4">
+                    <input type="text" id="newKategoriInput" required class="flex-1 px-3 py-2 rounded-xl border dark:bg-slate-900 dark:border-slate-700 text-sm">
+                    <button type="submit" class="bg-primary text-white px-4 py-2 rounded-xl text-sm font-bold theme-transition">Tambah</button>
+                </form>
+                <div id="kategoriList" class="space-y-2"></div>
+            </div>
+        </div>
+    </div>
+
     <!-- SETTINGS MODAL -->
     <div id="settingsModal" class="hidden fixed inset-0 bg-slate-900/60 z-[60] flex items-end md:items-center justify-center p-0 md:p-4 backdrop-blur-sm">
         <div class="bg-white dark:bg-slate-800 rounded-t-3xl md:rounded-3xl shadow-2xl w-full max-w-md max-h-[90vh] overflow-y-auto">
@@ -415,6 +486,23 @@
                         <div><label class="block text-xs font-bold text-slate-500 mb-1">Nama Madrasah</label><input type="text" id="setNama" required class="w-full px-3 py-2 rounded-xl border dark:bg-slate-900 dark:border-slate-700"></div>
                         <div><label class="block text-xs font-bold text-slate-500 mb-1">Alamat</label><input type="text" id="setAlamat" class="w-full px-3 py-2 rounded-xl border dark:bg-slate-900 dark:border-slate-700"></div>
                         <div><label class="block text-xs font-bold text-slate-500 mb-1">Kepala Madrasah</label><input type="text" id="setKepala" class="w-full px-3 py-2 rounded-xl border dark:bg-slate-900 dark:border-slate-700"></div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-500 mb-1">Bulan Awal Tahun Ajaran</label>
+                            <select id="setBulanAwal" class="w-full px-3 py-2 rounded-xl border dark:bg-slate-900 dark:border-slate-700 font-bold">
+                                <option value="1">Januari</option>
+                                <option value="2">Februari</option>
+                                <option value="3">Maret</option>
+                                <option value="4">April</option>
+                                <option value="5">Mei</option>
+                                <option value="6">Juni</option>
+                                <option value="7">Juli (Standar)</option>
+                                <option value="8">Agustus</option>
+                                <option value="9">September</option>
+                                <option value="10">Oktober</option>
+                                <option value="11">November</option>
+                                <option value="12">Desember</option>
+                            </select>
+                        </div>
                         <button type="submit" class="w-full bg-primary text-white py-2.5 rounded-xl font-bold text-sm shadow-md theme-transition">Simpan Profil</button>
                     </form>
                 </section>
@@ -487,63 +575,68 @@
                     </div>
                 </section>
 
-                <!-- 6. ZONA BERBAHAYA -->
+                <!-- 6. ZONA BERBAHAYA (HAPUS DATA) -->
                 <section class="border border-red-200 dark:border-red-900/50 bg-red-50 dark:bg-red-900/10 rounded-2xl p-4">
                     <div class="flex items-center gap-2 mb-3">
                         <div class="w-1.5 h-5 bg-red-500 rounded-full"></div>
                         <h4 class="text-sm font-extrabold text-red-700 dark:text-red-400 uppercase tracking-wide">Hapus Data</h4>
                     </div>
+                    <p class="text-xs text-red-600 dark:text-red-400 mb-3">Tindakan ini tidak dapat dibatalkan. Pastikan Anda sudah melakukan Backup JSON sebelum menghapus data.</p>
                     <div class="space-y-2">
-                        <button onclick="hapusData('kas_spp')" class="w-full bg-white dark:bg-slate-800 border border-red-300 text-red-600 py-2.5 rounded-xl font-bold text-xs">Hapus Kas & SPP Saja</button>
-                        <button onclick="hapusData('all')" class="w-full bg-red-600 text-white py-2.5 rounded-xl font-bold text-xs">Hapus SEMUA Data (Reset)</button>
+                        <button onclick="hapusData('kas_spp')" class="w-full bg-white dark:bg-slate-800 border border-red-300 dark:border-red-700 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30 py-2.5 rounded-xl font-bold text-xs transition flex justify-center items-center gap-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                            Hapus Kas & SPP Saja
+                        </button>
+                        <button onclick="hapusData('all')" class="w-full bg-red-600 hover:bg-red-700 text-white py-2.5 rounded-xl font-bold text-xs transition flex justify-center items-center gap-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                            Hapus SEMUA Data (Reset Pabrik)
+                        </button>
                     </div>
                 </section>
             </div>
         </div>
     </div>
 
-    <!-- Kategori Modal -->
-    <div id="kategoriModal" class="hidden fixed inset-0 bg-slate-900/60 z-[60] flex items-end md:items-center justify-center p-0 md:p-4 backdrop-blur-sm">
-        <div class="bg-white dark:bg-slate-800 rounded-t-3xl md:rounded-3xl shadow-2xl w-full max-w-md max-h-[90vh] overflow-y-auto">
-            <div class="p-5 border-b flex justify-between items-center sticky top-0 bg-white dark:bg-slate-800 z-10 rounded-t-3xl">
-                <h3 class="font-extrabold text-lg">Kategori</h3>
-                <button onclick="closeKelolaKategori()" class="text-slate-400 bg-slate-100 dark:bg-slate-700 rounded-full p-2 leading-none">&times;</button>
+    <!-- SMART IMPORT PREVIEW MODAL -->
+    <div id="importPreviewModal" class="hidden fixed inset-0 bg-slate-900/60 z-[70] flex items-end md:items-center justify-center p-0 md:p-4 backdrop-blur-sm">
+        <div class="bg-white dark:bg-slate-800 rounded-t-3xl md:rounded-3xl shadow-2xl w-full max-w-2xl max-h-[95vh] flex flex-col">
+            <div class="p-5 border-b flex justify-between items-center bg-white dark:bg-slate-800 rounded-t-3xl sticky top-0 z-10">
+                <div>
+                    <h3 class="font-extrabold text-lg">📄 Preview Impor</h3>
+                    <p id="importFileName" class="text-xs text-slate-500 mt-0.5">-</p>
+                </div>
+                <button onclick="cancelImport()" class="text-slate-400 bg-slate-100 dark:bg-slate-700 rounded-full p-2 leading-none">&times;</button>
             </div>
-            <div class="p-5">
-                <form onsubmit="addKategori(event)" class="flex gap-2 mb-4">
-                    <input type="text" id="newKategoriInput" required class="flex-1 px-3 py-2 rounded-xl border dark:bg-slate-900 dark:border-slate-700 text-sm">
-                    <button type="submit" class="bg-primary text-white px-4 py-2 rounded-xl text-sm font-bold theme-transition">Tambah</button>
-                </form>
-                <div id="kategoriList" class="space-y-2"></div>
+            <div id="importPreviewBody" class="p-4 md:p-5 overflow-y-auto space-y-3 flex-grow"></div>
+            <div class="p-4 md:p-5 border-t bg-slate-50 dark:bg-slate-900 rounded-b-3xl sticky bottom-0 flex gap-2">
+                <button onclick="cancelImport()" class="flex-1 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 py-3 rounded-xl font-bold text-sm">Batal</button>
+                <button onclick="applyImport()" class="flex-1 bg-primary text-white py-3 rounded-xl font-bold text-sm shadow-md theme-transition">✅ Terapkan</button>
             </div>
         </div>
     </div>
 
-    <!-- Bulk SPP Modal -->
-    <div id="bulkNominalModal" class="hidden fixed inset-0 bg-slate-900/60 z-[60] flex items-end md:items-center justify-center p-0 md:p-4 backdrop-blur-sm">
-        <div class="bg-white dark:bg-slate-800 rounded-t-3xl md:rounded-3xl shadow-2xl w-full max-w-md">
-            <div class="p-5 border-b flex justify-between items-center"><h3 class="font-extrabold text-lg">Massal SPP</h3><button onclick="closeBulkNominal()" class="text-slate-400 text-2xl">&times;</button></div>
-            <form onsubmit="applyBulkNominal(event)" class="p-5 space-y-4">
-                <select id="bulkTargetKelas" onchange="previewBulkNominal()" class="w-full px-3 py-2 rounded-xl border dark:bg-slate-900 dark:border-slate-700"><option value="">Semua Kelas</option></select>
-                <select id="bulkTargetStatus" onchange="previewBulkNominal()" class="w-full px-3 py-2 rounded-xl border dark:bg-slate-900 dark:border-slate-700"><option value="">Semua Status</option><option value="Belum">Belum</option><option value="Lunas">Lunas</option></select>
-                <input type="number" id="bulkNominalBaru" onchange="previewBulkNominal()" oninput="previewBulkNominal()" required class="w-full px-3 py-2 rounded-xl border dark:bg-slate-900 dark:border-slate-700 font-bold">
-                <div id="bulkPreview" class="bg-amber-50 dark:bg-amber-900/30 text-amber-900 dark:text-amber-400 p-3 rounded-xl text-xs">Isi nominal...</div>
-                <div class="flex gap-2 pt-2"><button type="button" onclick="closeBulkNominal()" class="flex-1 bg-slate-100 dark:bg-slate-700 py-3 rounded-xl font-bold">Batal</button><button type="submit" class="flex-1 bg-primary text-white py-3 rounded-xl font-bold theme-transition">Terapkan</button></div>
-            </form>
-        </div>
-    </div>
-
-    <!-- ================= JAVASCRIPT LOGIC (FIREBASE SYNC + UI BARU) ================= -->
+    <!-- ================= JAVASCRIPT LOGIC ================= -->
     <script>
     const DB_VERSION = 6; 
     const DEFAULT_KATEGORI = ['SPP','BOS','Dana Bantuan','ATK','Gaji/Honor','Listrik/Air','Perbaikan','Konsumsi','Lainnya'];
-    const BULAN_LIST = ['Juli','Agustus','September','Oktober','November','Desember','Januari','Februari','Maret','April','Mei','Juni'];
+    const ALL_MONTHS = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+    
+    function getDynamicBulanList() {
+        const startMonth = db.bulanAwalTahunAjaran || 7; // Default Juli (7)
+        const result = [];
+        for (let i = 0; i < 12; i++) {
+            result.push(ALL_MONTHS[(startMonth - 1 + i) % 12]);
+        }
+        return result;
+    }
     
     const CAT_COLORS = [
         { bg: 'bg-primary-light text-primary', dot: 'bg-primary', ring: 'ring-primary' },
         { bg: 'bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-400', dot: 'bg-blue-500', ring: 'ring-blue-200' },
         { bg: 'bg-amber-100 dark:bg-amber-900/30 text-amber-800 dark:text-amber-400', dot: 'bg-amber-500', ring: 'ring-amber-200' },
         { bg: 'bg-rose-100 dark:bg-rose-900/30 text-rose-800 dark:text-rose-400', dot: 'bg-rose-500', ring: 'ring-rose-200' },
+        { bg: 'bg-violet-100 dark:bg-violet-900/30 text-violet-800 dark:text-violet-400', dot: 'bg-violet-500', ring: 'ring-violet-200' },
+        { bg: 'bg-cyan-100 dark:bg-cyan-900/30 text-cyan-800 dark:text-cyan-400', dot: 'bg-cyan-500', ring: 'ring-cyan-200' },
     ];
 
     const defaultMurid = [
@@ -602,7 +695,7 @@
         { nip: '351421005930007', nama: 'LUTFI', mapel: 'KHOLASOH', kontak: '-' }
     ];
 
-    let appSettings = JSON.parse(localStorage.getItem('madrasah_settings')) || { nama: 'MIFTAHUL ULUM ULA', alamat: 'Tongas, Probolinggo', kepala: 'ACHMAD MUCHAMAD', pin: null, themeColor: 'green', closedPeriods: [] };
+    let appSettings = JSON.parse(localStorage.getItem('madrasah_settings')) || { nama: 'MIFTAHUL ULUM ULA', alamat: 'Tongas, Probolinggo', kepala: 'ACHMAD MUCHAMAD', pin: null, themeColor: 'green', closedPeriods: [], lastBackup: null };
 
     if (localStorage.getItem('themeMode') === 'dark' || (!('themeMode' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
         document.documentElement.classList.add('dark');
@@ -615,6 +708,7 @@
     function setThemeColor(color) {
         document.body.classList.remove('theme-blue', 'theme-purple', 'theme-rose');
         if (color !== 'green') document.body.classList.add('theme-' + color);
+        
         ['green', 'blue', 'purple', 'rose'].forEach(c => {
             const btn = document.getElementById('btn-theme-' + c);
             if(btn) {
@@ -622,9 +716,11 @@
                 else btn.classList.remove('ring-2', 'ring-offset-2', 'ring-slate-400');
             }
         });
+        
         appSettings.themeColor = color;
         localStorage.setItem('madrasah_settings', JSON.stringify(appSettings));
     }
+
     setThemeColor(appSettings.themeColor);
     document.getElementById('appNameDisplay').innerText = appSettings.nama;
 
@@ -642,6 +738,7 @@
             btn.onclick = checkPin;
         }
     }
+
     function setupPin() {
         const val = document.getElementById('pinInput').value;
         if (val.length < 4) return alert('PIN minimal 4 digit!');
@@ -650,25 +747,31 @@
         document.getElementById('lockScreen').classList.add('hidden');
         document.getElementById('appContainer').classList.remove('hidden');
         renderChart();
+        checkBackupWarning();
         toast('PIN berhasil dibuat!');
     }
+
     function checkPin() {
         const input = document.getElementById('pinInput').value;
         if (input === appSettings.pin) {
             document.getElementById('lockScreen').classList.add('hidden');
             document.getElementById('appContainer').classList.remove('hidden');
             renderChart(); 
+            checkBackupWarning();
         } else {
             alert('PIN Salah!'); document.getElementById('pinInput').value = '';
         }
     }
+
     function resetPin() {
-        if(!confirm('Reset PIN? Data Anda tetap aman.')) return;
+        if(!confirm('Reset PIN? Data Kas, Murid, dan SPP Anda TIDAK akan terhapus. Anda hanya akan diminta membuat PIN baru.')) return;
         appSettings.pin = null;
         localStorage.setItem('madrasah_settings', JSON.stringify(appSettings));
         location.reload(); 
     }
+
     initLockScreen();
+    document.getElementById('pinInput').addEventListener('keypress', function (e) { if (e.key === 'Enter') document.getElementById('btnPin').click(); });
 
     function toggleThemeMode() {
         const html = document.documentElement;
@@ -684,108 +787,129 @@
 
     function isPeriodClosed(tanggal) {
         if (!appSettings.closedPeriods || appSettings.closedPeriods.length === 0) return false;
-        return appSettings.closedPeriods.includes(tanggal.slice(0, 7));
+        const bulan = tanggal.slice(0, 7);
+        return appSettings.closedPeriods.includes(bulan);
     }
+
     function lockPeriode() {
         const bulan = document.getElementById('lockBulanInput').value;
-        if (!bulan) return toast('Pilih bulan', 'error');
-        if (appSettings.closedPeriods.includes(bulan)) return toast('Sudah dikunci', 'info');
+        if (!bulan) return toast('Pilih bulan terlebih dahulu', 'error');
+        if (appSettings.closedPeriods.includes(bulan)) return toast('Bulan ini sudah dikunci', 'info');
+        
+        if (!confirm(`Kunci data bulan ${bulan}? Transaksi di bulan ini tidak bisa diedit/dihapus.`)) return;
         appSettings.closedPeriods.push(bulan);
         localStorage.setItem('madrasah_settings', JSON.stringify(appSettings));
         renderLockedPeriods();
-        toast('Periode dikunci');
+        renderKas();
+        toast('Data bulan ' + bulan + ' dikunci.');
     }
+
     function unlockPeriode(bulan) {
+        if (!confirm(`Buka kunci data bulan ${bulan}?`)) return;
         appSettings.closedPeriods = appSettings.closedPeriods.filter(b => b !== bulan);
         localStorage.setItem('madrasah_settings', JSON.stringify(appSettings));
         renderLockedPeriods();
-        toast('Kunci dibuka');
+        renderKas();
+        toast('Kunci data dibuka.');
     }
+
     function renderLockedPeriods() {
         const container = document.getElementById('listLockedPeriods');
-        if (!appSettings.closedPeriods.length) { container.innerHTML = '<p class="text-xs text-slate-400 italic">Belum ada.</p>'; return; }
-        container.innerHTML = appSettings.closedPeriods.map(b => `<div class="flex justify-between items-center bg-slate-100 dark:bg-slate-900 p-2 rounded-lg"><span class="text-xs font-bold">${b}</span><button onclick="unlockPeriode('${b}')" class="text-[10px] bg-red-100 text-red-600 px-2 py-1 rounded">Buka</button></div>`).join('');
+        if (!appSettings.closedPeriods || appSettings.closedPeriods.length === 0) {
+            container.innerHTML = '<p class="text-xs text-slate-400 italic">Belum ada bulan yang dikunci.</p>';
+            return;
+        }
+        container.innerHTML = appSettings.closedPeriods.sort().reverse().map(b => `
+            <div class="flex justify-between items-center bg-slate-100 dark:bg-slate-900 p-2 rounded-lg border border-slate-200 dark:border-slate-700">
+                <span class="text-xs font-bold">${b}</span>
+                <button onclick="unlockPeriode('${b}')" class="text-[10px] bg-red-100 text-red-600 px-2 py-1 rounded hover:bg-red-200 transition">Buka Kunci</button>
+            </div>
+        `).join('');
+    }
+
+    function checkBackupWarning() {
+        const warning = document.getElementById('backupWarning');
+        if (!appSettings.lastBackup) {
+            warning.classList.remove('hidden');
+            return;
+        }
+        const last = new Date(appSettings.lastBackup);
+        const now = new Date();
+        const diffDays = Math.ceil(Math.abs(now - last) / (1000 * 60 * 60 * 24)); 
+        if (diffDays > 7) {
+            warning.classList.remove('hidden');
+        } else {
+            warning.classList.add('hidden');
+        }
+    }
+
+    function getCatColor(name) {
+        if (!name) name = 'Lainnya';
+        let hash = 0; for (let i = 0; i < name.length; i++) { hash = ((hash << 5) - hash) + name.charCodeAt(i); hash |= 0; }
+        return CAT_COLORS[Math.abs(hash) % CAT_COLORS.length];
     }
 
     function formatRupiah(angka) { return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(angka || 0); }
-    function escapeHtml(s) { if (s === null || s === undefined) return ''; return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]); }
+    function escapeHtml(s) { if (s === null || s === undefined) return ''; return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
     
     function toast(msg, type = 'success') {
         const container = document.getElementById('toastContainer');
+        const icons = {
+            success: '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>',
+            error: '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>',
+            info: '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>'
+        };
         const el = document.createElement('div');
-        el.className = `${type === 'success' ? 'bg-primary' : 'bg-red-600'} text-white px-4 py-3 rounded-xl shadow-lg text-sm font-bold flex items-center gap-2 border-l-4 max-w-xs animate-slide-in`;
-        el.innerHTML = `<span>${escapeHtml(msg)}</span>`;
+        el.className = `${type === 'success' ? 'bg-primary border-primary' : type === 'error' ? 'bg-red-600 border-red-500' : 'bg-blue-500 border-blue-400'} text-white px-4 py-3 rounded-xl shadow-lg text-sm font-bold flex items-center gap-2 pointer-events-auto border-l-4 max-w-xs animate-slide-in theme-transition`;
+        el.innerHTML = `${icons[type]}<span>${escapeHtml(msg)}</span>`;
         container.appendChild(el);
         setTimeout(() => { el.style.opacity = '0'; setTimeout(() => el.remove(), 300); }, 3000);
     }
 
+    function toastWithUndo(msg, onUndo) {
+        const container = document.getElementById('toastContainer');
+        const el = document.createElement('div');
+        el.className = 'bg-primary text-white px-4 py-3 rounded-xl shadow-lg text-sm font-bold flex items-center gap-2 pointer-events-auto border-l-4 border-primary max-w-sm animate-slide-in theme-transition';
+        el.innerHTML = `<svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg><span class="flex-1">${escapeHtml(msg)}</span><button class="bg-white/20 hover:bg-white/30 px-2 py-1 rounded-lg text-xs font-bold transition">↩️ Undo</button>`;
+        el.querySelector('button').onclick = () => { onUndo(); el.remove(); };
+        container.appendChild(el);
+        setTimeout(() => { el.style.opacity = '0'; setTimeout(() => el.remove(), 300); }, 10000);
+    }
+
     function getDefaultDb() {
         return {
-            version: DB_VERSION, tahunAjaran: '2025/2026', nominalSppDefault: 50000, kategori: [...DEFAULT_KATEGORI], kategoriSpp: 'SPP',
+            version: DB_VERSION, tahunAjaran: '2025/2026', bulanAwalTahunAjaran: 7, nominalSppDefault: 50000, kategori: [...DEFAULT_KATEGORI], kategoriSpp: 'SPP',
             kas: [{ id: 1, tanggal: new Date().toISOString().slice(0,10), keterangan: 'Saldo Awal Kas', jenis: 'Masuk', nominal: 5000000, kategori: 'Lainnya' }],
-            spp: [], murid: [...defaultMurid], guru: [...defaultGuru]
+            spp: [], 
+            murid: [...defaultMurid], 
+            guru: [...defaultGuru]
         };
     }
 
     function migrateDb(db) {
-        db.murid = db.murid && db.murid.length ? db.murid : [...defaultMurid];
-        db.guru = db.guru && db.guru.length ? db.guru : [...defaultGuru];
-        db.spp = db.spp || []; db.kas = db.kas || [];
-        db.kategori = db.kategori || [...DEFAULT_KATEGORI];
+        if (!db.version || db.version < DB_VERSION) {
+            db.murid = db.murid && db.murid.length > 0 ? db.murid : [...defaultMurid];
+            db.guru = db.guru && db.guru.length > 0 ? db.guru : [...defaultGuru];
+            db.spp = db.spp || [];
+            db.version = DB_VERSION;
+        }
         db.tahunAjaran = db.tahunAjaran || '2025/2026';
+        db.bulanAwalTahunAjaran = Number(db.bulanAwalTahunAjaran) || 7;
         db.nominalSppDefault = Number(db.nominalSppDefault) || 50000;
+        db.kas = db.kas || [];
+        db.murid = db.murid || [];
+        db.guru = db.guru || [];
+        db.spp = db.spp || [];
+        db.kategori = (Array.isArray(db.kategori) && db.kategori.length > 0) ? db.kategori : [...DEFAULT_KATEGORI];
+        if (!db.kategori.includes('Lainnya')) db.kategori.push('Lainnya');
+        db.kategoriSpp = (db.kategoriSpp && db.kategori.includes(db.kategoriSpp)) ? db.kategoriSpp : 'SPP';
         return db;
     }
 
     let db = migrateDb(JSON.parse(localStorage.getItem('madrasah_db')) || getDefaultDb());
+    localStorage.setItem('madrasah_db', JSON.stringify(db));
 
-    // ==========================================
-    // INTEGRASI REALTIME FIREBASE FIRESTORE
-    // ==========================================
-    window.addEventListener('DOMContentLoaded', () => {
-        const statusBanner = document.getElementById('syncStatusBanner');
-        const statusText = document.getElementById('syncStatusText');
-        
-        const checkFB = setInterval(() => {
-            if (window.fbDb && window.fbMethods) {
-                clearInterval(checkFB);
-                const { doc, setDoc, onSnapshot } = window.fbMethods;
-                const docRef = doc(window.fbDb, "madrasah_data", "main_config");
-
-                onSnapshot(docRef, async (docSnap) => {
-                    if (docSnap.exists()) {
-                        db = migrateDb(docSnap.data());
-                        localStorage.setItem('madrasah_db', JSON.stringify(db));
-                        populateKategoriSelects();
-                        renderAll();
-                        statusText.textContent = 'Terhubung ke Cloud Firestore (Realtime)';
-                        statusBanner.className = 'bg-emerald-50 dark:bg-emerald-900/30 border border-emerald-200 dark:border-emerald-700 rounded-2xl p-3 flex items-center justify-between text-xs font-semibold text-emerald-800 dark:text-emerald-300';
-                    } else {
-                        await setDoc(docRef, db);
-                        statusText.textContent = 'Cloud Firestore diinisialisasi';
-                    }
-                }, (error) => {
-                    console.warn("Gagal koneksi cloud, menggunakan mode offline:", error);
-                    statusText.textContent = 'Mode Offline (Menggunakan penyimpanan lokal)';
-                    statusBanner.className = 'bg-amber-50 dark:bg-amber-900/30 border border-amber-200 rounded-2xl p-3 flex items-center justify-between text-xs font-semibold text-amber-800 dark:text-amber-300';
-                });
-            }
-        }, 500);
-    });
-
-    async function saveData() {
-        localStorage.setItem('madrasah_db', JSON.stringify(db));
-        renderAll();
-
-        if (window.fbDb && window.fbMethods) {
-            try {
-                const { doc, setDoc } = window.fbMethods;
-                await setDoc(doc(window.fbDb, "madrasah_data", "main_config"), db);
-            } catch (err) {
-                console.error("Gagal simpan ke cloud:", err);
-            }
-        }
-    }
+    function saveData() { localStorage.setItem('madrasah_db', JSON.stringify(db)); renderAll(); }
 
     function switchTab(tabId) {
         document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
@@ -800,11 +924,12 @@
 
         const fab = document.getElementById('fabBtn');
         if(tabId === 'spp' || tabId === 'laporan') fab.classList.add('hidden'); else fab.classList.remove('hidden');
+        
         if(tabId === 'laporan') renderLaporan();
     }
 
     function toggleNotif(e) { if(e) e.stopPropagation(); document.getElementById('notifPanel').classList.toggle('hidden'); }
-    function closeNotifOnOutside(e) { const p = document.getElementById('notifPanel'); if (p && !e.target.closest('button[onclick="toggleNotif(event)"]') && !e.target.closest('#notifPanel')) p.classList.add('hidden'); }
+    function closeNotifOnOutside(e) { const p = document.getElementById('notifPanel'); if (!p) return; if (!e.target.closest('button[onclick="toggleNotif(event)"]') && !e.target.closest('#notifPanel')) p.classList.add('hidden'); }
     
     function renderNotif() {
         const map = {};
@@ -816,10 +941,23 @@
         badge.textContent = keys.length; badge.classList.toggle('hidden', keys.length === 0);
         
         const list = document.getElementById('notifList');
-        if (!keys.length) { list.innerHTML = `<div class="p-6 text-center text-slate-500 text-xs">Tidak ada tunggakan 🎉</div>`; return; }
+        if (keys.length === 0) { 
+            list.innerHTML = `<div class="p-8 text-center text-slate-500"><div class="inline-flex items-center justify-center w-12 h-12 bg-emerald-50 rounded-full mb-3"><svg class="w-6 h-6 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div><p class="text-sm font-bold">Tidak ada tunggakan 🎉</p></div>`; 
+            return; 
+        }
+        
         list.innerHTML = keys.map(k => {
             const t = map[k];
-            return `<div class="p-3 hover:bg-slate-50 dark:hover:bg-slate-800/50"><div class="flex justify-between items-start mb-1"><p class="font-bold text-sm">${escapeHtml(t.nama)}</p><span class="text-[10px] bg-amber-100 text-amber-800 px-2 py-0.5 rounded">${t.list.length} Bln</span></div><p class="text-xs text-slate-500">Kelas: ${escapeHtml(t.kelas)}</p></div>`;
+            return `<div class="p-3 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition">
+                <div class="flex justify-between items-start mb-1">
+                    <p class="font-bold text-sm text-slate-800 dark:text-slate-200">${escapeHtml(t.nama)}</p>
+                    <span class="text-[10px] bg-amber-100 text-amber-800 px-2 py-0.5 rounded-md font-bold">${t.list.length} Bln</span>
+                </div>
+                <p class="text-xs text-slate-500 mb-1.5">Kelas: ${escapeHtml(t.kelas)}</p>
+                <div class="flex flex-wrap gap-1">
+                    ${t.list.map(b => `<span class="text-[10px] bg-red-50 text-red-600 border border-red-100 px-1.5 py-0.5 rounded">${escapeHtml(b)}</span>`).join('')}
+                </div>
+            </div>`;
         }).join('');
     }
 
@@ -833,22 +971,54 @@
         db.kas.forEach(k => { const d = new Date(k.tanggal); const idx = months.findIndex(m => m.year === d.getFullYear() && m.month === d.getMonth()); if (idx > -1) { if (k.jenis === 'Masuk') dataMasuk[idx] += k.nominal; else dataKeluar[idx] += k.nominal; } });
         if (chartInstance) chartInstance.destroy();
         const isDark = document.documentElement.classList.contains('dark');
-        chartInstance = new Chart(ctx, { type: 'bar', data: { labels: months.map(m => m.label), datasets: [ { label: 'Masuk', data: dataMasuk, backgroundColor: '#059669', borderRadius: 4 }, { label: 'Keluar', data: dataKeluar, backgroundColor: '#ef4444', borderRadius: 4 } ] }, options: { responsive: true, maintainAspectRatio: false, scales: { x: { ticks: { color: isDark ? '#94a3b8' : '#64748b' } }, y: { ticks: { color: isDark ? '#94a3b8' : '#64748b' } } } } });
+        const primaryColor = getComputedStyle(document.body).getPropertyValue('--c-primary').trim().split(' ').join(', ');
+        
+        chartInstance = new Chart(ctx, { type: 'bar', data: { labels: months.map(m => m.label), datasets: [ { label: 'Masuk', data: dataMasuk, backgroundColor: `rgb(${primaryColor})`, borderRadius: 4 }, { label: 'Keluar', data: dataKeluar, backgroundColor: '#ef4444', borderRadius: 4 } ] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: isDark ? '#fff' : '#333' } } }, scales: { x: { ticks: { color: isDark ? '#94a3b8' : '#64748b' }, grid: { display: false } }, y: { ticks: { color: isDark ? '#94a3b8' : '#64748b' }, grid: { color: isDark ? '#334155' : '#e2e8f0' } } } } });
     }
 
     function renderLaporan() {
         const input = document.getElementById('lapBulan');
         if (!input.value) input.value = new Date().toISOString().slice(0, 7);
         const bulan = input.value;
+        
         const filterKas = db.kas.filter(k => k.tanggal.startsWith(bulan));
         const tMasuk = filterKas.filter(k => k.jenis === 'Masuk').reduce((s, k) => s + k.nominal, 0);
         const tKeluar = filterKas.filter(k => k.jenis === 'Keluar').reduce((s, k) => s + k.nominal, 0);
         
-        document.getElementById('lapContent').innerHTML = `
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-                <div class="bg-emerald-50 p-3 rounded-xl"><p class="text-xs font-bold text-emerald-600">Masuk</p><p class="font-bold text-emerald-700">${formatRupiah(tMasuk)}</p></div>
-                <div class="bg-red-50 p-3 rounded-xl"><p class="text-xs font-bold text-red-600">Keluar</p><p class="font-bold text-red-700">${formatRupiah(tKeluar)}</p></div>
+        let sppLunasBulanIni = 0, sppNominalLunas = 0;
+        db.spp.forEach(s => {
+            if (s.status === 'Lunas' && s.tanggalBayar && s.tanggalBayar.startsWith(bulan)) {
+                sppLunasBulanIni++;
+                sppNominalLunas += s.nominal;
+            }
+        });
+
+        const container = document.getElementById('lapContent');
+        container.innerHTML = `
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-3">
+                <div class="bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-100 dark:border-emerald-800 p-3 md:p-4 rounded-xl md:rounded-2xl">
+                    <p class="text-[10px] md:text-xs font-bold text-emerald-600 dark:text-emerald-400 mb-1">Kas Masuk</p>
+                    <p class="text-sm md:text-lg font-extrabold text-emerald-700 dark:text-emerald-300 break-all">${formatRupiah(tMasuk)}</p>
+                </div>
+                <div class="bg-red-50 dark:bg-red-900/20 border border-red-100 dark:border-red-800 p-3 md:p-4 rounded-xl md:rounded-2xl">
+                    <p class="text-[10px] md:text-xs font-bold text-red-600 dark:text-red-400 mb-1">Kas Keluar</p>
+                    <p class="text-sm md:text-lg font-extrabold text-red-700 dark:text-red-300 break-all">${formatRupiah(tKeluar)}</p>
+                </div>
+                <div class="bg-primary-light/50 dark:bg-primary-dark/20 border border-primary/20 p-3 md:p-4 rounded-xl md:rounded-2xl">
+                    <p class="text-[10px] md:text-xs font-bold text-primary mb-1">SPP Lunas</p>
+                    <p class="text-sm md:text-lg font-extrabold text-primary break-all">${sppLunasBulanIni} Tagihan</p>
+                    <p class="text-[10px] md:text-xs font-bold text-primary mt-1 break-all">${formatRupiah(sppNominalLunas)}</p>
+                </div>
+                <div class="bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-3 md:p-4 rounded-xl md:rounded-2xl">
+                    <p class="text-[10px] md:text-xs font-bold text-slate-500 mb-1">Selisih Kas</p>
+                    <p class="text-sm md:text-lg font-extrabold ${tMasuk - tKeluar >= 0 ? 'text-emerald-600' : 'text-red-600'} break-all">${formatRupiah(tMasuk - tKeluar)}</p>
+                </div>
             </div>
+
+            <h3 class="text-sm font-bold mt-6 mb-3 border-b pb-2">Rincian Kas Bulan ${bulan}</h3>
+            ${filterKas.length ? `<div class="table-wrap"><table class="w-full text-left"><thead><tr class="bg-slate-50 text-xs uppercase"><th class="p-3">Tgl</th><th class="p-3">Keterangan</th><th class="p-3 text-right">Nominal</th></tr></thead><tbody>
+                ${filterKas.map(k => `<tr class="border-b dark:border-slate-700"><td class="p-3 text-xs whitespace-nowrap">${k.tanggal}</td><td class="p-3 font-medium text-sm">${escapeHtml(k.keterangan)}</td><td class="p-3 text-right font-bold text-sm ${k.jenis === 'Masuk' ? 'text-emerald-500' : 'text-red-500'} whitespace-nowrap">${k.jenis === 'Masuk' ? '+' : '-'} ${formatRupiah(k.nominal)}</td></tr>`).join('')}
+            </tbody></table></div>` : '<p class="text-sm text-slate-400">Tidak ada transaksi di bulan ini.</p>'}
         `;
     }
 
@@ -864,87 +1034,921 @@
         document.getElementById('heroPemasukan').innerText = formatRupiah(inK);
         document.getElementById('heroPengeluaran').innerText = formatRupiah(outK);
 
+        const fJ = document.getElementById('kasFilterJenis').value, fK = document.getElementById('kasFilterKategori').value, fD = document.getElementById('kasFilterDari').value, fS = document.getElementById('kasFilterSampai').value;
+        const filtered = db.kas.filter(i => (!fJ || i.jenis === fJ) && (!fK || i.kategori === fK) && (!fD || i.tanggal >= fD) && (!fS || i.tanggal <= fS));
         const tbody = document.getElementById('tabelKasBody');
-        tbody.innerHTML = db.kas.length ? db.kas.map(item => `
-            <tr class="border-b dark:border-slate-700">
-                <td class="p-4 text-xs">${escapeHtml(item.tanggal)}</td>
+        if (!filtered.length) { tbody.innerHTML = '<tr><td colspan="5" class="p-8 text-center text-slate-400">Tidak ada data kas.</td></tr>'; return; }
+        
+        tbody.innerHTML = [...filtered].sort((a,b) => new Date(b.tanggal) - new Date(a.tanggal)).map(item => {
+            const color = getCatColor(item.kategori);
+            const isClosed = isPeriodClosed(item.tanggal);
+            return `<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition border-b border-slate-100 dark:border-slate-700/50">
+                <td class="p-4 text-xs text-slate-500 whitespace-nowrap">${escapeHtml(item.tanggal)} ${isClosed?'<span class="text-[9px] bg-slate-200 text-slate-600 px-1 rounded">LOCK</span>':''}</td>
                 <td class="p-4 font-bold">${escapeHtml(item.keterangan)}</td>
-                <td class="p-4 hidden sm:table-cell">${escapeHtml(item.kategori)}</td>
-                <td class="p-4 text-right font-bold ${item.jenis === 'Masuk' ? 'text-emerald-600' : 'text-red-500'}">${item.jenis === 'Masuk' ? '+' : '-'} ${formatRupiah(item.nominal)}</td>
-                <td class="p-4 text-center"><button onclick="deleteKas(${item.id})" class="text-red-500">🗑️</button></td>
-            </tr>
-        `).join('') : '<tr><td colspan="5" class="p-6 text-center text-slate-400">Belum ada kas.</td></tr>';
+                <td class="p-4 hidden sm:table-cell"><span class="inline-flex items-center gap-1.5 ${color.bg} px-2.5 py-1 rounded-lg text-[11px] font-bold"><span class="w-1.5 h-1.5 rounded-full ${color.dot}"></span>${escapeHtml(item.kategori)}</span></td>
+                <td class="p-4 text-right font-extrabold ${item.jenis === 'Masuk' ? 'text-primary' : 'text-red-500'} whitespace-nowrap theme-transition">${item.jenis === 'Masuk' ? '+' : '-'} ${formatRupiah(item.nominal)}</td>
+                <td class="p-4 text-center">
+                    ${isClosed ? '<span class="text-slate-400 text-xs">Terkunci</span>' : `
+                    <button onclick="openEditKas(${item.id})" class="text-slate-400 hover:text-primary p-1 transition theme-transition">✏️</button>
+                    <button onclick="deleteKas(${item.id})" class="text-slate-400 hover:text-red-500 p-1 transition">🗑️</button>`}
+                </td>
+            </tr>`;
+        }).join('');
     }
 
     function addKas(e) {
         e.preventDefault();
         const tgl = document.getElementById('kasTanggal').value;
-        if (isPeriodClosed(tgl)) return toast('Bulan ini sudah ditutup buku', 'error');
+        if (isPeriodClosed(tgl)) return toast('Bulan ini sudah ditutup buku (terkunci)', 'error');
+        
         db.kas.push({ id: Date.now(), tanggal: tgl, keterangan: document.getElementById('kasKeterangan').value, kategori: document.getElementById('kasKategori').value, jenis: document.getElementById('kasJenis').value, nominal: parseFloat(document.getElementById('kasNominal').value) });
         document.getElementById('formKas').reset(); document.getElementById('kasTanggal').valueAsDate = new Date();
-        saveData(); toast('Kas tersimpan');
+        saveData(); toast('Transaksi Kas tersimpan');
     }
-    function deleteKas(id) { if (!confirm('Hapus?')) return; db.kas = db.kas.filter(item => item.id !== id); saveData(); toast('Dihapus'); }
-    function resetKasFilter() { renderKas(); }
+    function deleteKas(id) { 
+        const item = db.kas.find(k=>k.id === id);
+        if (item && isPeriodClosed(item.tanggal)) return toast('Tidak bisa hapus data di bulan terkunci', 'error');
+        if (!confirm('Hapus?')) return; db.kas = db.kas.filter(item => item.id !== id); saveData(); toast('Dihapus'); 
+    }
+    function resetKasFilter() { document.getElementById('kasFilterJenis').value = ''; document.getElementById('kasFilterKategori').value = ''; document.getElementById('kasFilterDari').value = ''; document.getElementById('kasFilterSampai').value = ''; renderKas(); }
+
+    // --- FUNGSI TABEL SPP (GROUPING & POP-UP) ---
+    
+    let currentDetailNis = null;
+
+    function renderSpp() {
+        // 1. Update Dropdown Filter Kelas
+        const kelasSet = new Set(db.spp.map(s => s.kelas)); 
+        const kelasSel = document.getElementById('sppFilterKelas');
+        const prevKelas = kelasSel.value; 
+        kelasSel.innerHTML = '<option value="">Semua Kelas</option>' + Array.from(kelasSet).sort().map(k => `<option value="${escapeHtml(k)}">${escapeHtml(k)}</option>`).join(''); 
+        kelasSel.value = prevKelas;
+        
+        document.getElementById('tahunAjaranInput').value = db.tahunAjaran; 
+        document.getElementById('nominalSppDefault').value = db.nominalSppDefault;
+
+        // 2. Ambil Filter
+        const kw = document.getElementById('searchSpp').value.toLowerCase(); 
+        const fK = kelasSel.value; 
+        const fS = document.getElementById('sppFilterStatus').value;
+
+        // 3. Kelompokkan Data per Murid (NIS)
+        const grouped = {};
+        db.spp.forEach(s => {
+            if (!grouped[s.nis]) {
+                grouped[s.nis] = { nis: s.nis, nama: s.nama, kelas: s.kelas, tagihan: [] };
+            }
+            grouped[s.nis].tagihan.push(s);
+        });
+
+        // 4. Filter & Hitung Total per Murid
+        let listMurid = Object.values(grouped).filter(m => {
+            // Filter Pencarian & Kelas
+            if (kw && !m.nama.toLowerCase().includes(kw) && !m.nis.toLowerCase().includes(kw)) return false;
+            if (fK && m.kelas !== fK) return false;
+            
+            // Hitung status
+            m.totalBelum = m.tagihan.filter(t => t.status === 'Belum').length;
+            m.totalNominalBelum = m.tagihan.filter(t => t.status === 'Belum').reduce((sum, t) => sum + t.nominal, 0);
+            
+            // Filter Status (Lunas / Belum)
+            if (fS === 'Belum' && m.totalBelum === 0) return false;
+            if (fS === 'Lunas' && m.totalBelum > 0) return false;
+            
+            return true;
+        });
+
+        // 5. Urutkan berdasarkan Kelas lalu Nama
+        listMurid.sort((a, b) => String(a.kelas).localeCompare(String(b.kelas)) || String(a.nama).localeCompare(String(b.nama)));
+
+        // 6. Render Tabel
+        const tbody = document.getElementById('tabelSppBody');
+        if (!listMurid.length) { 
+            tbody.innerHTML = '<tr><td colspan="5" class="p-8 text-center text-slate-400">Belum ada data SPP yang cocok.</td></tr>'; 
+        } else {
+            tbody.innerHTML = listMurid.map(m => {
+                let statusBadge = '';
+                if (m.totalBelum === 0) {
+                    statusBadge = '<span class="bg-primary-light text-primary px-3 py-1 rounded-lg text-xs font-bold">Lunas Semua</span>';
+                } else {
+                    statusBadge = `<span class="bg-amber-100 text-amber-700 px-3 py-1 rounded-lg text-xs font-bold">${m.totalBelum} Bln Belum</span>`;
+                }
+
+                return `
+                <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition border-b border-slate-100 dark:border-slate-700/50">
+                    <td class="p-4">
+                        <div class="font-bold text-sm">${escapeHtml(m.nama)}</div>
+                        <div class="text-[11px] text-slate-500 font-mono mt-0.5">${escapeHtml(m.nis)}</div>
+                    </td>
+                    <td class="p-4 hidden sm:table-cell text-xs">
+                        <span class="bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded-md font-semibold">${escapeHtml(m.kelas)}</span>
+                    </td>
+                    <td class="p-4 text-center">${statusBadge}</td>
+                    <td class="p-4 text-right font-extrabold text-sm ${m.totalBelum > 0 ? 'text-red-500' : 'text-slate-400'} whitespace-nowrap">
+                        ${m.totalBelum > 0 ? formatRupiah(m.totalNominalBelum) : '-'}
+                    </td>
+                    <td class="p-4 text-center">
+                        <button onclick="openSppDetail('${escapeHtml(m.nis)}')" class="bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1 mx-auto">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                            Detail
+                        </button>
+                    </td>
+                </tr>`;
+            }).join('');
+        }
+
+        // 7. Update Ringkasan Bawah (Tunggakan Keseluruhan)
+        const totalT = db.spp.filter(s => s.status === 'Belum').reduce((sum, s) => sum + s.nominal, 0);
+        document.getElementById('sppSummary').innerHTML = `Tunggakan: ${formatRupiah(totalT)}`; 
+        document.getElementById('heroTunggakan').innerText = formatRupiah(totalT);
+    }
+
+    function openSppDetail(nis) {
+        currentDetailNis = nis;
+        const sppList = db.spp.filter(s => String(s.nis) === String(nis));
+        if (!sppList.length) return;
+        
+        const murid = sppList[0];
+        const totalBelum = sppList.filter(s => s.status === 'Belum').length;
+
+        document.getElementById('sppDetailTitle').innerText = murid.nama;
+        document.getElementById('sppDetailSubtitle').innerText = `Kelas ${murid.kelas} • NIS ${murid.nis}`;
+        
+        const btnLunasi = document.getElementById('btnLunasiSemua');
+        if (totalBelum === 0) {
+            btnLunasi.style.display = 'none';
+        } else {
+            btnLunasi.style.display = 'block';
+            btnLunasi.innerText = `Lunasi Semua (${totalBelum} Bln)`;
+        }
+
+        // Urutkan bulan sesuai Tahun Ajaran
+        const dynList = getDynamicBulanList();
+        sppList.sort((a, b) => a.tahun - b.tahun || dynList.indexOf(a.bulan) - dynList.indexOf(b.bulan));
+
+        document.getElementById('sppDetailBody').innerHTML = sppList.map(s => {
+            const isLunas = s.status === 'Lunas';
+            return `
+                <button onclick="toggleSppStatus(${s.id})" class="p-3 rounded-xl border text-left transition flex flex-col justify-between h-20 ${isLunas ? 'bg-primary-light/30 border-primary/30' : 'bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800 hover:bg-red-100'}">
+                    <div class="flex justify-between items-start w-full">
+                        <span class="text-xs font-bold ${isLunas ? 'text-primary' : 'text-red-600 dark:text-red-400'}">${escapeHtml(s.bulan)} ${s.tahun}</span>
+                        <span class="text-[10px]">${isLunas ? '✅' : '⏳'}</span>
+                    </div>
+                    <div class="text-[11px] font-semibold ${isLunas ? 'text-primary-dark' : 'text-red-500'}">
+                        ${isLunas ? 'Lunas' : formatRupiah(s.nominal)}
+                    </div>
+                </button>
+            `;
+        }).join('');
+
+        document.getElementById('sppDetailModal').classList.remove('hidden');
+    }
+
+    function closeSppDetail() {
+        document.getElementById('sppDetailModal').classList.add('hidden');
+        currentDetailNis = null;
+    }
 
     function toggleSppStatus(id) {
         const item = db.spp.find(s => s.id === id); if (!item) return;
-        item.status = item.status === 'Belum' ? 'Lunas' : 'Belum';
-        saveData();
+        const tgl = new Date().toISOString().split('T')[0];
+        if (isPeriodClosed(tgl)) return toast('Bulan ini terkunci, tidak bisa ubah status SPP', 'error');
+
+        if (item.status === 'Belum') {
+            item.status = 'Lunas'; item.tanggalBayar = tgl;
+            const kasId = Date.now() + Math.floor(Math.random() * 1000); item.kasId = kasId;
+            db.kas.push({ id: kasId, tanggal: item.tanggalBayar, keterangan: `SPP ${item.bulan} ${item.tahun} - ${item.nama} (${item.kelas})`, jenis: 'Masuk', nominal: item.nominal, kategori: db.kategoriSpp || 'SPP' });
+            toast(`SPP ${item.bulan} ${item.nama} LUNAS`);
+        } else {
+            item.status = 'Belum'; if (item.kasId) { db.kas = db.kas.filter(k => k.id !== item.kasId); item.kasId = null; }
+            item.tanggalBayar = null; toast(`SPP ${item.bulan} ${item.nama} Batal`);
+        }
+        saveData(); 
+        // Jika modal sedang terbuka, refresh isi modalnya
+        if (currentDetailNis) openSppDetail(currentDetailNis); 
     }
 
-    function renderSpp() {
-        document.getElementById('tahunAjaranInput').value = db.tahunAjaran; document.getElementById('nominalSppDefault').value = db.nominalSppDefault;
-        const tbody = document.getElementById('tabelSppBody');
-        tbody.innerHTML = db.spp.length ? db.spp.map(item => `
-            <tr class="border-b dark:border-slate-700">
-                <td class="p-3">${escapeHtml(item.nama)}</td>
-                <td class="p-3 hidden sm:table-cell">${escapeHtml(item.kelas)}</td>
-                <td class="p-3">${escapeHtml(item.bulan)} ${item.tahun}</td>
-                <td class="p-3 text-right">${formatRupiah(item.nominal)}</td>
-                <td class="p-3 text-center"><button onclick="toggleSppStatus(${item.id})" class="px-2 py-1 rounded text-xs ${item.status === 'Lunas' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}">${item.status}</button></td>
-                <td class="p-3 text-center">-</td>
-            </tr>
-        `).join('') : '<tr><td colspan="6" class="p-6 text-center text-slate-400">Belum ada SPP.</td></tr>';
-        document.getElementById('sppSummary').innerHTML = `Tunggakan: Rp 0`; document.getElementById('heroTunggakan').innerText = 'Rp 0';
-    }
-    function updateNominalDefault() { db.nominalSppDefault = parseInt(document.getElementById('nominalSppDefault').value); saveData(); }
-    function updateTahunAjaran() { db.tahunAjaran = document.getElementById('tahunAjaranInput').value; saveData(); }
-    function generateSppForAll() {
-        db.murid.forEach(m => {
-            db.spp.push({ id: Date.now() + Math.random(), nis: m.nis, nama: m.nama, kelas: m.kelas, bulan: 'Juli', tahun: 2026, nominal: db.nominalSppDefault, status: 'Belum', tanggalBayar: null, kasId: null });
+    function lunasiSemuaSpp() {
+        if (!currentDetailNis) return;
+        if (!confirm('Lunasi SEMUA tagihan yang belum dibayar untuk murid ini?')) return;
+
+        const sppList = db.spp.filter(s => String(s.nis) === String(currentDetailNis) && s.status === 'Belum');
+        const tgl = new Date().toISOString().split('T')[0];
+        if (isPeriodClosed(tgl)) return toast('Bulan ini terkunci', 'error');
+
+        let count = 0;
+        sppList.forEach(item => {
+            item.status = 'Lunas'; 
+            item.tanggalBayar = tgl;
+            const kasId = Date.now() + Math.floor(Math.random() * 1000); 
+            item.kasId = kasId;
+            db.kas.push({ id: kasId, tanggal: item.tanggalBayar, keterangan: `SPP ${item.bulan} ${item.tahun} - ${item.nama} (${item.kelas})`, jenis: 'Masuk', nominal: item.nominal, kategori: db.kategoriSpp || 'SPP' });
+            count++;
         });
-        saveData(); toast('SPP digenerate');
+
+        saveData();
+        openSppDetail(currentDetailNis); // Refresh modal
+        toast(`Berhasil melunasi ${count} tagihan`);
     }
-    function openBulkNominal() { document.getElementById('bulkNominalModal').classList.remove('hidden'); }
+
+    function updateNominalDefault() { const val = parseInt(document.getElementById('nominalSppDefault').value); if (!val || val < 0) return toast('Nominal salah', 'error'); db.nominalSppDefault = val; saveData(); toast('Default diperbarui'); }
+    function updateTahunAjaran() { const val = document.getElementById('tahunAjaranInput').value.trim(); if (!/^\d{4}\/\d{4}$/.test(val)) return alert('Format: 2025/2026'); db.tahunAjaran = val; saveData(); toast('Tahun ajaran disimpan'); }
+
+    // --- FUNGSI GENERATE SPP DINAMIS ---
+    function openGenerateSppModal() {
+        document.getElementById('genTahunAjaranDisplay').innerText = db.tahunAjaran;
+        const select = document.getElementById('genSppStartBulan');
+        const dynList = getDynamicBulanList();
+        
+        // Cari tahu bulan sekarang (sesuai kalender asli)
+        const currentMonthName = ALL_MONTHS[new Date().getMonth()];
+        
+        select.innerHTML = dynList.map(b => `<option value="${b}">${b}</option>`).join('');
+        
+        // Jika bulan sekarang ada di dalam tahun ajaran, pilih otomatis
+        if (dynList.includes(currentMonthName)) {
+            select.value = currentMonthName;
+        }
+        
+        document.getElementById('generateSppModal').classList.remove('hidden');
+    }
+
+    function closeGenerateSpp() {
+        document.getElementById('generateSppModal').classList.add('hidden');
+    }
+
+    function applyGenerateSpp(e) {
+        e.preventDefault();
+        if (!db.murid.length) return toast('Belum ada murid', 'error');
+        
+        const startBulanStr = document.getElementById('genSppStartBulan').value;
+        const dynList = getDynamicBulanList();
+        const startIndex = dynList.indexOf(startBulanStr);
+        
+        const [ta1, ta2] = db.tahunAjaran.split('/'); 
+        const y1 = parseInt(ta1), y2 = parseInt(ta2); 
+        let created = 0;
+
+        db.murid.forEach(m => { 
+            for (let i = startIndex; i < 12; i++) { 
+                const bulan = dynList[i];
+                
+                // Logika penentuan tahun (kalender Masehi)
+                const monthNum = ALL_MONTHS.indexOf(bulan) + 1; // 1-12
+                const startMonthNum = db.bulanAwalTahunAjaran || 7;
+                const tahun = monthNum >= startMonthNum ? y1 : y2;
+
+                if (!db.spp.find(s => String(s.nis) === String(m.nis) && s.bulan === bulan && s.tahun === tahun)) {
+                    db.spp.push({ 
+                        id: Date.now() + Math.floor(Math.random() * 100000) + i, 
+                        nis: m.nis, nama: m.nama, kelas: m.kelas, bulan, tahun, 
+                        nominal: db.nominalSppDefault || 50000, status: 'Belum', tanggalBayar: null, kasId: null 
+                    }); 
+                    created++;
+                }
+            } 
+        });
+        
+        closeGenerateSpp();
+        if (created === 0) toast('Semua tagihan dari bulan tersebut sudah ada', 'info'); 
+        else { saveData(); toast(`Berhasil membuat ${created} tagihan SPP baru`); }
+    }
+
+    // --- FUNGSI LAINNYA ---
+
+    function openBulkNominal() {
+        const kelasSel = document.getElementById('bulkTargetKelas'); kelasSel.innerHTML = '<option value="">Semua Kelas</option>' + Array.from(new Set(db.spp.map(s => s.kelas))).sort().map(k => `<option value="${escapeHtml(k)}">${escapeHtml(k)}</option>`).join('');
+        document.getElementById('bulkTargetStatus').value = ''; document.getElementById('bulkNominalBaru').value = db.nominalSppDefault;
+        document.getElementById('bulkPreview').className = 'bg-amber-50 text-amber-900 p-3 rounded-xl text-xs'; document.getElementById('bulkPreview').innerHTML = 'Isi nominal untuk melihat preview.';
+        document.getElementById('bulkNominalModal').classList.remove('hidden'); previewBulkNominal();
+    }
     function closeBulkNominal() { document.getElementById('bulkNominalModal').classList.add('hidden'); }
-    function applyBulkNominal(e) { e.preventDefault(); closeBulkNominal(); }
-    function previewBulkNominal() {}
+    function getBulkMatching() { const k = document.getElementById('bulkTargetKelas').value, s = document.getElementById('bulkTargetStatus').value; return db.spp.filter(i => (!k || i.kelas === k) && (!s || i.status === s)); }
+    
+    function previewBulkNominal() {
+        const preview = document.getElementById('bulkPreview'); const nominal = parseInt(document.getElementById('bulkNominalBaru').value);
+        const matches = getBulkMatching(); const affected = matches.filter(s => s.nominal !== nominal).length;
+        if (matches.length === 0) { preview.innerHTML = '<strong>Tidak ada tagihan</strong> yang cocok.'; return; }
+        preview.innerHTML = `<div class="font-bold mb-1">📋 Preview Perubahan</div><div>Menemukan <strong>${matches.length} tagihan</strong>.</div>${nominal > 0 ? `<div>Total nilai tagihan setelah update: <strong>${formatRupiah(nominal * matches.length)}</strong>.</div>` : ''}`;
+    }
+    
+    function applyBulkNominal(e) {
+        e.preventDefault(); const nominal = parseInt(document.getElementById('bulkNominalBaru').value); if (!nominal || nominal < 0) return;
+        const matches = getBulkMatching(); let changed = 0, kasSynced = 0;
+        matches.forEach(s => { if (s.nominal === nominal) return; s.nominal = nominal; changed++;
+            if (s.status === 'Lunas' && s.kasId) { const l = db.kas.find(k => k.id === s.kasId); if (l) { l.nominal = nominal; kasSynced++; } }
+        });
+        saveData(); closeBulkNominal(); toast(`${changed} tagihan di-update`);
+    }
 
+    function addMurid(e) {
+        e.preventDefault(); const nis = document.getElementById('muridNis').value.trim();
+        if (db.murid.find(m => String(m.nis) === nis)) return toast('NIS dipakai', 'error');
+        db.murid.push({ nis, nama: document.getElementById('muridNama').value, kelas: document.getElementById('muridKelas').value });
+        document.getElementById('formMurid').reset(); saveData(); toast('Murid ditambah');
+    }
+    function deleteMurid(nis) { if (!confirm('Hapus?')) return; db.murid = db.murid.filter(m => String(m.nis) !== String(nis)); db.spp = db.spp.filter(s => String(s.nis) !== String(nis)); saveData(); toast('Dihapus'); }
+    
     function renderMurid() {
-        document.getElementById('tabelMuridBody').innerHTML = db.murid.map(m => `<tr class="border-b dark:border-slate-700"><td class="p-4">${m.nis}</td><td class="p-4 font-bold">${m.nama}</td><td class="p-4">${m.kelas}</td><td class="p-4 text-center">-</td></tr>`).join('');
+        const kelasSet = new Set(db.murid.map(m => m.kelas)); const kelasSel = document.getElementById('muridFilterKelas');
+        const prevK = kelasSel.value; kelasSel.innerHTML = '<option value="">Semua Kelas</option>' + Array.from(kelasSet).sort().map(k => `<option value="${escapeHtml(k)}">${escapeHtml(k)}</option>`).join(''); kelasSel.value = prevK;
+        const kw = document.getElementById('searchMurid').value.toLowerCase(), fK = kelasSel.value;
+        const filtered = db.murid.filter(m => (!fK || m.kelas === fK) && (!kw || m.nama.toLowerCase().includes(kw)));
+        const tbody = document.getElementById('tabelMuridBody');
+        if (!filtered.length) { tbody.innerHTML = '<tr><td colspan="4" class="p-8 text-center text-slate-400">Tidak ada murid.</td></tr>'; return; }
+        
+        const sorted = [...filtered].sort((a, b) => String(a.kelas).localeCompare(String(b.kelas)) || String(a.nama).localeCompare(String(b.nama)));
+        let curK = '';
+        tbody.innerHTML = sorted.map(item => {
+            let group = '';
+            if (item.kelas !== curK && !fK) { curK = item.kelas; group = `<tr><td colspan="4" class="bg-slate-50 dark:bg-slate-900 text-primary font-extrabold text-[11px] uppercase px-4 py-2 tracking-widest theme-transition">Kelas ${escapeHtml(item.kelas)}</td></tr>`; }
+            return group + `<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition border-b border-slate-100 dark:border-slate-700/50">
+                <td class="p-4 text-slate-500 font-mono text-xs">${escapeHtml(item.nis)}</td>
+                <td class="p-4 font-bold">${escapeHtml(item.nama)}</td>
+                <td class="p-4 text-xs"><span class="bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded-md font-semibold">${escapeHtml(item.kelas)}</span></td>
+                <td class="p-4 text-center whitespace-nowrap">
+                    <button onclick="openEditMurid('${escapeHtml(item.nis)}')" class="text-slate-400 hover:text-primary p-1 theme-transition">✏️</button>
+                    <button onclick="deleteMurid('${escapeHtml(item.nis)}')" class="text-slate-400 hover:text-red-500 p-1 transition">🗑️</button>
+                </td></tr>`;
+        }).join('');
     }
+
+    function addGuru(e) {
+        e.preventDefault(); const nip = document.getElementById('guruNip').value.trim();
+        if (db.guru.find(g => String(g.nip) === nip)) return toast('NIP dipakai', 'error');
+        db.guru.push({ nip, nama: document.getElementById('guruNama').value, mapel: document.getElementById('guruMapel').value, kontak: document.getElementById('guruKontak').value });
+        document.getElementById('formGuru').reset(); saveData(); toast('Guru ditambah');
+    }
+    function deleteGuru(nip) { if (!confirm('Hapus?')) return; db.guru = db.guru.filter(g => String(g.nip) !== String(nip)); saveData(); toast('Dihapus'); }
+    
     function renderGuru() {
-        document.getElementById('tabelGuruBody').innerHTML = db.guru.map(g => `<tr class="border-b dark:border-slate-700"><td class="p-4">${g.nip}</td><td class="p-4 font-bold">${g.nama}</td><td class="p-4">${g.mapel}</td><td class="p-4">${g.kontak}</td></tr>`).join('');
+        const kw = document.getElementById('searchGuru').value.toLowerCase();
+        const filtered = db.guru.filter(g => !kw || g.nama.toLowerCase().includes(kw));
+        const tbody = document.getElementById('tabelGuruBody');
+        tbody.innerHTML = filtered.length ? filtered.map(item => `<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition border-b border-slate-100 dark:border-slate-700/50">
+            <td class="p-4 text-slate-500 font-mono text-xs">${escapeHtml(item.nip)}</td>
+            <td class="p-4 font-bold">${escapeHtml(item.nama)}</td>
+            <td class="p-4 text-xs">${escapeHtml(item.mapel)}</td>
+            <td class="p-4 text-xs">${escapeHtml(item.kontak)}</td>
+            <td class="p-4 text-center whitespace-nowrap">
+                <button onclick="openEditGuru('${escapeHtml(item.nip)}')" class="text-slate-400 hover:text-primary p-1 theme-transition">✏️</button>
+                <button onclick="deleteGuru('${escapeHtml(item.nip)}')" class="text-slate-400 hover:text-red-500 p-1 transition">🗑️</button>
+            </td></tr>`).join('') : '<tr><td colspan="5" class="p-8 text-center text-slate-400">Tidak ada guru.</td></tr>';
     }
 
-    function openKelolaKategori() { document.getElementById('kategoriModal').classList.remove('hidden'); }
-    function closeKelolaKategori() { document.getElementById('kategoriModal').classList.add('hidden'); }
-    function addKategori(e) { e.preventDefault(); }
-    function backupJSON() { const b = new Blob([JSON.stringify(db, null, 2)], { type: 'application/json' }); const a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = 'backup.json'; a.click(); }
-    function restoreJSON(e) {}
-    function exportToExcel() { const wb = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(db.kas), 'Kas'); XLSX.writeFile(wb, 'laporan.xlsx'); }
-    function importData(e) {}
-    function hapusData(type) { if(confirm('Hapus data?')) { db = getDefaultDb(); saveData(); } }
+    let editContext = { type: null, id: null };
+    function closeEdit() { document.getElementById('editModal').classList.add('hidden'); editContext = { type: null, id: null }; }
+    
+    function openEditKas(id) {
+        const item = db.kas.find(k => k.id === id); if (!item) return; 
+        if (isPeriodClosed(item.tanggal)) return toast('Bulan ini terkunci', 'error');
+        editContext = { type: 'kas', id };
+        document.getElementById('editTitle').textContent = 'Edit Transaksi Kas';
+        document.getElementById('editBody').innerHTML = `
+            <select name="jenis" class="w-full px-3 py-2 rounded-xl border mb-3 dark:bg-slate-900 dark:border-slate-700"><option value="Masuk" ${item.jenis === 'Masuk' ? 'selected' : ''}>Pemasukan</option><option value="Keluar" ${item.jenis === 'Keluar' ? 'selected' : ''}>Pengeluaran</option></select>
+            <input type="date" name="tanggal" value="${escapeHtml(item.tanggal)}" required class="w-full px-3 py-2 rounded-xl border mb-3 dark:bg-slate-900 dark:border-slate-700">
+            <input type="text" name="keterangan" value="${escapeHtml(item.keterangan)}" required class="w-full px-3 py-2 rounded-xl border mb-3 dark:bg-slate-900 dark:border-slate-700">
+            <select name="kategori" class="w-full px-3 py-2 rounded-xl border mb-3 dark:bg-slate-900 dark:border-slate-700">${db.kategori.map(k => `<option value="${escapeHtml(k)}" ${item.kategori === k ? 'selected' : ''}>${escapeHtml(k)}</option>`).join('')}</select>
+            <input type="number" name="nominal" value="${item.nominal}" min="1" required class="w-full px-3 py-2 rounded-xl border mb-3 dark:bg-slate-900 dark:border-slate-700">`;
+        document.getElementById('editModal').classList.remove('hidden');
+    }
 
-    function openMobileForm() { openKelolaKategori(); }
-    function openSettings() { document.getElementById('settingsModal').classList.remove('hidden'); }
+    function openEditMurid(nis) {
+        const item = db.murid.find(m => String(m.nis) === String(nis)); if (!item) return; editContext = { type: 'murid', id: nis };
+        document.getElementById('editTitle').textContent = 'Edit Murid';
+        document.getElementById('editBody').innerHTML = `
+            <input type="text" value="${escapeHtml(item.nis)}" disabled class="w-full px-3 py-2 rounded-xl border bg-slate-100 mb-3 dark:bg-slate-800">
+            <input type="text" name="nama" value="${escapeHtml(item.nama)}" required class="w-full px-3 py-2 rounded-xl border mb-3 dark:bg-slate-900 dark:border-slate-700">
+            <input type="text" name="kelas" value="${escapeHtml(item.kelas)}" required class="w-full px-3 py-2 rounded-xl border mb-3 dark:bg-slate-900 dark:border-slate-700">`;
+        document.getElementById('editModal').classList.remove('hidden');
+    }
+
+    function openEditGuru(nip) {
+        const item = db.guru.find(g => String(g.nip) === String(nip)); if (!item) return; editContext = { type: 'guru', id: nip };
+        document.getElementById('editTitle').textContent = 'Edit Guru';
+        document.getElementById('editBody').innerHTML = `
+            <input type="text" value="${escapeHtml(item.nip)}" disabled class="w-full px-3 py-2 rounded-xl border bg-slate-100 mb-3 dark:bg-slate-800">
+            <input type="text" name="nama" value="${escapeHtml(item.nama)}" required class="w-full px-3 py-2 rounded-xl border mb-3 dark:bg-slate-900 dark:border-slate-700">
+            <input type="text" name="mapel" value="${escapeHtml(item.mapel)}" required class="w-full px-3 py-2 rounded-xl border mb-3 dark:bg-slate-900 dark:border-slate-700">
+            <input type="text" name="kontak" value="${escapeHtml(item.kontak)}" required class="w-full px-3 py-2 rounded-xl border mb-3 dark:bg-slate-900 dark:border-slate-700">`;
+        document.getElementById('editModal').classList.remove('hidden');
+    }
+
+    function openEditSpp(id) {
+        const item = db.spp.find(s => s.id === id); if (!item) return; editContext = { type: 'spp', id };
+        document.getElementById('editTitle').textContent = 'Edit SPP';
+        document.getElementById('editBody').innerHTML = `
+            <div class="bg-slate-50 dark:bg-slate-900 p-3 rounded-xl text-sm mb-3"><p class="font-bold">${escapeHtml(item.nama)}</p><p class="text-xs">${escapeHtml(item.kelas)} • ${escapeHtml(item.bulan)} ${item.tahun}</p></div>
+            <input type="number" name="nominal" value="${item.nominal}" min="1" required class="w-full px-3 py-2 rounded-xl border mb-3 dark:bg-slate-900 dark:border-slate-700">`;
+        document.getElementById('editModal').classList.remove('hidden');
+    }
+
+    function saveEdit(e) {
+        e.preventDefault(); const data = Object.fromEntries(new FormData(e.target).entries());
+        if (editContext.type === 'kas') {
+            const item = db.kas.find(k => k.id === editContext.id); if (!item) return;
+            if (isPeriodClosed(data.tanggal)) return toast('Tidak bisa pindah ke bulan yang terkunci', 'error');
+            const oldN = item.nominal; Object.assign(item, { jenis: data.jenis, tanggal: data.tanggal, keterangan: data.keterangan, kategori: data.kategori, nominal: parseFloat(data.nominal) });
+            const linked = db.spp.find(s => s.kasId === item.id); if (linked && linked.status === 'Lunas' && oldN !== item.nominal) linked.nominal = item.nominal;
+        } else if (editContext.type === 'murid') {
+            const item = db.murid.find(m => String(m.nis) === String(editContext.id)); if (!item) return;
+            item.nama = data.nama; item.kelas = data.kelas; db.spp.forEach(s => { if (String(s.nis) === String(item.nis)) { s.nama = data.nama; s.kelas = data.kelas; } });
+        } else if (editContext.type === 'guru') {
+            const item = db.guru.find(g => String(g.nip) === String(editContext.id)); if (!item) return;
+            item.nama = data.nama; item.mapel = data.mapel; item.kontak = data.kontak;
+        } else if (editContext.type === 'spp') {
+            const item = db.spp.find(s => s.id === editContext.id); if (!item) return;
+            const n = parseFloat(data.nominal); if (item.status === 'Lunas' && item.kasId) { const k = db.kas.find(x => x.id === item.kasId); if (k) k.nominal = n; } item.nominal = n;
+        }
+        closeEdit(); saveData(); toast('Perubahan disimpan');
+    }
+
+    function openKelolaKategori() { renderKategoriList(); document.getElementById('kategoriModal').classList.remove('hidden'); }
+    function closeKelolaKategori() { document.getElementById('kategoriModal').classList.add('hidden'); populateKategoriSelects(); renderKas(); }
+    function renderKategoriList() {
+        document.getElementById('kategoriList').innerHTML = db.kategori.map(k => {
+            const isProtected = (k === db.kategoriSpp) || (k === 'Lainnya');
+            const color = getCatColor(k);
+            const delBtn = isProtected ? '' : `<button type="button" onclick="deleteKategori('${escapeHtml(k)}')" class="text-red-400 hover:text-red-600 p-1.5 bg-red-50 dark:bg-red-900/20 rounded-lg">🗑️</button>`;
+            return `<div class="flex items-center gap-2 p-2 bg-slate-50 dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-700 mb-2">
+                <span class="w-3 h-3 rounded-full ${color.dot} flex-shrink-0"></span>
+                <input type="text" value="${escapeHtml(k)}" onchange="renameKategori('${escapeHtml(k)}', this.value)" class="flex-1 px-2 py-1.5 rounded-lg border bg-transparent text-sm font-medium focus:outline-none">
+                ${delBtn}</div>`;
+        }).join('');
+    }
+    function addKategori(e) {
+        e.preventDefault(); const val = document.getElementById('newKategoriInput').value.trim(); if (!val) return; if (db.kategori.includes(val)) return toast('Sudah ada', 'error');
+        db.kategori.push(val); document.getElementById('newKategoriInput').value = ''; saveData(); renderKategoriList(); populateKategoriSelects(); toast('Ditambah');
+    }
+    function renameKategori(o, n) {
+        n = (n || '').trim(); if (!n) return renderKategoriList(); if (n === o) return; if (db.kategori.includes(n)) return toast('Nama dipakai', 'error');
+        db.kategori[db.kategori.indexOf(o)] = n; if (db.kategoriSpp === o) db.kategoriSpp = n; db.kas.forEach(k => { if (k.kategori === o) k.kategori = n; });
+        saveData(); renderKategoriList(); populateKategoriSelects();
+    }
+    function deleteKategori(n) {
+        if (n === db.kategoriSpp || n === 'Lainnya') return toast('Kategori sistem', 'error'); if (!confirm(`Hapus kategori "${n}"?`)) return;
+        db.kategori = db.kategori.filter(k => k !== n); db.kas.forEach(k => { if (k.kategori === n) k.kategori = 'Lainnya'; });
+        saveData(); renderKategoriList(); populateKategoriSelects(); renderKas(); toast('Dihapus');
+    }
+
+    function backupJSON() { 
+        const b = new Blob([JSON.stringify(db, null, 2)], { type: 'application/json' }); 
+        const a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = `backup_madrasah_${new Date().toISOString().slice(0, 10)}.json`; a.click(); 
+        
+        appSettings.lastBackup = new Date().toISOString();
+        localStorage.setItem('madrasah_settings', JSON.stringify(appSettings));
+        document.getElementById('backupWarning').classList.add('hidden');
+        toast('Backup diunduh'); 
+    }
+    function restoreJSON(e) {
+        const f = e.target.files[0]; if (!f) return; if (!confirm('Data diganti?')) { e.target.value = ''; return; }
+        const r = new FileReader(); r.onload = ev => { try { const p = JSON.parse(ev.target.result); if (!p.kas || !p.murid) throw new Error('Format salah'); db = migrateDb(p); localStorage.setItem('madrasah_db', JSON.stringify(db)); saveData(); toast('Restore berhasil'); closeSettings(); } catch (err) { toast(err.message, 'error'); } e.target.value = ''; }; r.readAsText(f);
+    }
+
+    // --- SMART EXPORT EXCEL ---
+    function exportToExcel() {
+        const wb = XLSX.utils.book_new();
+        function getAutoWidth(data, headers) {
+            return headers.map(h => {
+                let maxLen = h.length;
+                data.forEach(row => { if (row[h]) maxLen = Math.max(maxLen, String(row[h]).length); });
+                return { wch: maxLen + 2 };
+            });
+        }
+
+        const kasData = db.kas.map(k => ({ 'Tanggal': k.tanggal, 'Keterangan': k.keterangan, 'Kategori': k.kategori, 'Jenis': k.jenis, 'Nominal': k.nominal }));
+        const totalKas = db.kas.reduce((s, k) => s + (k.jenis === 'Masuk' ? k.nominal : -k.nominal), 0);
+        kasData.push({ 'Tanggal': 'TOTAL', 'Keterangan': '', 'Kategori': '', 'Jenis': '', 'Nominal': totalKas }); 
+
+        const wsKas = XLSX.utils.json_to_sheet(kasData);
+        wsKas['!cols'] = getAutoWidth(kasData, ['Tanggal', 'Keterangan', 'Kategori', 'Jenis', 'Nominal']);
+        wsKas['!autofilter'] = { ref: "A1:E1" };
+        for (let i = 2; i <= kasData.length; i++) { 
+            if (wsKas['E' + i]) wsKas['E' + i].z = '"Rp"#,##0'; 
+            if (i === kasData.length) { 
+                if (wsKas['A' + i]) wsKas['A' + i].s = { font: { bold: true } };
+                if (wsKas['E' + i]) wsKas['E' + i].s = { font: { bold: true } };
+            }
+        }
+        XLSX.utils.book_append_sheet(wb, wsKas, 'Jurnal Kas');
+
+        const sppData = db.spp.map(s => ({ 'NIS': s.nis, 'Nama Murid': s.nama, 'Kelas': s.kelas, 'Bulan': s.bulan, 'Tahun': s.tahun, 'Nominal': s.nominal, 'Status': s.status, 'Tgl Bayar': s.tanggalBayar || '-', 'kasId': s.kasId || '' }));
+        const totalSppLunas = db.spp.filter(s => s.status === 'Lunas').reduce((s, x) => s + x.nominal, 0);
+        sppData.push({ 'NIS': 'TOTAL', 'Nama Murid': '', 'Kelas': '', 'Bulan': '', 'Tahun': '', 'Nominal': totalSppLunas, 'Status': 'Lunas', 'Tgl Bayar': '', 'kasId': '' }); 
+
+        const wsSpp = XLSX.utils.json_to_sheet(sppData);
+        wsSpp['!cols'] = getAutoWidth(sppData, ['NIS', 'Nama Murid', 'Kelas', 'Bulan', 'Tahun', 'Nominal', 'Status', 'Tgl Bayar', 'kasId']);
+        wsSpp['!autofilter'] = { ref: "A1:I1" };
+        for (let i = 2; i <= sppData.length; i++) { 
+            if (wsSpp['F' + i]) wsSpp['F' + i].z = '"Rp"#,##0'; 
+            if (i === sppData.length) { 
+                if (wsSpp['A' + i]) wsSpp['A' + i].s = { font: { bold: true } };
+                if (wsSpp['F' + i]) wsSpp['F' + i].s = { font: { bold: true } };
+            }
+        }
+        XLSX.utils.book_append_sheet(wb, wsSpp, 'Data SPP');
+
+        const muridData = db.murid.map(m => ({ 'NIS': m.nis, 'Nama Murid': m.nama, 'Kelas': m.kelas }));
+        const wsMurid = XLSX.utils.json_to_sheet(muridData);
+        wsMurid['!cols'] = getAutoWidth(muridData, ['NIS', 'Nama Murid', 'Kelas']);
+        wsMurid['!autofilter'] = { ref: "A1:C1" };
+        XLSX.utils.book_append_sheet(wb, wsMurid, 'Data Murid');
+
+        const guruData = db.guru.map(g => ({ 'NIP': g.nip, 'Nama Guru': g.nama, 'Mata Pelajaran': g.mapel, 'Kontak/HP': g.kontak }));
+        const wsGuru = XLSX.utils.json_to_sheet(guruData);
+        wsGuru['!cols'] = getAutoWidth(guruData, ['NIP', 'Nama Guru', 'Mata Pelajaran', 'Kontak/HP']);
+        wsGuru['!autofilter'] = { ref: "A1:D1" };
+        XLSX.utils.book_append_sheet(wb, wsGuru, 'Data Guru');
+
+        XLSX.writeFile(wb, `Laporan_Madrasah_${new Date().toISOString().slice(0, 10)}.xlsx`);
+        toast('Ekspor Excel berhasil');
+    }
+
+    function parseExcelDate(val) {
+        if (!val) return new Date().toISOString().slice(0, 10);
+        if (typeof val === 'number') return new Date((val - 25569) * 86400 * 1000).toISOString().slice(0, 10);
+        let str = String(val);
+        if (str.includes('/')) { const parts = str.split('/'); if (parts.length === 3) return `${parts[2]}-${parts[0].padStart(2,'0')}-${parts[1].padStart(2,'0')}`; }
+        return str.slice(0, 10); 
+    }
+
+    // ============================================
+    // SMART IMPORT SYSTEM v1.0
+    // ============================================
+    let importContext = null;
+
+    function importData(e) {
+        const f = e.target.files[0];
+        if (!f) return;
+        e.target.value = '';
+        const r = new FileReader();
+        r.onload = function(ev) {
+            try {
+                const data = new Uint8Array(ev.target.result);
+                const wb = XLSX.read(data, { type: 'array' });
+                prepareImport(wb, f.name);
+            } catch (err) {
+                console.error(err);
+                toast('Gagal membaca file. Pastikan format Excel valid.', 'error');
+            }
+        };
+        r.readAsArrayBuffer(f);
+    }
+
+    function prepareImport(wb, fileName) {
+        const parsed = { kas: [], spp: [], murid: [], guru: [] };
+        const foundSheets = [];
+
+        if (wb.SheetNames.includes('Jurnal Kas')) {
+            parsed.kas = XLSX.utils.sheet_to_json(wb.Sheets['Jurnal Kas'])
+                .filter(r => r['Tanggal'] !== 'TOTAL')
+                .map((r, i) => ({
+                    id: Date.now() + i,
+                    tanggal: parseExcelDate(r['Tanggal']),
+                    keterangan: String(r['Keterangan'] || '-').trim(),
+                    kategori: String(r['Kategori'] || 'Lainnya').trim(),
+                    jenis: r['Jenis'] === 'Keluar' ? 'Keluar' : 'Masuk',
+                    nominal: Number(r['Nominal']) || 0
+                })).filter(k => k.nominal > 0 && k.tanggal);
+            foundSheets.push('kas');
+        }
+
+        if (wb.SheetNames.includes('Data SPP')) {
+            parsed.spp = XLSX.utils.sheet_to_json(wb.Sheets['Data SPP'])
+                .filter(r => r['NIS'] !== 'TOTAL')
+                .map((r, i) => ({
+                    id: Date.now() + 1000 + i,
+                    nis: String(r['NIS'] || '').trim(),
+                    nama: String(r['Nama Murid'] || '-').trim(),
+                    kelas: String(r['Kelas'] || '-').trim(),
+                    bulan: String(r['Bulan'] || 'Januari').trim(),
+                    tahun: Number(r['Tahun']) || 2026,
+                    nominal: Number(r['Nominal']) || 0,
+                    status: r['Status'] === 'Lunas' ? 'Lunas' : 'Belum',
+                    tanggalBayar: (r['Tgl Bayar'] && r['Tgl Bayar'] !== '-') ? parseExcelDate(r['Tgl Bayar']) : null,
+                    kasId: r['kasId'] ? Number(r['kasId']) : null
+                })).filter(s => s.nis && s.nominal > 0);
+            foundSheets.push('spp');
+        }
+
+        if (wb.SheetNames.includes('Data Murid')) {
+            parsed.murid = XLSX.utils.sheet_to_json(wb.Sheets['Data Murid'])
+                .map(r => ({ nis: String(r['NIS'] || '').trim(), nama: String(r['Nama Murid'] || '-').trim(), kelas: String(r['Kelas'] || '-').trim() }))
+                .filter(m => m.nis);
+            foundSheets.push('murid');
+        } else if (wb.SheetNames.includes('MURID')) {
+            const rawRows = XLSX.utils.sheet_to_json(wb.Sheets['MURID'], { header: 1 });
+            const hIdx = rawRows.findIndex(row => row.join(' ').toUpperCase().includes('NAMA SANTRI'));
+            if (hIdx > -1) {
+                const headers = rawRows[hIdx].map(h => h ? String(h).toUpperCase().trim() : '');
+                const iNis = headers.findIndex(h => h.includes('NOMER INDUK') || h.includes('NIS'));
+                const iNama = headers.findIndex(h => h.includes('NAMA SANTRI') || h.includes('NAMA MURID'));
+                const iKelas = headers.findIndex(h => h.includes('KELAS'));
+                for (let i = hIdx + 1; i < rawRows.length; i++) {
+                    const row = rawRows[i];
+                    if (row[iNis] && row[iNama]) parsed.murid.push({ nis: String(row[iNis]).trim(), nama: String(row[iNama]).trim(), kelas: String(row[iKelas] || '-').trim() });
+                }
+                foundSheets.push('murid');
+            }
+        }
+
+        if (wb.SheetNames.includes('Data Guru')) {
+            parsed.guru = XLSX.utils.sheet_to_json(wb.Sheets['Data Guru'])
+                .map(r => ({ nip: String(r['NIP'] || '').trim(), nama: String(r['Nama Guru'] || '-').trim(), mapel: String(r['Mata Pelajaran'] || '-').trim(), kontak: String(r['Kontak/HP'] || '-').trim() }))
+                .filter(g => g.nip);
+            foundSheets.push('guru');
+        } else if (wb.SheetNames.includes('ASATIDZ')) {
+            const rawRows = XLSX.utils.sheet_to_json(wb.Sheets['ASATIDZ'], { header: 1 });
+            const hIdx = rawRows.findIndex(row => row.join(' ').toUpperCase().includes('NAMA GURU'));
+            if (hIdx > -1) {
+                const headers = rawRows[hIdx].map(h => h ? String(h).toUpperCase().trim() : '');
+                const iNip = headers.findIndex(h => h.includes('NIK') || h.includes('NO'));
+                const iNama = headers.findIndex(h => h.includes('NAMA GURU'));
+                const iMapel = headers.findIndex(h => h.includes('MENGAJAR'));
+                for (let i = hIdx + 1; i < rawRows.length; i++) {
+                    const row = rawRows[i];
+                    if (row[iNip] && row[iNama]) parsed.guru.push({ nip: String(row[iNip]).trim(), nama: String(row[iNama]).trim(), mapel: String(row[iMapel] || '-').trim(), kontak: '-' });
+                }
+                foundSheets.push('guru');
+            }
+        }
+
+        if (foundSheets.length === 0) return toast('Tidak ada sheet yang dikenali. Pastikan nama sheet sesuai template.', 'error');
+
+        const modes = {};
+        foundSheets.forEach(s => {
+            const existing = s === 'kas' ? db.kas.length : s === 'spp' ? db.spp.length : s === 'murid' ? db.murid.length : db.guru.length;
+            modes[s] = existing === 0 ? 'replace' : 'merge';
+        });
+
+        const analysis = {};
+        foundSheets.forEach(s => analysis[s] = analyzeSheet(s, parsed[s]));
+
+        importContext = { fileName, parsed, modes, analysis, foundSheets, detailsOpen: {} };
+        renderImportPreview();
+        document.getElementById('importPreviewModal').classList.remove('hidden');
+    }
+
+    function getKeyForSheet(sheet, row) {
+        if (sheet === 'murid') return String(row.nis);
+        if (sheet === 'guru') return String(row.nip);
+        if (sheet === 'spp') return `${row.nis}|${row.bulan}|${row.tahun}`;
+        if (sheet === 'kas') return `${row.tanggal}|${row.jenis}|${row.keterangan}|${row.nominal}`;
+        return null;
+    }
+
+    function normalizeForCompare(sheet, row) {
+        if (sheet === 'murid') return { nis: row.nis, nama: row.nama, kelas: row.kelas };
+        if (sheet === 'guru') return { nip: row.nip, nama: row.nama, mapel: row.mapel, kontak: row.kontak };
+        if (sheet === 'spp') return { nis: row.nis, bulan: row.bulan, tahun: row.tahun, nominal: row.nominal, status: row.status, tanggalBayar: row.tanggalBayar };
+        if (sheet === 'kas') return { tanggal: row.tanggal, jenis: row.jenis, keterangan: row.keterangan, kategori: row.kategori, nominal: row.nominal };
+        return row;
+    }
+
+    function analyzeSheet(sheet, rows) {
+        const dbList = sheet === 'kas' ? db.kas : sheet === 'spp' ? db.spp : sheet === 'murid' ? db.murid : db.guru;
+        const existingKeys = new Set(dbList.map(r => getKeyForSheet(sheet, r)));
+        const result = { baru: [], update: [], skip: [], invalid: [] };
+        rows.forEach(row => {
+            const key = getKeyForSheet(sheet, row);
+            if (!key) { result.invalid.push(row); return; }
+            if (existingKeys.has(key)) {
+                const existing = dbList.find(r => getKeyForSheet(sheet, r) === key);
+                const same = JSON.stringify(normalizeForCompare(sheet, existing)) === JSON.stringify(normalizeForCompare(sheet, row));
+                same ? result.skip.push(row) : result.update.push(row);
+            } else result.baru.push(row);
+        });
+        return result;
+    }
+
+    function renderImportPreview() {
+        if (!importContext) return;
+        document.getElementById('importFileName').textContent = importContext.fileName;
+        const labelMap = { kas: 'Jurnal Kas', spp: 'Data SPP', murid: 'Data Murid', guru: 'Data Guru' };
+        const iconMap = { kas: '💰', spp: '🎓', murid: '👥', guru: '👨‍🏫' };
+        const body = document.getElementById('importPreviewBody');
+        body.innerHTML = importContext.foundSheets.map(sheet => {
+            const a = importContext.analysis[sheet];
+            const mode = importContext.modes[sheet];
+            const total = a.baru.length + a.update.length + a.skip.length + a.invalid.length;
+            const isOpen = importContext.detailsOpen[sheet];
+            const modeOpts = [
+                { v: 'merge', l: '🟢 Gabung (tambah baru, skip lama)' },
+                { v: 'update', l: '🟡 Update (tambah baru + perbarui lama)' },
+                { v: 'replace', l: '🔴 Timpa (hapus semua, isi ulang)' }
+            ];
+            return `
+            <div class="border border-slate-200 dark:border-slate-700 rounded-2xl overflow-hidden">
+                <div class="p-3 bg-slate-50 dark:bg-slate-900/50">
+                    <div class="flex justify-between items-start mb-2">
+                        <div class="flex items-center gap-2"><span class="text-lg">${iconMap[sheet]}</span><span class="font-bold text-sm">${labelMap[sheet]}</span></div>
+                        <span class="text-xs text-slate-500">${total} baris</span>
+                    </div>
+                    <div class="flex flex-wrap gap-1.5 mb-2 text-[11px]">
+                        <span class="bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 px-2 py-0.5 rounded font-bold">🟢 ${a.baru.length} baru</span>
+                        <span class="bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 px-2 py-0.5 rounded font-bold">🟡 ${a.update.length} update</span>
+                        <span class="bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300 px-2 py-0.5 rounded font-bold">⚪ ${a.skip.length} skip</span>
+                        ${a.invalid.length > 0 ? `<span class="bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400 px-2 py-0.5 rounded font-bold">⚠️ ${a.invalid.length} invalid</span>` : ''}
+                    </div>
+                    <select onchange="changeImportMode('${sheet}', this.value)" class="w-full px-2 py-1.5 rounded-lg border text-xs dark:bg-slate-900 dark:border-slate-700 font-semibold">
+                        ${modeOpts.map(o => `<option value="${o.v}" ${mode === o.v ? 'selected' : ''}>${o.l}</option>`).join('')}
+                    </select>
+                </div>
+                ${(a.baru.length + a.update.length) > 0 ? `
+                <button onclick="toggleImportDetail('${sheet}')" class="w-full text-xs text-slate-500 hover:text-primary py-1.5 bg-white dark:bg-slate-800 border-t dark:border-slate-700 font-semibold">
+                    ${isOpen ? '▴ Sembunyikan detail' : '▾ Lihat detail baris'}
+                </button>
+                ${isOpen ? renderImportDetail(sheet, a) : ''}` : ''}
+            </div>`;
+        }).join('') + `
+        <div class="p-3 bg-slate-50 dark:bg-slate-900/50 rounded-xl border border-slate-200 dark:border-slate-700 flex items-start gap-2">
+            <input type="checkbox" id="autoBackupBeforeImport" checked class="mt-0.5 w-4 h-4">
+            <label for="autoBackupBeforeImport" class="text-xs text-slate-600 dark:text-slate-400 flex-1 cursor-pointer"><strong>Buat backup JSON otomatis</strong> sebelum impor (disarankan)</label>
+        </div>`;
+    }
+
+    function renderImportDetail(sheet, a) {
+        const rows = [...a.baru.map(r => ({ r, tag: '🟢', cls: 'bg-emerald-50 dark:bg-emerald-900/20' })), ...a.update.map(r => ({ r, tag: '🟡', cls: 'bg-amber-50 dark:bg-amber-900/20' }))];
+        if (!rows.length) return '';
+        const display = rows.slice(0, 20);
+        const more = rows.length > 20 ? `<div class="p-2 text-center text-xs text-slate-400">+ ${rows.length - 20} baris lainnya…</div>` : '';
+        const labelFn = r => {
+            if (sheet === 'kas') return `${r.tanggal} · ${r.keterangan} · ${formatRupiah(r.nominal)}`;
+            if (sheet === 'spp') return `${r.nis} · ${r.nama} · ${r.bulan} ${r.tahun} · ${formatRupiah(r.nominal)}`;
+            if (sheet === 'murid') return `${r.nis} · ${r.nama} · Kelas ${r.kelas}`;
+            if (sheet === 'guru') return `${r.nip} · ${r.nama} · ${r.mapel}`;
+            return JSON.stringify(r);
+        };
+        return `<div class="border-t dark:border-slate-700 max-h-48 overflow-y-auto">
+            ${display.map(({ r, tag, cls }) => `<div class="px-3 py-1.5 text-xs border-b dark:border-slate-700/50 ${cls} flex items-center gap-2"><span>${tag}</span><span class="flex-1 truncate">${escapeHtml(labelFn(r))}</span></div>`).join('')}
+            ${more}
+        </div>`;
+    }
+
+    function toggleImportDetail(sheet) { importContext.detailsOpen[sheet] = !importContext.detailsOpen[sheet]; renderImportPreview(); }
+    function changeImportMode(sheet, mode) { importContext.modes[sheet] = mode; renderImportPreview(); }
+    function cancelImport() { importContext = null; document.getElementById('importPreviewModal').classList.add('hidden'); }
+
+    function applyImport() {
+        if (!importContext) return;
+        const replaceSheets = importContext.foundSheets.filter(s => importContext.modes[s] === 'replace');
+        if (replaceSheets.length > 0) {
+            const labelMap = { kas: 'Jurnal Kas', spp: 'Data SPP', murid: 'Data Murid', guru: 'Data Guru' };
+            if (!confirm(`⚠️ Mode TIMPA aktif untuk: ${replaceSheets.map(s => labelMap[s]).join(', ')}\n\nSemua data lama di sheet tersebut akan DIHAPUS. Lanjutkan?`)) return;
+        }
+
+        if (document.getElementById('autoBackupBeforeImport')?.checked) {
+            const b = new Blob([JSON.stringify(db, null, 2)], { type: 'application/json' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(b);
+            a.download = `pre-import-${new Date().toISOString().slice(0, 16).replace(/[:T]/g, '-')}.json`;
+            a.click();
+            appSettings.lastBackup = new Date().toISOString();
+            localStorage.setItem('madrasah_settings', JSON.stringify(appSettings));
+        }
+
+        const snapshot = JSON.parse(JSON.stringify(db));
+        const summary = { added: 0, updated: 0 };
+
+        try {
+            importContext.foundSheets.forEach(sheet => {
+                const mode = importContext.modes[sheet];
+                const parsed = importContext.parsed[sheet];
+                const analysis = importContext.analysis[sheet];
+                if (mode === 'replace') {
+                    if (sheet === 'kas') db.kas = parsed;
+                    if (sheet === 'spp') db.spp = parsed;
+                    if (sheet === 'murid') db.murid = parsed;
+                    if (sheet === 'guru') db.guru = parsed;
+                    summary.added += parsed.length;
+                } else {
+                    const target = sheet === 'kas' ? db.kas : sheet === 'spp' ? db.spp : sheet === 'murid' ? db.murid : db.guru;
+                    analysis.baru.forEach(r => target.push(r));
+                    summary.added += analysis.baru.length;
+                    if (mode === 'update') {
+                        analysis.update.forEach(newRow => {
+                            const key = getKeyForSheet(sheet, newRow);
+                            const idx = target.findIndex(r => getKeyForSheet(sheet, r) === key);
+                            if (idx > -1) { newRow.id = target[idx].id; target[idx] = newRow; summary.updated++; }
+                        });
+                    }
+                }
+            });
+            relinkSppToKas();
+            saveData();
+            cancelImport();
+            toastWithUndo(`✅ Impor selesai: ${summary.added} baru, ${summary.updated} diperbarui`, () => {
+                db = snapshot;
+                saveData();
+                toast('↩️ Perubahan impor dibatalkan', 'info');
+            });
+        } catch (err) {
+            console.error(err);
+            db = snapshot;
+            saveData();
+            toast('❌ Impor gagal, data dikembalikan.', 'error');
+            cancelImport();
+        }
+    }
+
+    function relinkSppToKas() {
+        let n = 0;
+        db.spp.forEach(s => {
+            if (s.status === 'Lunas' && !s.kasId) {
+                const match = db.kas.find(k => k.jenis === 'Masuk' && k.nominal === s.nominal && k.keterangan.includes(s.bulan) && k.keterangan.includes(s.nama));
+                if (match) { s.kasId = match.id; n++; }
+            }
+        });
+        if (n > 0) console.log(`[Import] ${n} SPP di-relink ke Kas`);
+    }
+
+    // ==========================================
+    // FITUR HAPUS DATA (RESET)
+    // ==========================================
+    function hapusData(type) {
+        if (type === 'kas_spp') {
+            if (!confirm('PERINGATAN!\n\nAnda akan menghapus SEMUA data Jurnal Kas dan Tagihan SPP.\nData Murid dan Guru akan tetap aman.\n\nLanjutkan?')) return;
+            if (!confirm('Konfirmasi terakhir: Hapus Kas & SPP sekarang?')) return;
+            
+            db.kas = [];
+            db.spp = [];
+            saveData();
+            closeSettings();
+            toast('Data Kas & SPP berhasil dikosongkan.', 'success');
+            
+        } else if (type === 'all') {
+            if (!confirm('PERINGATAN FATAL!\n\nAnda akan menghapus SEMUA DATA (Kas, SPP, Murid, Guru, Kategori).\nAplikasi akan kembali ke kondisi awal (Reset Pabrik).\n\nKecuali PIN dan Pengaturan Profil.\n\nLanjutkan?')) return;
+            if (!confirm('Konfirmasi terakhir: Hapus SEMUA data sekarang?')) return;
+            
+            const currentPin = appSettings.pin;
+            db = getDefaultDb();
+            appSettings.pin = currentPin;
+            
+            localStorage.setItem('madrasah_db', JSON.stringify(db));
+            localStorage.setItem('madrasah_settings', JSON.stringify(appSettings));
+            
+            closeSettings();
+            renderAll();
+            toast('Aplikasi berhasil di-reset ke pengaturan pabrik.', 'success');
+        }
+    }
+
+    function openMobileForm(type = null) {
+        let tab = document.querySelector('.tab-content:not(.hidden)').id.replace('tab-',''); if(type) tab = type;
+        if(tab === 'kas') {
+            editContext = { type: 'kas_new' }; document.getElementById('editTitle').innerText = 'Tambah Kas';
+            document.getElementById('editBody').innerHTML = `<select name="jenis" class="w-full px-3 py-2 rounded-xl border mb-3 dark:bg-slate-900 dark:border-slate-700"><option value="Masuk">Masuk</option><option value="Keluar">Keluar</option></select><input type="date" name="tanggal" value="${new Date().toISOString().slice(0,10)}" required class="w-full px-3 py-2 rounded-xl border mb-3 dark:bg-slate-900 dark:border-slate-700"><input type="text" name="keterangan" required class="w-full px-3 py-2 rounded-xl border mb-3 dark:bg-slate-900 dark:border-slate-700" placeholder="Keterangan"><input type="number" name="nominal" required class="w-full px-3 py-2 rounded-xl border mb-3 dark:bg-slate-900 dark:border-slate-700" placeholder="Nominal"><select name="kategori" class="w-full px-3 py-2 rounded-xl border mb-3 dark:bg-slate-900 dark:border-slate-700">${db.kategori.map(k=>`<option value="${k}">${k}</option>`).join('')}</select>`;
+        } else if (tab === 'murid') {
+            editContext = { type: 'murid_new' }; document.getElementById('editTitle').innerText = 'Tambah Murid';
+            document.getElementById('editBody').innerHTML = `<input type="text" name="nis" required class="w-full px-3 py-2 rounded-xl border mb-3 dark:bg-slate-900 dark:border-slate-700" placeholder="NIS"><input type="text" name="nama" required class="w-full px-3 py-2 rounded-xl border mb-3 dark:bg-slate-900 dark:border-slate-700" placeholder="Nama"><input type="text" name="kelas" required class="w-full px-3 py-2 rounded-xl border mb-3 dark:bg-slate-900 dark:border-slate-700" placeholder="Kelas">`;
+        } else if (tab === 'guru') {
+            editContext = { type: 'guru_new' }; document.getElementById('editTitle').innerText = 'Tambah Guru';
+            document.getElementById('editBody').innerHTML = `<input type="text" name="nip" required class="w-full px-3 py-2 rounded-xl border mb-3 dark:bg-slate-900 dark:border-slate-700" placeholder="NIP"><input type="text" name="nama" required class="w-full px-3 py-2 rounded-xl border mb-3 dark:bg-slate-900 dark:border-slate-700" placeholder="Nama"><input type="text" name="mapel" required class="w-full px-3 py-2 rounded-xl border mb-3 dark:bg-slate-900 dark:border-slate-700" placeholder="Mapel"><input type="text" name="kontak" required class="w-full px-3 py-2 rounded-xl border mb-3 dark:bg-slate-900 dark:border-slate-700" placeholder="Kontak">`;
+        }
+        document.getElementById('editModal').classList.remove('hidden');
+    }
+
+    const originalSaveEdit = saveEdit;
+    saveEdit = function(e) {
+        e.preventDefault(); const data = Object.fromEntries(new FormData(e.target).entries());
+        if (editContext.type === 'kas_new') { 
+            if (isPeriodClosed(data.tanggal)) return toast('Bulan ini sudah ditutup buku (terkunci)', 'error');
+            db.kas.push({ id: Date.now(), ...data, nominal: parseFloat(data.nominal) }); closeEdit(); saveData(); toast('Kas ditambah'); return; 
+        }
+        if (editContext.type === 'murid_new') { db.murid.push(data); closeEdit(); saveData(); toast('Murid ditambah'); return; }
+        if (editContext.type === 'guru_new') { db.guru.push(data); closeEdit(); saveData(); toast('Guru ditambah'); return; }
+        originalSaveEdit(e);
+    };
+
+    function openSettings() {
+        document.getElementById('setNama').value = appSettings.nama; 
+        document.getElementById('setAlamat').value = appSettings.alamat;
+        document.getElementById('setKepala').value = appSettings.kepala; 
+        document.getElementById('setBulanAwal').value = db.bulanAwalTahunAjaran || 7;
+        document.getElementById('setPin').value = '';
+        setThemeColor(appSettings.themeColor);
+        renderLockedPeriods();
+        document.getElementById('settingsModal').classList.remove('hidden');
+    }
     function closeSettings() { document.getElementById('settingsModal').classList.add('hidden'); }
-    function saveSettings(e) { e.preventDefault(); closeSettings(); }
-    function closeEdit() { document.getElementById('editModal').classList.add('hidden'); }
-    function saveEdit(e) { e.preventDefault(); closeEdit(); }
+    function saveSettings(e) {
+        e.preventDefault(); appSettings.nama = document.getElementById('setNama').value;
+        appSettings.alamat = document.getElementById('setAlamat').value; appSettings.kepala = document.getElementById('setKepala').value;
+        
+        const newBulanAwal = Number(document.getElementById('setBulanAwal').value);
+        if (db.bulanAwalTahunAjaran !== newBulanAwal) {
+            db.bulanAwalTahunAjaran = newBulanAwal;
+            localStorage.setItem('madrasah_db', JSON.stringify(db));
+            renderSpp(); // Refresh urutan SPP
+        }
+
+        const newPin = document.getElementById('setPin').value; if (newPin && newPin.length >= 4) appSettings.pin = newPin;
+        localStorage.setItem('madrasah_settings', JSON.stringify(appSettings)); document.getElementById('appNameDisplay').innerText = appSettings.nama;
+        closeSettings(); toast('Pengaturan disimpan');
+    }
 
     populateKategoriSelects();
+    document.getElementById('kasTanggal').valueAsDate = new Date();
     renderAll();
     </script>
 </body>
