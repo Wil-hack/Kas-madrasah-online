@@ -243,9 +243,10 @@
                             <p class="text-sm font-bold flex items-center gap-2"><svg class="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>Pengaturan SPP</p>
                             <p class="text-xs text-slate-500 mt-0.5">Atur nominal default sebelum generate.</p>
                         </div>
-                        <div class="flex items-center gap-2">
-                            <input type="number" id="nominalSppDefault" onchange="updateNominalDefault()" class="px-3 py-2 rounded-xl border w-28 text-sm font-bold">
+                        <div class="flex flex-wrap items-center gap-2">
+                            <input type="number" id="nominalSppDefault" onchange="updateNominalDefault()" class="px-3 py-2 rounded-xl border w-24 text-sm font-bold">
                             <button onclick="openBulkNominal()" class="bg-amber-100 text-amber-700 px-3 py-2 rounded-xl text-xs font-bold">Atur Massal</button>
+                            <button onclick="openLunasiMassal()" class="bg-emerald-100 text-emerald-700 px-3 py-2 rounded-xl text-xs font-bold">Lunasi Massal</button>
                         </div>
                     </div>
 
@@ -446,6 +447,35 @@
                 <input type="number" id="bulkNominalBaru" onchange="previewBulkNominal()" oninput="previewBulkNominal()" required class="w-full px-3 py-2 rounded-xl border dark:bg-slate-900 dark:border-slate-700 font-bold">
                 <div id="bulkPreview" class="bg-amber-50 dark:bg-amber-900/30 text-amber-900 dark:text-amber-400 p-3 rounded-xl text-xs">Isi nominal...</div>
                 <div class="flex gap-2 pt-2"><button type="button" onclick="closeBulkNominal()" class="flex-1 bg-slate-100 dark:bg-slate-700 py-3 rounded-xl font-bold">Batal</button><button type="submit" class="flex-1 bg-primary text-white py-3 rounded-xl font-bold theme-transition">Terapkan</button></div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Lunasi Massal -->
+    <div id="lunasiMassalModal" class="hidden fixed inset-0 bg-slate-900/60 z-[60] flex items-end md:items-center justify-center p-0 md:p-4 backdrop-blur-sm">
+        <div class="bg-white dark:bg-slate-800 rounded-t-3xl md:rounded-3xl shadow-2xl w-full max-w-md">
+            <div class="p-5 border-b flex justify-between items-center">
+                <h3 class="font-extrabold text-lg">Lunasi Massal SPP</h3>
+                <button onclick="closeLunasiMassal()" class="text-slate-400 text-2xl">&times;</button>
+            </div>
+            <form onsubmit="applyLunasiMassal(event)" class="p-5 space-y-4">
+                <div>
+                    <label class="block text-xs font-bold mb-1 text-slate-500">Pilih Kelas</label>
+                    <select id="lunasiKelas" onchange="previewLunasiMassal()" class="w-full px-3 py-2 rounded-xl border dark:bg-slate-900 dark:border-slate-700 font-bold"><option value="">Semua Kelas</option></select>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold mb-1 text-slate-500">Pilih Bulan</label>
+                    <select id="lunasiBulan" onchange="previewLunasiMassal()" class="w-full px-3 py-2 rounded-xl border dark:bg-slate-900 dark:border-slate-700 font-bold"></select>
+                </div>
+                
+                <div id="lunasiPreview" class="bg-emerald-50 dark:bg-emerald-900/30 text-emerald-900 dark:text-emerald-400 p-3 rounded-xl text-xs">
+                    Pilih kelas dan bulan untuk melihat preview.
+                </div>
+                
+                <div class="flex gap-2 pt-2">
+                    <button type="button" onclick="closeLunasiMassal()" class="flex-1 bg-slate-100 dark:bg-slate-700 py-3 rounded-xl font-bold">Batal</button>
+                    <button type="submit" class="flex-1 bg-primary text-white py-3 rounded-xl font-bold shadow-md theme-transition">Lunasi Semua</button>
+                </div>
             </form>
         </div>
     </div>
@@ -1299,6 +1329,92 @@
         }
     }
 
+    // --- FITUR LUNASI MASSAL ---
+    function openLunasiMassal() {
+        const kelasSel = document.getElementById('lunasiKelas');
+        const kelasSet = new Set(db.spp.map(s => s.kelas));
+        kelasSel.innerHTML = '<option value="">Semua Kelas</option>' + Array.from(kelasSet).sort().map(k => `<option value="${escapeHtml(k)}">Kelas ${escapeHtml(k)}</option>`).join('');
+
+        const bulanSel = document.getElementById('lunasiBulan');
+        const dynList = getDynamicBulanList();
+        bulanSel.innerHTML = dynList.map(b => `<option value="${b}">${b}</option>`).join('');
+        
+        const currentMonthName = ALL_MONTHS[new Date().getMonth()];
+        if (dynList.includes(currentMonthName)) bulanSel.value = currentMonthName;
+
+        document.getElementById('lunasiMassalModal').classList.remove('hidden');
+        previewLunasiMassal();
+    }
+
+    function closeLunasiMassal() {
+        document.getElementById('lunasiMassalModal').classList.add('hidden');
+    }
+
+    function getLunasiMatching() {
+        const k = document.getElementById('lunasiKelas').value;
+        const b = document.getElementById('lunasiBulan').value;
+        const tahunAjaran = db.tahunAjaran.split('/');
+        const y1 = parseInt(tahunAjaran[0]), y2 = parseInt(tahunAjaran[1]);
+        
+        const monthNum = ALL_MONTHS.indexOf(b) + 1;
+        const startMonthNum = db.bulanAwalTahunAjaran || 7;
+        const tahun = monthNum >= startMonthNum ? y1 : y2;
+
+        return db.spp.filter(s => s.status === 'Belum' && (!k || s.kelas === k) && s.bulan === b && s.tahun === tahun);
+    }
+
+    function previewLunasiMassal() {
+        const matches = getLunasiMatching();
+        const preview = document.getElementById('lunasiPreview');
+        
+        if (matches.length === 0) {
+            preview.innerHTML = '<strong>Tidak ada tagihan "Belum"</strong> yang cocok dengan pilihan ini.';
+            return;
+        }
+
+        const totalNominal = matches.reduce((sum, s) => sum + s.nominal, 0);
+        preview.innerHTML = `
+            <div class="font-bold mb-1">📋 Preview Pelunasan</div>
+            <div>Menemukan <strong>${matches.length} tagihan</strong> yang belum dibayar.</div>
+            <div>Total uang masuk ke Kas: <strong>${formatRupiah(totalNominal)}</strong>.</div>
+        `;
+    }
+
+    function applyLunasiMassal(e) {
+        e.preventDefault();
+        const matches = getLunasiMatching();
+        if (matches.length === 0) return toast('Tidak ada tagihan untuk dilunasi', 'info');
+
+        const tgl = new Date().toISOString().split('T')[0];
+        if (isPeriodClosed(tgl)) return toast('Bulan ini terkunci, tidak bisa melunasi', 'error');
+
+        if (!confirm(`Lunasi ${matches.length} tagihan sekaligus? Total uang masuk Kas: ${formatRupiah(matches.reduce((sum, s) => sum + s.nominal, 0))}`)) return;
+
+        let count = 0;
+        matches.forEach(item => {
+            item.status = 'Lunas'; 
+            item.tanggalBayar = tgl;
+            
+            const kasId = Date.now() + Math.floor(Math.random() * 1000); 
+            item.kasId = kasId;
+            
+            db.kas.push({ 
+                id: kasId, 
+                tanggal: item.tanggalBayar, 
+                keterangan: `SPP ${item.bulan} ${item.tahun} - ${item.nama} (${item.kelas})`, 
+                jenis: 'Masuk', 
+                nominal: item.nominal, 
+                kategori: db.kategoriSpp || 'SPP' 
+            });
+            count++;
+        });
+
+        saveData();
+        closeLunasiMassal();
+        toast(`Berhasil melunasi ${count} tagihan sekaligus!`);
+    }
+
+    // --- FITUR LAINNYA ---
     function openBulkNominal() {
         const kelasSel = document.getElementById('bulkTargetKelas'); kelasSel.innerHTML = '<option value="">Semua Kelas</option>' + Array.from(new Set(db.spp.map(s => s.kelas))).sort().map(k => `<option value="${escapeHtml(k)}">${escapeHtml(k)}</option>`).join('');
         document.getElementById('bulkTargetStatus').value = ''; document.getElementById('bulkNominalBaru').value = db.nominalSppDefault;
