@@ -1045,10 +1045,33 @@
                 </div>
             </div>
 
-            <h3 class="text-sm font-bold mt-6 mb-3 border-b pb-2">Rincian Kas Bulan ${bulan}</h3>
-            ${filterKas.length ? `<div class="table-wrap"><table class="w-full text-left"><thead><tr class="bg-slate-50 text-xs uppercase"><th class="p-3">Tgl</th><th class="p-3">Keterangan</th><th class="p-3 text-right">Nominal</th></tr></thead><tbody>
-                ${filterKas.map(k => `<tr class="border-b dark:border-slate-700"><td class="p-3 text-xs whitespace-nowrap">${k.tanggal}</td><td class="p-3 font-medium text-sm">${escapeHtml(k.keterangan)}</td><td class="p-3 text-right font-bold text-sm ${k.jenis === 'Masuk' ? 'text-emerald-500' : 'text-red-500'} whitespace-nowrap">${k.jenis === 'Masuk' ? '+' : '-'} ${formatRupiah(k.nominal)}</td></tr>`).join('')}
-            </tbody></table></div>` : '<p class="text-sm text-slate-400">Tidak ada transaksi di bulan ini.</p>'}
+            <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden mt-6">
+                <div class="p-4 border-b border-slate-100 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-900/20">
+                    <h3 class="text-sm font-bold text-slate-800 dark:text-slate-200">Rincian Kas Bulan ${bulan}</h3>
+                </div>
+                ${filterKas.length ? `
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-slate-100 dark:bg-slate-900/80 text-[11px] uppercase tracking-wider text-slate-500 dark:text-slate-400 border-b border-slate-200 dark:border-slate-700">
+                                <th class="px-4 py-3 font-bold">Tanggal</th>
+                                <th class="px-4 py-3 font-bold">Keterangan</th>
+                                <th class="px-4 py-3 font-bold text-right">Nominal</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100 dark:divide-slate-700/50">
+                            ${filterKas.map(k => `
+                            <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                                <td class="px-4 py-3 text-xs font-medium text-slate-500 dark:text-slate-400 whitespace-nowrap">${k.tanggal}</td>
+                                <td class="px-4 py-3 text-sm font-semibold text-slate-800 dark:text-slate-200">${escapeHtml(k.keterangan)}</td>
+                                <td class="px-4 py-3 text-right font-extrabold text-sm whitespace-nowrap ${k.jenis === 'Masuk' ? 'text-emerald-600 dark:text-emerald-400' : 'text-red-600 dark:text-red-400'}">
+                                    ${k.jenis === 'Masuk' ? '+' : '-'} ${formatRupiah(k.nominal)}
+                                </td>
+                            </tr>`).join('')}
+                        </tbody>
+                    </table>
+                </div>` : `<div class="p-8 text-center text-slate-400 text-sm">Tidak ada transaksi di bulan ini.</div>`}
+            </div>
         `;
     }
 
