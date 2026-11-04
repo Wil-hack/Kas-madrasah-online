@@ -32,8 +32,9 @@ tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['"Plus Jakart
 
 <!-- LOCK SCREEN -->
 <div id="lockScreen" class="fixed inset-0 z-[999] bg-slate-900 flex flex-col items-center justify-center p-6 transition-opacity duration-300">
-    <div class="w-20 h-20 bg-theme-gradient rounded-3xl flex items-center justify-center mb-6 shadow-lg shadow-primary/30">
-        <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+    <!-- Ikon Gembok (Bisa diketuk 5x) -->
+    <div id="lockIcon" onclick="handleLockIconClick()" class="w-20 h-20 bg-theme-gradient rounded-3xl flex items-center justify-center mb-6 shadow-lg shadow-primary/30 cursor-pointer select-none active:scale-95 transition-transform">
+        <svg class="w-10 h-10 text-white pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
     </div>
     <h2 id="lockTitle" class="text-2xl font-bold text-white mb-2">Akses Terkunci</h2>
     <p id="lockDesc" class="text-slate-400 text-sm mb-8">Masukkan PIN untuk membuka aplikasi</p>
@@ -42,8 +43,8 @@ tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['"Plus Jakart
     </div>
     <button id="btnPin" class="w-48 bg-theme-gradient text-white font-bold py-3 rounded-xl transition shadow-lg shadow-primary/30 active:scale-95">Buka Aplikasi</button>
     
-    <!-- Tombol Reset Tersembunyi -->
-    <button id="btnForgotPin" type="button" onclick="resetPin()" class="hidden mt-6 text-sm text-slate-500 hover:text-white transition">Lupa PIN? Reset Aplikasi</button>
+    <!-- Tombol Reset Tersembunyi (Muncul jika ikon diketuk 5x) -->
+    <button id="btnForgotPin" type="button" onclick="resetPin()" class="hidden mt-6 text-sm text-slate-400 hover:text-red-400 transition animate-fade-in">Lupa PIN? Reset Aplikasi</button>
 </div>
 
 <div id="appContainer" class="hidden flex flex-col min-h-screen">
@@ -297,7 +298,10 @@ tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['"Plus Jakart
 const DB_VERSION = 6; 
 const DEFAULT_KATEGORI = ['SPP','BOS','Dana Bantuan','ATK','Gaji/Honor','Listrik/Air','Perbaikan','Konsumsi','Lainnya'];
 const ALL_MONTHS = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
-let pinAttempts = 0; // Variabel untuk hitung salah PIN
+
+// Variabel untuk sistem ketuk 5x
+let iconClickCount = 0;
+let iconClickTimer = null;
 
 function getDynamicBulanList() {
     const startMonth = db.bulanAwalTahunAjaran || 7;
@@ -359,6 +363,24 @@ function initLockScreen() {
     }
 }
 
+// Fungsi untuk deteksi ketuk 5x pada ikon
+function handleLockIconClick() {
+    iconClickCount++;
+    
+    if (iconClickTimer) clearTimeout(iconClickTimer);
+    
+    if (iconClickCount >= 5) {
+        document.getElementById('btnForgotPin').classList.remove('hidden');
+        toast('Mode Pemulihan PIN Aktif', 'info');
+        iconClickCount = 0;
+        return;
+    }
+    
+    iconClickTimer = setTimeout(() => {
+        iconClickCount = 0;
+    }, 1500);
+}
+
 function setupPin() {
     const val = document.getElementById('pinInput').value; if (val.length < 4) return alert('PIN minimal 4 digit!');
     appSettings.pin = val; localStorage.setItem('madrasah_settings', JSON.stringify(appSettings));
@@ -369,40 +391,25 @@ function setupPin() {
 function checkPin() {
     const input = document.getElementById('pinInput').value;
     if (input === appSettings.pin) {
-        pinAttempts = 0; // Reset hitungan jika berhasil
-        document.getElementById('btnForgotPin').classList.add('hidden'); // Sembunyikan tombol reset
         document.getElementById('lockScreen').classList.add('hidden'); document.getElementById('appContainer').classList.remove('hidden');
         renderChart(); checkBackupWarning();
-    } else { 
-        pinAttempts++;
-        alert('PIN Salah!'); 
-        document.getElementById('pinInput').value = ''; 
-        
-        // Jika salah 3 kali, munculkan tombol reset
-        if (pinAttempts >= 3) {
-            document.getElementById('btnForgotPin').classList.remove('hidden');
-            document.getElementById('btnForgotPin').innerText = 'Lupa PIN? Reset Aplikasi';
-            toast('Anda salah PIN 3 kali. Tombol reset muncul.', 'info');
-        }
-    }
+    } else { alert('PIN Salah!'); document.getElementById('pinInput').value = ''; }
 }
 
 function resetPin() {
     if(!confirm('PERINGATAN!\n\nAnda akan menghapus PIN aplikasi.\nData Kas, Murid, dan SPP TIDAK akan terhapus.\n\nLanjutkan?')) return;
-    if(!confirm('Konfirmasi terakhir: Hapus PIN dan buka aplikasi sekarang?')) return;
+    if(!confirm('Konfirmasi terakhir: Buka aplikasi tanpa PIN?')) return;
     
     appSettings.pin = null;
     localStorage.setItem('madrasah_settings', JSON.stringify(appSettings));
     
-    // Buka aplikasi tanpa reload
     document.getElementById('lockScreen').classList.add('hidden'); 
     document.getElementById('appContainer').classList.remove('hidden');
-    renderChart(); checkBackupWarning();
-    toast('PIN telah dihapus. Silakan buat PIN baru di menu Pengaturan.', 'info');
-    
-    // Bersihkan state
     document.getElementById('btnForgotPin').classList.add('hidden');
-    pinAttempts = 0;
+    
+    renderChart(); 
+    checkBackupWarning();
+    toast('PIN dihapus. Silakan buat PIN baru di menu Pengaturan.', 'info');
 }
 
 initLockScreen();
