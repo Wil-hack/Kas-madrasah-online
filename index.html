@@ -30,18 +30,24 @@ tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['"Plus Jakart
 </head>
 <body class="text-slate-800 dark:text-slate-200 font-sans antialiased bg-slate-50 dark:bg-slate-900 min-h-screen flex flex-col theme-transition">
 
+<!-- LOCK SCREEN -->
 <div id="lockScreen" class="fixed inset-0 z-[999] bg-slate-900 flex flex-col items-center justify-center p-6 transition-opacity duration-300">
-<div class="w-20 h-20 bg-theme-gradient rounded-3xl flex items-center justify-center mb-6 shadow-lg shadow-primary/30">
-<svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
-</div>
-<h2 id="lockTitle" class="text-2xl font-bold text-white mb-2">Akses Terkunci</h2>
-<p id="lockDesc" class="text-slate-400 text-sm mb-8">Masukkan PIN untuk membuka aplikasi</p>
-<div class="flex gap-3 mb-6"><input type="password" id="pinInput" maxlength="6" inputmode="numeric" class="w-48 text-center text-2xl tracking-[0.5em] font-bold px-4 py-3 rounded-xl bg-slate-800 text-white border border-slate-700 focus:outline-none focus:border-primary"></div>
-<button id="btnPin" class="w-48 bg-theme-gradient text-white font-bold py-3 rounded-xl transition shadow-lg shadow-primary/30 active:scale-95">Buka Aplikasi</button>
-<button type="button" onclick="resetPin()" class="mt-6 text-sm text-slate-500 hover:text-white transition">Lupa PIN? Reset Aplikasi</button>
+    <div class="w-20 h-20 bg-theme-gradient rounded-3xl flex items-center justify-center mb-6 shadow-lg shadow-primary/30">
+        <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+    </div>
+    <h2 id="lockTitle" class="text-2xl font-bold text-white mb-2">Akses Terkunci</h2>
+    <p id="lockDesc" class="text-slate-400 text-sm mb-8">Masukkan PIN untuk membuka aplikasi</p>
+    <div class="flex gap-3 mb-6">
+        <input type="password" id="pinInput" maxlength="6" inputmode="numeric" class="w-48 text-center text-2xl tracking-[0.5em] font-bold px-4 py-3 rounded-xl bg-slate-800 text-white border border-slate-700 focus:outline-none focus:border-primary">
+    </div>
+    <button id="btnPin" class="w-48 bg-theme-gradient text-white font-bold py-3 rounded-xl transition shadow-lg shadow-primary/30 active:scale-95">Buka Aplikasi</button>
+    
+    <!-- Tombol Reset Tersembunyi -->
+    <button id="btnForgotPin" type="button" onclick="resetPin()" class="hidden mt-6 text-sm text-slate-500 hover:text-white transition">Lupa PIN? Reset Aplikasi</button>
 </div>
 
 <div id="appContainer" class="hidden flex flex-col min-h-screen">
+<!-- HEADER -->
 <header class="glass sticky top-0 z-40 border-b border-slate-200 dark:border-slate-700 transition-colors duration-300">
 <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center gap-3">
 <div class="flex items-center space-x-3">
@@ -201,6 +207,7 @@ tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['"Plus Jakart
 
 <div id="toastContainer" class="fixed top-20 right-4 z-[100] flex flex-col gap-2 pointer-events-none"></div>
 
+<!-- MODALS -->
 <div id="editModal" class="hidden fixed inset-0 bg-slate-900/60 z-[60] flex items-end md:items-center justify-center p-0 md:p-4 backdrop-blur-sm"><div class="bg-white dark:bg-slate-800 rounded-t-3xl md:rounded-3xl shadow-2xl w-full max-w-md max-h-[90vh] overflow-y-auto"><div class="p-5 border-b flex justify-between items-center sticky top-0 bg-white dark:bg-slate-800 z-10 rounded-t-3xl"><h3 id="editTitle" class="font-extrabold text-lg">Edit</h3><button onclick="closeEdit()" class="text-slate-400 bg-slate-100 dark:bg-slate-700 rounded-full p-2 leading-none">&times;</button></div><form id="editForm" onsubmit="saveEdit(event)" class="p-5 space-y-4"><div id="editBody"></div><div class="flex gap-3 pt-2"><button type="button" onclick="closeEdit()" class="flex-1 bg-slate-100 dark:bg-slate-700 py-3 rounded-xl font-bold text-sm">Batal</button><button type="submit" class="flex-1 bg-theme-gradient text-white py-3 rounded-xl font-bold text-sm">Simpan</button></div></form></div></div>
 
 <div id="generateSppModal" class="hidden fixed inset-0 bg-slate-900/60 z-[60] flex items-end md:items-center justify-center p-0 md:p-4 backdrop-blur-sm"><div class="bg-white dark:bg-slate-800 rounded-t-3xl md:rounded-3xl shadow-2xl w-full max-w-md"><div class="p-5 border-b flex justify-between items-center"><h3 class="font-extrabold text-lg">Generate Tagihan SPP</h3><button onclick="closeGenerateSpp()" class="text-slate-400 text-2xl">&times;</button></div><form onsubmit="applyGenerateSpp(event)" class="p-5 space-y-4"><div class="bg-primary-light/50 dark:bg-primary-dark/20 p-3 rounded-xl border border-primary/20"><p class="text-xs font-bold text-primary mb-1">Tahun Ajaran Aktif</p><p id="genTahunAjaranDisplay" class="text-lg font-extrabold text-primary">2025/2026</p></div><div><label class="block text-sm font-bold mb-2 text-slate-700 dark:text-slate-300">Buat Tagihan Untuk Bulan:</label><select id="genSppStartBulan" required class="w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 font-bold text-primary dark:text-primary-light text-lg focus:ring-2 focus:ring-primary"></select><p class="text-[11px] text-slate-500 mt-2"><em>*Sistem hanya membuat tagihan untuk 1 bulan yang dipilih.</em></p></div><div class="flex gap-2 pt-2"><button type="button" onclick="closeGenerateSpp()" class="flex-1 bg-slate-100 dark:bg-slate-700 py-3 rounded-xl font-bold">Batal</button><button type="submit" class="flex-1 bg-theme-gradient text-white py-3 rounded-xl font-bold">Proses</button></div></form></div></div>
@@ -290,6 +297,7 @@ tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['"Plus Jakart
 const DB_VERSION = 6; 
 const DEFAULT_KATEGORI = ['SPP','BOS','Dana Bantuan','ATK','Gaji/Honor','Listrik/Air','Perbaikan','Konsumsi','Lainnya'];
 const ALL_MONTHS = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+let pinAttempts = 0; // Variabel untuk hitung salah PIN
 
 function getDynamicBulanList() {
     const startMonth = db.bulanAwalTahunAjaran || 7;
@@ -361,14 +369,40 @@ function setupPin() {
 function checkPin() {
     const input = document.getElementById('pinInput').value;
     if (input === appSettings.pin) {
+        pinAttempts = 0; // Reset hitungan jika berhasil
+        document.getElementById('btnForgotPin').classList.add('hidden'); // Sembunyikan tombol reset
         document.getElementById('lockScreen').classList.add('hidden'); document.getElementById('appContainer').classList.remove('hidden');
         renderChart(); checkBackupWarning();
-    } else { alert('PIN Salah!'); document.getElementById('pinInput').value = ''; }
+    } else { 
+        pinAttempts++;
+        alert('PIN Salah!'); 
+        document.getElementById('pinInput').value = ''; 
+        
+        // Jika salah 3 kali, munculkan tombol reset
+        if (pinAttempts >= 3) {
+            document.getElementById('btnForgotPin').classList.remove('hidden');
+            document.getElementById('btnForgotPin').innerText = 'Lupa PIN? Reset Aplikasi';
+            toast('Anda salah PIN 3 kali. Tombol reset muncul.', 'info');
+        }
+    }
 }
 
 function resetPin() {
-    if(!confirm('Reset PIN? Data Kas, Murid, dan SPP Anda TIDAK akan terhapus.')) return;
-    appSettings.pin = null; localStorage.setItem('madrasah_settings', JSON.stringify(appSettings)); location.reload(); 
+    if(!confirm('PERINGATAN!\n\nAnda akan menghapus PIN aplikasi.\nData Kas, Murid, dan SPP TIDAK akan terhapus.\n\nLanjutkan?')) return;
+    if(!confirm('Konfirmasi terakhir: Hapus PIN dan buka aplikasi sekarang?')) return;
+    
+    appSettings.pin = null;
+    localStorage.setItem('madrasah_settings', JSON.stringify(appSettings));
+    
+    // Buka aplikasi tanpa reload
+    document.getElementById('lockScreen').classList.add('hidden'); 
+    document.getElementById('appContainer').classList.remove('hidden');
+    renderChart(); checkBackupWarning();
+    toast('PIN telah dihapus. Silakan buat PIN baru di menu Pengaturan.', 'info');
+    
+    // Bersihkan state
+    document.getElementById('btnForgotPin').classList.add('hidden');
+    pinAttempts = 0;
 }
 
 initLockScreen();
@@ -1049,7 +1083,6 @@ function extractDataFromWb(wb) {
 function finalizeMultiImport(parsed, fileNames) {
     const foundSheets = [];
     
-    // Deduplikasi di dalam file yang diimpor (mencegah data dobel dari 2 file)
     ['kas', 'spp', 'murid', 'guru'].forEach(s => {
         if (parsed[s].length > 0) {
             const unique = [];
