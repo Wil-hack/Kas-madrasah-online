@@ -826,7 +826,7 @@ function restoreJSON(e) {
     const r = new FileReader(); r.onload = ev => { try { const p = JSON.parse(ev.target.result); if (!p.kas || !p.murid) throw new Error('Format salah'); db = migrateDb(p); localStorage.setItem('madrasah_db', JSON.stringify(db)); saveData(); toast('Restore berhasil'); closeSettings(); } catch (err) { toast(err.message, 'error'); } e.target.value = ''; }; r.readAsText(f);
 }
 
-// --- SMART EXPORT EXCEL DENGAN MATRIKS & SHEET PER KELAS ---
+// --- SMART EXPORT EXCEL DENGAN REKAP KAS & MATRIKS ---
 function exportToExcel() {
     const wb = XLSX.utils.book_new();
     
@@ -838,22 +838,49 @@ function exportToExcel() {
         });
     }
 
-    // 1. SHEET JURNAL KAS (Global)
-    const kasData = db.kas.map(k => ({ 'Tanggal': k.tanggal, 'Keterangan': k.keterangan, 'Kategori': k.kategori, 'Jenis': k.jenis, 'Nominal': k.nominal }));
-    const totalKas = db.kas.reduce((s, k) => s + (k.jenis === 'Masuk' ? k.nominal : -k.nominal), 0);
-    kasData.push({ 'Tanggal': 'TOTAL', 'Keterangan': '', 'Kategori': '', 'Jenis': '', 'Nominal': totalKas });
-    const wsKas = XLSX.utils.json_to_sheet(kasData);
-    wsKas['!cols'] = getAutoWidth(kasData, ['Tanggal', 'Keterangan', 'Kategori', 'Jenis', 'Nominal']);
-    for (let i = 2; i <= kasData.length; i++) { 
-        if (wsKas['E' + i]) wsKas['E' + i].z = '"Rp"#,##0'; 
-        if (i === kasData.length) { 
-            if (wsKas['A' + i]) wsKas['A' + i].s = { font: { bold: true } };
-            if (wsKas['E' + i]) wsKas['E' + i].s = { font: { bold: true } };
+    // 1. SHEET REKAP KAS BULANAN (Ringkasan)
+    const monthlyKas = {};
+    db.kas.forEach(k => {
+        const bln = k.tanggal.slice(0, 7); 
+        if (!monthlyKas[bln]) monthlyKas[bln] = { masuk: 0, keluar: 0 };
+        if (k.jenis === 'Masuk') monthlyKas[bln].masuk += k.nominal;
+        else monthlyKas[bln].keluar += k.nominal;
+    });
+    
+    const rekapKasData = Object.keys(monthlyKas).sort().map(bln => {
+        const data = monthlyKas[bln];
+        const d = new Date(bln + '-01');
+        const namaBulan = d.toLocaleString('id-ID', { month: 'long', year: 'numeric' });
+        return { 'Bulan': namaBulan, 'Pemasukan': data.masuk, 'Pengeluaran': data.keluar, 'Saldo Bersih': data.masuk - data.keluar };
+    });
+    const tMasukAll = rekapKasData.reduce((s, x) => s + x['Pemasukan'], 0);
+    const tKeluarAll = rekapKasData.reduce((s, x) => s + x['Pengeluaran'], 0);
+    rekapKasData.push({ 'Bulan': 'TOTAL', 'Pemasukan': tMasukAll, 'Pengeluaran': tKeluarAll, 'Saldo Bersih': tMasukAll - tKeluarAll });
+    
+    const wsRekapKas = XLSX.utils.json_to_sheet(rekapKasData);
+    wsRekapKas['!cols'] = getAutoWidth(rekapKasData, ['Bulan', 'Pemasukan', 'Pengeluaran', 'Saldo Bersih']);
+    for (let i = 2; i <= rekapKasData.length; i++) { 
+        if (wsRekapKas['B' + i]) wsRekapKas['B' + i].z = '"Rp"#,##0';
+        if (wsRekapKas['C' + i]) wsRekapKas['C' + i].z = '"Rp"#,##0';
+        if (wsRekapKas['D' + i]) wsRekapKas['D' + i].z = '"Rp"#,##0';
+        if (i === rekapKasData.length) { 
+            if (wsRekapKas['A' + i]) wsRekapKas['A' + i].s = { font: { bold: true } };
+            if (wsRekapKas['B' + i]) wsRekapKas['B' + i].s = { font: { bold: true } };
+            if (wsRekapKas['C' + i]) wsRekapKas['C' + i].s = { font: { bold: true } };
+            if (wsRekapKas['D' + i]) wsRekapKas['D' + i].s = { font: { bold: true } };
         }
     }
+    XLSX.utils.book_append_sheet(wb, wsRekapKas, 'Rekap Kas Bulanan');
+
+    // 2. SHEET JURNAL KAS (Rinci)
+    const kasData = db.kas.map(k => ({ 'Tanggal': k.tanggal, 'Keterangan': k.keterangan, 'Kategori': k.kategori, 'Jenis': k.jenis, 'Nominal': k.nominal }));
+    const wsKas = XLSX.utils.json_to_sheet(kasData);
+    wsKas['!cols'] = getAutoWidth(kasData, ['Tanggal', 'Keterangan', 'Kategori', 'Jenis', 'Nominal']);
+    wsKas['!autofilter'] = { ref: "A1:E1" };
+    for (let i = 2; i <= kasData.length; i++) { if (wsKas['E' + i]) wsKas['E' + i].z = '"Rp"#,##0'; }
     XLSX.utils.book_append_sheet(wb, wsKas, 'Jurnal Kas');
 
-    // 2. SHEET MATRIKS SPP (Ceklis Tahunan)
+    // 3. SHEET MATRIKS SPP (Ceklis Tahunan)
     const dynamicMonths = getDynamicBulanList();
     const matriksData = [];
     const allMurid = [...db.murid].sort((a,b) => String(a.kelas).localeCompare(String(b.kelas)) || String(a.nama).localeCompare(String(b.nama)));
@@ -892,7 +919,7 @@ function exportToExcel() {
         XLSX.utils.book_append_sheet(wb, wsMatriks, 'Rekap Matriks Tahunan');
     }
 
-    // 3. SHEET DATA SPP (Global & Format Baru)
+    // 4. SHEET DATA SPP (Global)
     const formatSpp = (s) => ({ 'Tgl Bayar': s.tanggalBayar || '-', 'NIS': s.nis, 'Nama Murid': s.nama, 'Kelas': s.kelas, 'Bulan': s.bulan, 'Tahun': s.tahun, 'Nominal': s.nominal, 'Status': s.status });
     const sppData = db.spp.map(formatSpp);
     const wsSpp = XLSX.utils.json_to_sheet(sppData);
@@ -901,7 +928,7 @@ function exportToExcel() {
     for (let i = 2; i <= sppData.length; i++) { if (wsSpp['G' + i]) wsSpp['G' + i].z = '"Rp"#,##0'; }
     XLSX.utils.book_append_sheet(wb, wsSpp, 'Data SPP');
 
-    // 4. SHEET PER KELAS
+    // 5. SHEET PER KELAS
     const listKelas = [...new Set(db.spp.map(s => s.kelas))].sort((a, b) => String(a).localeCompare(String(b)));
     listKelas.forEach(kelas => {
         const sppKelas = db.spp.filter(s => String(s.kelas) === String(kelas));
@@ -915,7 +942,7 @@ function exportToExcel() {
         XLSX.utils.book_append_sheet(wb, wsKelas, sheetName);
     });
 
-    // 5. SHEET DATA MURID & GURU
+    // 6. SHEET DATA MURID & GURU
     const muridData = db.murid.map(m => ({ 'NIS': m.nis, 'Nama Murid': m.nama, 'Kelas': m.kelas }));
     const wsMurid = XLSX.utils.json_to_sheet(muridData);
     wsMurid['!cols'] = getAutoWidth(muridData, ['NIS', 'Nama Murid', 'Kelas']);
