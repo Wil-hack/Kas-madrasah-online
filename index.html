@@ -262,7 +262,7 @@ tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['"Plus Jakart
 <button onclick="backupJSON()" class="flex flex-col items-center justify-center p-3 bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400 rounded-xl hover:bg-blue-100 transition"><svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path></svg><span class="text-xs font-bold">Backup JSON</span></button>
 <label class="flex flex-col items-center justify-center p-3 bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-400 rounded-xl hover:bg-amber-100 transition cursor-pointer"><svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg><span class="text-xs font-bold">Restore JSON</span><input type="file" id="restoreFile" accept=".json" onchange="restoreJSON(event)" class="hidden"></label>
 <button onclick="exportToExcel()" class="flex flex-col items-center justify-center p-3 bg-primary-light text-primary rounded-xl hover:opacity-80 transition"><svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg><span class="text-xs font-bold">Ekspor Excel</span></button>
-<label class="flex flex-col items-center justify-center p-3 bg-purple-50 dark:bg-purple-900/20 text-purple-700 dark:text-purple-400 rounded-xl hover:bg-purple-100 transition cursor-pointer"><svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg><span class="text-xs font-bold">Impor Excel</span><input type="file" id="importFile" accept=".xlsx, .xls" onchange="importData(event)" class="hidden"></label>
+<label class="flex flex-col items-center justify-center p-3 bg-purple-50 dark:bg-purple-900/20 text-purple-700 dark:text-purple-400 rounded-xl hover:bg-purple-100 transition cursor-pointer"><svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg><span class="text-xs font-bold">Impor Excel</span><input type="file" id="importFile" accept=".xlsx, .xls" onchange="importData(event)" multiple class="hidden"></label>
 </div>
 </section>
 
@@ -965,24 +965,119 @@ function parseExcelDate(val) {
     let str = String(val); if (str.includes('/')) { const parts = str.split('/'); if (parts.length === 3) return `${parts[2]}-${parts[0].padStart(2,'0')}-${parts[1].padStart(2,'0')}`; } return str.slice(0, 10); 
 }
 
+// --- SMART IMPORT MULTI-FILE ---
 let importContext = null;
+
 function importData(e) {
-    const f = e.target.files[0]; if (!f) return; e.target.value = '';
-    const r = new FileReader(); r.onload = function(ev) { try { const data = new Uint8Array(ev.target.result); const wb = XLSX.read(data, { type: 'array' }); prepareImport(wb, f.name); } catch (err) { toast('Gagal membaca file. Pastikan format Excel valid.', 'error'); } }; r.readAsArrayBuffer(f);
+    const files = Array.from(e.target.files);
+    if (!files.length) return;
+    e.target.value = ''; 
+    
+    let allParsed = { kas: [], spp: [], murid: [], guru: [] };
+    let fileNames = [];
+    let processed = 0;
+
+    files.forEach(file => {
+        fileNames.push(file.name);
+        const r = new FileReader();
+        r.onload = function(ev) {
+            try {
+                const data = new Uint8Array(ev.target.result);
+                const wb = XLSX.read(data, { type: 'array' });
+                const currentParsed = extractDataFromWb(wb);
+
+                ['kas', 'spp', 'murid', 'guru'].forEach(sheetType => {
+                    allParsed[sheetType].push(...currentParsed[sheetType]);
+                });
+            } catch (err) {
+                toast(`Gagal membaca file ${file.name}`, 'error');
+            } finally {
+                processed++;
+                if (processed === files.length) {
+                    finalizeMultiImport(allParsed, fileNames);
+                }
+            }
+        };
+        r.readAsArrayBuffer(file);
+    });
 }
 
-function prepareImport(wb, fileName) {
-    const parsed = { kas: [], spp: [], murid: [], guru: [] }; const foundSheets = [];
-    if (wb.SheetNames.includes('Jurnal Kas')) { parsed.kas = XLSX.utils.sheet_to_json(wb.Sheets['Jurnal Kas']).filter(r => r['Tanggal'] !== 'TOTAL').map((r, i) => ({ id: Date.now() + i, tanggal: parseExcelDate(r['Tanggal']), keterangan: String(r['Keterangan'] || '-').trim(), kategori: String(r['Kategori'] || 'Lainnya').trim(), jenis: r['Jenis'] === 'Keluar' ? 'Keluar' : 'Masuk', nominal: Number(r['Nominal']) || 0 })).filter(k => k.nominal > 0 && k.tanggal); foundSheets.push('kas'); }
-    if (wb.SheetNames.includes('Data SPP')) { parsed.spp = XLSX.utils.sheet_to_json(wb.Sheets['Data SPP']).filter(r => r['NIS'] !== 'TOTAL').map((r, i) => ({ id: Date.now() + 1000 + i, nis: String(r['NIS'] || '').trim(), nama: String(r['Nama Murid'] || '-').trim(), kelas: String(r['Kelas'] || '-').trim(), bulan: String(r['Bulan'] || 'Januari').trim(), tahun: Number(r['Tahun']) || 2026, nominal: Number(r['Nominal']) || 0, status: r['Status'] === 'Lunas' ? 'Lunas' : 'Belum', tanggalBayar: (r['Tgl Bayar'] && r['Tgl Bayar'] !== '-') ? parseExcelDate(r['Tgl Bayar']) : null, kasId: r['kasId'] ? Number(r['kasId']) : null })).filter(s => s.nis && s.nominal > 0); foundSheets.push('spp'); }
-    if (wb.SheetNames.includes('Data Murid')) { parsed.murid = XLSX.utils.sheet_to_json(wb.Sheets['Data Murid']).map(r => ({ nis: String(r['NIS'] || '').trim(), nama: String(r['Nama Murid'] || '-').trim(), kelas: String(r['Kelas'] || '-').trim() })).filter(m => m.nis); foundSheets.push('murid'); } 
-    else if (wb.SheetNames.includes('MURID')) { const rawRows = XLSX.utils.sheet_to_json(wb.Sheets['MURID'], { header: 1 }); const hIdx = rawRows.findIndex(row => row.join(' ').toUpperCase().includes('NAMA SANTRI')); if (hIdx > -1) { const headers = rawRows[hIdx].map(h => h ? String(h).toUpperCase().trim() : ''); const iNis = headers.findIndex(h => h.includes('NOMER INDUK') || h.includes('NIS')); const iNama = headers.findIndex(h => h.includes('NAMA SANTRI') || h.includes('NAMA MURID')); const iKelas = headers.findIndex(h => h.includes('KELAS')); for (let i = hIdx + 1; i < rawRows.length; i++) { const row = rawRows[i]; if (row[iNis] && row[iNama]) parsed.murid.push({ nis: String(row[iNis]).trim(), nama: String(row[iNama]).trim(), kelas: String(row[iKelas] || '-').trim() }); } foundSheets.push('murid'); } }
-    if (wb.SheetNames.includes('Data Guru')) { parsed.guru = XLSX.utils.sheet_to_json(wb.Sheets['Data Guru']).map(r => ({ nip: String(r['NIP'] || '').trim(), nama: String(r['Nama Guru'] || '-').trim(), mapel: String(r['Mata Pelajaran'] || '-').trim(), kontak: String(r['Kontak/HP'] || '-').trim() })).filter(g => g.nip); foundSheets.push('guru'); }
-    else if (wb.SheetNames.includes('ASATIDZ')) { const rawRows = XLSX.utils.sheet_to_json(wb.Sheets['ASATIDZ'], { header: 1 }); const hIdx = rawRows.findIndex(row => row.join(' ').toUpperCase().includes('NAMA GURU')); if (hIdx > -1) { const headers = rawRows[hIdx].map(h => h ? String(h).toUpperCase().trim() : ''); const iNip = headers.findIndex(h => h.includes('NIK') || h.includes('NO')); const iNama = headers.findIndex(h => h.includes('NAMA GURU')); const iMapel = headers.findIndex(h => h.includes('MENGAJAR')); for (let i = hIdx + 1; i < rawRows.length; i++) { const row = rawRows[i]; if (row[iNip] && row[iNama]) parsed.guru.push({ nip: String(row[iNip]).trim(), nama: String(row[iNama]).trim(), mapel: String(row[iMapel] || '-').trim(), kontak: '-' }); } foundSheets.push('guru'); } }
-    if (foundSheets.length === 0) return toast('Tidak ada sheet yang dikenali.', 'error');
-    const modes = {}; foundSheets.forEach(s => { const existing = s === 'kas' ? db.kas.length : s === 'spp' ? db.spp.length : s === 'murid' ? db.murid.length : db.guru.length; modes[s] = existing === 0 ? 'replace' : 'merge'; });
-    const analysis = {}; foundSheets.forEach(s => analysis[s] = analyzeSheet(s, parsed[s]));
-    importContext = { fileName, parsed, modes, analysis, foundSheets, detailsOpen: {} }; renderImportPreview(); document.getElementById('importPreviewModal').classList.remove('hidden');
+function extractDataFromWb(wb) {
+    const parsed = { kas: [], spp: [], murid: [], guru: [] };
+    
+    if (wb.SheetNames.includes('Jurnal Kas')) { 
+        parsed.kas = XLSX.utils.sheet_to_json(wb.Sheets['Jurnal Kas']).filter(r => r['Tanggal'] !== 'TOTAL').map((r, i) => ({ id: Date.now() + i, tanggal: parseExcelDate(r['Tanggal']), keterangan: String(r['Keterangan'] || '-').trim(), kategori: String(r['Kategori'] || 'Lainnya').trim(), jenis: r['Jenis'] === 'Keluar' ? 'Keluar' : 'Masuk', nominal: Number(r['Nominal']) || 0 })).filter(k => k.nominal > 0 && k.tanggal); 
+    }
+    if (wb.SheetNames.includes('Data SPP')) { 
+        parsed.spp = XLSX.utils.sheet_to_json(wb.Sheets['Data SPP']).filter(r => r['NIS'] !== 'TOTAL').map((r, i) => ({ id: Date.now() + 1000 + i, nis: String(r['NIS'] || '').trim(), nama: String(r['Nama Murid'] || '-').trim(), kelas: String(r['Kelas'] || '-').trim(), bulan: String(r['Bulan'] || 'Januari').trim(), tahun: Number(r['Tahun']) || 2026, nominal: Number(r['Nominal']) || 0, status: r['Status'] === 'Lunas' ? 'Lunas' : 'Belum', tanggalBayar: (r['Tgl Bayar'] && r['Tgl Bayar'] !== '-') ? parseExcelDate(r['Tgl Bayar']) : null, kasId: r['kasId'] ? Number(r['kasId']) : null })).filter(s => s.nis && s.nominal > 0); 
+    }
+    if (wb.SheetNames.includes('Data Murid')) { 
+        parsed.murid = XLSX.utils.sheet_to_json(wb.Sheets['Data Murid']).map(r => ({ nis: String(r['NIS'] || '').trim(), nama: String(r['Nama Murid'] || '-').trim(), kelas: String(r['Kelas'] || '-').trim() })).filter(m => m.nis); 
+    } else if (wb.SheetNames.includes('MURID')) { 
+        const rawRows = XLSX.utils.sheet_to_json(wb.Sheets['MURID'], { header: 1 }); 
+        const hIdx = rawRows.findIndex(row => row.join(' ').toUpperCase().includes('NAMA SANTRI')); 
+        if (hIdx > -1) { 
+            const headers = rawRows[hIdx].map(h => h ? String(h).toUpperCase().trim() : ''); 
+            const iNis = headers.findIndex(h => h.includes('NOMER INDUK') || h.includes('NIS')); 
+            const iNama = headers.findIndex(h => h.includes('NAMA SANTRI') || h.includes('NAMA MURID')); 
+            const iKelas = headers.findIndex(h => h.includes('KELAS')); 
+            for (let i = hIdx + 1; i < rawRows.length; i++) { 
+                const row = rawRows[i]; 
+                if (row[iNis] && row[iNama]) parsed.murid.push({ nis: String(row[iNis]).trim(), nama: String(row[iNama]).trim(), kelas: String(row[iKelas] || '-').trim() }); 
+            } 
+        } 
+    }
+    if (wb.SheetNames.includes('Data Guru')) { 
+        parsed.guru = XLSX.utils.sheet_to_json(wb.Sheets['Data Guru']).map(r => ({ nip: String(r['NIP'] || '').trim(), nama: String(r['Nama Guru'] || '-').trim(), mapel: String(r['Mata Pelajaran'] || '-').trim(), kontak: String(r['Kontak/HP'] || '-').trim() })).filter(g => g.nip); 
+    } else if (wb.SheetNames.includes('ASATIDZ')) { 
+        const rawRows = XLSX.utils.sheet_to_json(wb.Sheets['ASATIDZ'], { header: 1 }); 
+        const hIdx = rawRows.findIndex(row => row.join(' ').toUpperCase().includes('NAMA GURU')); 
+        if (hIdx > -1) { 
+            const headers = rawRows[hIdx].map(h => h ? String(h).toUpperCase().trim() : ''); 
+            const iNip = headers.findIndex(h => h.includes('NIK') || h.includes('NO')); 
+            const iNama = headers.findIndex(h => h.includes('NAMA GURU')); 
+            const iMapel = headers.findIndex(h => h.includes('MENGAJAR')); 
+            for (let i = hIdx + 1; i < rawRows.length; i++) { 
+                const row = rawRows[i]; 
+                if (row[iNip] && row[iNama]) parsed.guru.push({ nip: String(row[iNip]).trim(), nama: String(row[iNama]).trim(), mapel: String(row[iMapel] || '-').trim(), kontak: '-' }); 
+            } 
+        } 
+    }
+    return parsed;
+}
+
+function finalizeMultiImport(parsed, fileNames) {
+    const foundSheets = [];
+    
+    // Deduplikasi di dalam file yang diimpor (mencegah data dobel dari 2 file)
+    ['kas', 'spp', 'murid', 'guru'].forEach(s => {
+        if (parsed[s].length > 0) {
+            const unique = [];
+            const keys = new Set();
+            parsed[s].forEach(row => {
+                const key = getKeyForSheet(s, row);
+                if (!keys.has(key)) { keys.add(key); unique.push(row); }
+            });
+            parsed[s] = unique;
+            foundSheets.push(s);
+        }
+    });
+
+    if (foundSheets.length === 0) return toast('Tidak ada data yang dikenali dari file yang dipilih.', 'error');
+
+    const modes = {}; 
+    foundSheets.forEach(s => { 
+        const existing = s === 'kas' ? db.kas.length : s === 'spp' ? db.spp.length : s === 'murid' ? db.murid.length : db.guru.length; 
+        modes[s] = existing === 0 ? 'replace' : 'merge'; 
+    });
+    
+    const analysis = {}; 
+    foundSheets.forEach(s => analysis[s] = analyzeSheet(s, parsed[s]));
+    
+    const displayName = fileNames.length === 1 ? fileNames[0] : `${fileNames.length} File Digabung`;
+    importContext = { fileName: displayName, parsed, modes, analysis, foundSheets, detailsOpen: {} }; 
+    renderImportPreview(); 
+    document.getElementById('importPreviewModal').classList.remove('hidden');
 }
 
 function getKeyForSheet(sheet, row) {
@@ -1004,7 +1099,11 @@ function analyzeSheet(sheet, rows) {
     const result = { baru: [], update: [], skip: [], invalid: [] };
     rows.forEach(row => {
         const key = getKeyForSheet(sheet, row); if (!key) { result.invalid.push(row); return; }
-        if (existingKeys.has(key)) { const existing = dbList.find(r => getKeyForSheet(sheet, r) === key); const same = JSON.stringify(normalizeForCompare(sheet, existing)) === JSON.stringify(normalizeForCompare(sheet, row)); same ? result.skip.push(row) : result.update.push(row); } else result.baru.push(row);
+        if (existingKeys.has(key)) { 
+            const existing = dbList.find(r => getKeyForSheet(sheet, r) === key); 
+            const same = JSON.stringify(normalizeForCompare(sheet, existing)) === JSON.stringify(normalizeForCompare(sheet, row)); 
+            same ? result.skip.push(row) : result.update.push(row); 
+        } else result.baru.push(row);
     });
     return result;
 }
