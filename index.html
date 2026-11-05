@@ -2,45 +2,51 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Serabimu — 3D Spatial & Animated Experience</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;900&family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
-<!-- GSAP Animation Library -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Serabimu — Full 3D & Animated Experience</title>
+
+<!-- Fonts & GSAP Libraries -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
 <style>
   :root {
-    --bg-dark: #07090e;
-    --glass-bg: rgba(255, 255, 255, 0.04);
-    --glass-border: rgba(255, 255, 255, 0.12);
-    --accent-emerald: #10b981;
-    --accent-gold: #f59e0b;
-    --accent-rose: #f43f5e;
-    --text-primary: #f8fafc;
-    --text-muted: #94a3b8;
+    --bg: #0a0a0b;
+    --card: #141418;
+    --card2: #1a1a20;
+    --accent: #1a6b4f;
+    --soft: #7fc9a8;
+    --text: #f0f5f2;
+    --muted: #8a9a92;
+    --border: rgba(127,201,168,.2);
+    --glow: rgba(26,107,79,.3);
+    --grad: linear-gradient(135deg, #7fc9a8, #1a6b4f);
   }
 
-  /* Mode Glasses 3D Red-Cyan */
-  body.anaglyph-mode {
-    filter: contrast(1.1);
-  }
-  body.anaglyph-mode .spatial-card,
-  body.anaglyph-mode .hero-title,
-  body.anaglyph-mode .btn-3d {
-    box-shadow: -4px 0 10px rgba(255, 0, 0, 0.6), 4px 0 10px rgba(0, 255, 255, 0.6) !important;
+  /* Filter Efek Kacamata 3D (Red-Cyan Anaglyph Mode) */
+  body.anaglyph-active .product-card,
+  body.anaglyph-active .hero h1,
+  body.anaglyph-active .icon-btn,
+  body.anaglyph-active header {
+    box-shadow: -4px 0 12px rgba(255, 0, 0, 0.7), 4px 0 12px rgba(0, 255, 255, 0.7) !important;
     text-shadow: -3px 0 2px rgba(255, 0, 0, 0.8), 3px 0 2px rgba(0, 255, 255, 0.8) !important;
   }
 
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior: smooth; }
   body {
-    background: var(--bg-dark);
-    color: var(--text-primary);
+    background: var(--bg);
+    color: var(--text);
     font-family: 'Plus Jakarta Sans', sans-serif;
     overflow-x: hidden;
     perspective: 1200px;
   }
 
-  /* Animated Canvas Background */
+  /* Animated Ambient Particle Canvas */
   #canvas3d {
     position: fixed;
     top: 0; left: 0;
@@ -49,244 +55,177 @@
     pointer-events: none;
   }
 
-  /* Header & Floating Glass Bar */
+  /* Header Glassmorphism 3D */
   header {
-    position: fixed;
-    top: 20px; left: 50%;
-    transform: translateX(-50%);
-    width: min(90%, 1000px);
-    background: rgba(15, 23, 42, 0.6);
-    backdrop-filter: blur(16px);
-    border: 1px solid var(--glass-border);
-    border-radius: 99px;
-    padding: 12px 28px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    z-index: 100;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(10, 10, 11, 0.75);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 24px;
+    display: flex; align-items: center; justify-content: space-between;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
   }
   .brand {
     font-family: 'Playfair Display', serif;
-    font-size: 24px;
-    font-weight: 900;
-    background: linear-gradient(135deg, #34d399, #10b981);
+    font-size: 24px; font-weight: 700;
+    background: var(--grad);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }
-  .header-actions {
-    display: flex;
-    gap: 12px;
-    align-items: center;
+  .nav-controls {
+    display: flex; gap: 10px; align-items: center;
   }
-  .toggle-3d-btn {
-    background: rgba(244, 63, 94, 0.15);
-    border: 1px solid rgba(244, 63, 94, 0.4);
-    color: #fda4af;
+  .btn-glasses-3d {
+    background: rgba(255, 71, 87, 0.15);
+    border: 1px solid rgba(255, 71, 87, 0.4);
+    color: #ff6b81;
     padding: 8px 16px;
-    border-radius: 99px;
-    font-size: 12px;
+    border-radius: 999px;
+    font-size: 11px;
     font-weight: 700;
     cursor: pointer;
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    gap: 6px;
+    transition: 0.3s;
   }
-  .toggle-3d-btn:hover {
-    background: rgba(244, 63, 94, 0.3);
+  .btn-glasses-3d:hover {
+    background: rgba(255, 71, 87, 0.3);
     transform: scale(1.05);
   }
 
-  /* Hero Section 3D Spatial */
+  /* Hero Section dengan Animated 3D Floating Plate */
   .hero {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
     text-align: center;
-    padding: 120px 20px 60px;
+    padding: 90px 20px 50px;
     position: relative;
     transform-style: preserve-3d;
   }
-  .hero-badge {
-    background: rgba(16, 185, 129, 0.1);
-    border: 1px solid rgba(16, 185, 129, 0.3);
-    color: #6ee7b7;
-    padding: 8px 20px;
-    border-radius: 99px;
-    font-size: 12px;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    margin-bottom: 24px;
-    transform: translateZ(40px);
+  .badge-open {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--soft); background: rgba(26,107,79,0.2);
+    border: 1px solid var(--border); padding: 6px 16px; border-radius: 999px;
+    margin-bottom: 20px;
   }
-  .hero-title {
+  .hero h1 {
     font-family: 'Playfair Display', serif;
-    font-size: clamp(48px, 8vw, 84px);
+    font-size: clamp(40px, 7vw, 68px);
     font-weight: 900;
     line-height: 1.1;
-    margin-bottom: 20px;
-    background: linear-gradient(180deg, #ffffff 30%, #94a3b8 100%);
+    margin-bottom: 16px;
+    background: linear-gradient(180deg, var(--text) 30%, var(--soft) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    transform: translateZ(80px);
+    transform: translateZ(60px);
   }
-  .hero-subtitle {
-    max-width: 540px;
-    color: var(--text-muted);
-    font-size: 16px;
-    line-height: 1.7;
-    margin-bottom: 40px;
-    transform: translateZ(50px);
+  .hero p {
+    color: var(--muted); max-width: 500px; margin: 0 auto 30px;
+    font-size: 15px; transform: translateZ(40px);
   }
 
-  /* Floating 3D Showcase Element */
-  .hero-3d-showcase {
+  /* Floating 3D Object Component */
+  .floating-3d-wrapper {
+    width: 220px; height: 220px;
+    margin: 20px auto;
     position: relative;
-    width: 280px; height: 280px;
-    margin-top: 20px;
     transform-style: preserve-3d;
     animation: float3D 6s ease-in-out infinite alternate;
   }
-  .serabi-plate-3d {
+  .plate-3d {
     width: 100%; height: 100%;
     border-radius: 50%;
-    background: radial-gradient(circle, #334155 0%, #0f172a 70%);
-    border: 4px solid rgba(255,255,255,0.1);
-    box-shadow: 0 40px 80px rgba(0,0,0,0.8), inset 0 0 30px rgba(16,185,129,0.3);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
+    background: radial-gradient(circle, var(--card2) 0%, var(--bg) 80%);
+    border: 2px solid var(--border);
+    box-shadow: 0 30px 60px rgba(0,0,0,0.7), inset 0 0 20px var(--glow);
+    display: flex; justify-content: center; align-items: center;
     transform-style: preserve-3d;
   }
-  .serabi-cake {
-    width: 180px; height: 180px;
-    border-radius: 50%;
-    background: radial-gradient(circle at 30% 30%, #fef3c7, #d97706);
-    box-shadow: 0 20px 40px rgba(0,0,0,0.6);
-    transform: translateZ(60px);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 64px;
+  .serabi-3d {
+    font-size: 72px;
+    transform: translateZ(50px);
+    filter: drop-shadow(0 15px 15px rgba(0,0,0,0.6));
   }
-
   @keyframes float3D {
-    0% { transform: translateY(0) rotateX(15deg) rotateY(-10deg); }
-    100% { transform: translateY(-25px) rotateX(25deg) rotateY(15deg); }
+    0% { transform: rotateX(15deg) rotateY(-10deg) translateY(0); }
+    100% { transform: rotateX(25deg) rotateY(15deg) translateY(-20px); }
   }
 
-  /* Catalog Section (Grid with Interactive 3D Spatial Cards) */
-  .section-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 80px 20px;
-  }
-  .section-header {
-    text-align: center;
-    margin-bottom: 60px;
-  }
-  .section-header h2 {
-    font-family: 'Playfair Display', serif;
-    font-size: 40px;
-    color: var(--text-primary);
-  }
-
+  /* Catalog Grid dengan Dynamic 3D Spatial Tilt */
+  .catalog-wrap { max-width: 1100px; margin: 40px auto 80px; padding: 0 20px; }
   .catalog-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 32px;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 28px;
     perspective: 1000px;
   }
 
-  /* Spatial Card (3D Tilt Effect) */
-  .spatial-card {
-    background: var(--glass-bg);
-    border: 1px solid var(--glass-border);
-    backdrop-filter: blur(12px);
-    border-radius: 24px;
-    padding: 24px;
-    position: relative;
+  .product-card {
+    background: linear-gradient(165deg, var(--card), var(--card2));
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    overflow: hidden;
+    padding: 16px;
     transform-style: preserve-3d;
-    transition: transform 0.1s ease-out, border-color 0.4s, box-shadow 0.4s;
+    transition: transform 0.1s ease-out, border-color 0.3s, box-shadow 0.3s;
     cursor: pointer;
+    position: relative;
   }
-  .spatial-card:hover {
-    border-color: rgba(16, 185, 129, 0.5);
-    box-shadow: 0 30px 60px rgba(0,0,0,0.5), 0 0 30px rgba(16, 185, 129, 0.2);
+  .product-card:hover {
+    border-color: var(--soft);
+    box-shadow: 0 25px 50px rgba(0,0,0,0.6), 0 0 25px var(--glow);
   }
 
-  .card-image-wrap {
-    width: 100%;
-    height: 200px;
-    border-radius: 16px;
+  .img-container {
+    width: 100%; height: 180px;
+    border-radius: 14px;
     overflow: hidden;
     position: relative;
-    margin-bottom: 20px;
     transform-style: preserve-3d;
+    margin-bottom: 14px;
   }
-  .card-image-wrap img {
-    width: 100%; height: 100%;
-    object-fit: cover;
+  .img-container img {
+    width: 100%; height: 100%; object-fit: cover;
     transition: transform 0.5s ease;
   }
-  .spatial-card:hover .card-image-wrap img {
-    transform: scale(1.1) translateZ(20px);
+  .product-card:hover .img-container img {
+    transform: scale(1.08) translateZ(20px);
   }
 
-  .card-title {
+  .product-title {
     font-family: 'Playfair Display', serif;
-    font-size: 22px;
-    font-weight: 700;
-    margin-bottom: 8px;
+    font-size: 19px; font-weight: 700;
+    margin-bottom: 6px;
+    transform: translateZ(30px);
+  }
+  .product-desc {
+    font-size: 13px; color: var(--muted);
+    margin-bottom: 16px; line-height: 1.5;
+    transform: translateZ(20px);
+  }
+  .product-footer {
+    display: flex; justify-content: space-between; align-items: center;
     transform: translateZ(35px);
   }
-  .card-desc {
-    color: var(--text-muted);
-    font-size: 14px;
-    line-height: 1.6;
-    margin-bottom: 20px;
-    transform: translateZ(25px);
-  }
-  .card-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    transform: translateZ(40px);
-  }
-  .card-price {
-    font-size: 20px;
-    font-weight: 700;
-    color: var(--accent-emerald);
-  }
+  .price { font-weight: 700; color: var(--soft); font-size: 16px; }
 
-  .btn-3d {
-    background: linear-gradient(135deg, #10b981, #059669);
-    color: #fff;
-    border: none;
-    padding: 10px 22px;
-    border-radius: 99px;
-    font-weight: 700;
-    font-size: 13px;
+  .btn-cart {
+    background: var(--grad);
+    color: var(--bg);
+    border: none; padding: 9px 18px;
+    border-radius: 999px;
+    font-size: 11px; font-weight: 700;
     cursor: pointer;
-    box-shadow: 0 10px 20px rgba(16, 185, 129, 0.3);
-    transition: all 0.3s;
+    transition: 0.3s;
+    box-shadow: 0 6px 20px var(--glow);
   }
-  .btn-3d:hover {
-    transform: scale(1.08) translateZ(10px);
-    box-shadow: 0 15px 30px rgba(16, 185, 129, 0.5);
+  .btn-cart:hover {
+    transform: scale(1.05) translateZ(10px);
+    filter: brightness(1.1);
   }
 
-  /* Glare Overlay for Glass 3D */
+  /* Glare Highlight Effects */
   .glare {
-    position: absolute;
-    top: 0; left: 0; width: 100%; height: 100%;
-    border-radius: 24px;
-    background: linear-gradient(125deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0) 60%);
-    pointer-events: none;
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 60%);
+    pointer-events: none; border-radius: 20px;
   }
 </style>
 </head>
@@ -296,74 +235,65 @@
 
 <header>
   <div class="brand">Serabimu 3D</div>
-  <div class="header-actions">
-    <button class="toggle-3d-btn" id="anaglyphBtn">
-      👓 Mode Kacamata 3D (OFF)
-    </button>
+  <div class="nav-controls">
+    <button class="btn-glasses-3d" id="glassesToggle">👓 Mode Kacamata 3D (OFF)</button>
   </div>
 </header>
 
 <main>
-  <!-- HERO SPATIAL 3D -->
-  <section class="hero" id="heroSec">
-    <div class="hero-badge">Pengalaman Culinary 3D Interactive</div>
-    <h1 class="hero-title">Kelezatan Autentik<br>Dalam Dimensi Baru</h1>
-    <p class="hero-subtitle">Merasakan kenikmatan Serabimu dengan visualisasi 3D spatial glassmorphism dan animasi interaktif generasi berikutnya.</p>
-    
-    <div class="hero-3d-showcase">
-      <div class="serabi-plate-3d">
-        <div class="serabi-cake">🥞</div>
+  <section class="hero">
+    <div class="badge-open">✨ Full Animated & 3D Depth</div>
+    <h1>Serabimu Autentik</h1>
+    <p>Kelezatan warisan tradisional dengan visualisasi interaktif modern.</p>
+
+    <div class="floating-3d-wrapper">
+      <div class="plate-3d">
+        <div class="serabi-3d">🥞</div>
       </div>
     </div>
   </section>
 
-  <!-- KATALOG SPATIAL GRID -->
-  <section class="section-container">
-    <div class="section-header">
-      <h2>Katalog Menu Spatial 3D</h2>
-      <p style="color:var(--text-muted); margin-top:8px;">Gerakkan kursor di atas kartu untuk melihat efek kedalaman 3D</p>
-    </div>
-
+  <section class="catalog-wrap">
     <div class="catalog-grid">
       <!-- Card 1 -->
-      <div class="spatial-card" data-tilt>
+      <div class="product-card" data-tilt>
         <div class="glare"></div>
-        <div class="card-image-wrap">
-          <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=600&q=80" alt="Serabi Kuah Kencana">
+        <div class="img-container">
+          <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=600&q=80" alt="Serabi Kuah Santan">
         </div>
-        <h3 class="card-title">Serabi Kuah Kencana</h3>
-        <p class="card-desc">Serabi pandan dengan siraman kuah kencana manis gurih warisan autentik.</p>
-        <div class="card-footer">
-          <span class="card-price">Rp 15.000</span>
-          <button class="btn-3d">+ Pesan 3D</button>
+        <div class="product-title">Serabi Kuah Santan</div>
+        <div class="product-desc">Kue serabi lembut dengan kuah gula merah cair dan santan gurih.</div>
+        <div class="product-footer">
+          <span class="price">Rp 12.000</span>
+          <button class="btn-cart">+ Pesan</button>
         </div>
       </div>
 
       <!-- Card 2 -->
-      <div class="spatial-card" data-tilt>
+      <div class="product-card" data-tilt>
         <div class="glare"></div>
-        <div class="card-image-wrap">
-          <img src="https://images.unsplash.com/photo-1551024709-8f23befc6f87?w=600&q=80" alt="Serabi Durian Royal">
+        <div class="img-container">
+          <img src="https://images.unsplash.com/photo-1551024709-8f23befc6f87?w=600&q=80" alt="Serabi Durian Premium">
         </div>
-        <h3 class="card-title">Serabi Durian Royal</h3>
-        <p class="card-desc">Daging durian asli dipadu dengan kehangatan serabi tradisional lembut.</p>
-        <div class="card-footer">
-          <span class="card-price">Rp 22.000</span>
-          <button class="btn-3d">+ Pesan 3D</button>
+        <div class="product-title">Serabi Durian Premium</div>
+        <div class="product-desc">Perpaduan serabi tradisional hangat dengan saus durian asli melimpah.</div>
+        <div class="product-footer">
+          <span class="price">Rp 18.000</span>
+          <button class="btn-cart">+ Pesan</button>
         </div>
       </div>
 
       <!-- Card 3 -->
-      <div class="spatial-card" data-tilt>
+      <div class="product-card" data-tilt>
         <div class="glare"></div>
-        <div class="card-image-wrap">
-          <img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?w=600&q=80" alt="Serabi Cokelat Melt">
+        <div class="img-container">
+          <img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?w=600&q=80" alt="Serabi Cokelat Keju">
         </div>
-        <h3 class="card-title">Serabi Cokelat Melt</h3>
-        <p class="card-desc">Llelehan cokelat keju melimpah di atas permukaan serabi yang renyah di tepi.</p>
-        <div class="card-footer">
-          <span class="card-price">Rp 18.000</span>
-          <button class="btn-3d">+ Pesan 3D</button>
+        <div class="product-title">Serabi Cokelat Keju</div>
+        <div class="product-desc">Taburan keju parut melimpah dan lelehan cokelat manis nikmat.</div>
+        <div class="product-footer">
+          <span class="price">Rp 15.000</span>
+          <button class="btn-cart">+ Pesan</button>
         </div>
       </div>
     </div>
@@ -371,26 +301,26 @@
 </main>
 
 <script>
-// --- 1. ANIMATED CANVAS PARTICLES (BACKGROUND 3D EFFORT) ---
+// 1. Ambient Particle Animation (Canvas 3D)
 const canvas = document.getElementById('canvas3d');
 const ctx = canvas.getContext('2d');
 let particles = [];
 
-function resizeCanvas() {
+function resize() {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
 }
-window.addEventListener('resize', resizeCanvas);
-resizeCanvas();
+window.addEventListener('resize', resize);
+resize();
 
 class Particle {
   constructor() {
     this.x = Math.random() * canvas.width;
     this.y = Math.random() * canvas.height;
-    this.size = Math.random() * 3 + 1;
-    this.speedX = Math.random() * 0.8 - 0.4;
-    this.speedY = Math.random() * 0.8 - 0.4;
-    this.alpha = Math.random() * 0.5 + 0.2;
+    this.size = Math.random() * 2 + 1;
+    this.speedX = Math.random() * 0.6 - 0.3;
+    this.speedY = Math.random() * 0.6 - 0.3;
+    this.opacity = Math.random() * 0.5 + 0.2;
   }
   update() {
     this.x += this.speedX;
@@ -399,44 +329,32 @@ class Particle {
     if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
   }
   draw() {
-    ctx.fillStyle = `rgba(16, 185, 129, ${this.alpha})`;
+    ctx.fillStyle = `rgba(127, 201, 168, ${this.opacity})`;
     ctx.beginPath();
     ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
     ctx.fill();
   }
 }
+for (let i = 0; i < 50; i++) particles.push(new Particle());
 
-for (let i = 0; i < 60; i++) particles.push(new Particle());
-
-function animateParticles() {
+function render() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  particles.forEach(p => {
-    p.update();
-    p.draw();
-  });
-  requestAnimationFrame(animateParticles);
+  particles.forEach(p => { p.update(); p.draw(); });
+  requestAnimationFrame(render);
 }
-animateParticles();
+render();
 
-// --- 2. GSAP SCROLL & HERO ANIMATIONS ---
-gsap.from('.hero-title', { opacity: 0, y: 50, duration: 1.2, delay: 0.2 });
-gsap.from('.hero-subtitle', { opacity: 0, y: 30, duration: 1, delay: 0.5 });
-gsap.from('.hero-3d-showcase', { opacity: 0, scale: 0.5, duration: 1.4, delay: 0.7 });
-
-// --- 3. 3D SPATIAL TILT EFFECT FOR CARDS ---
-const cards = document.querySelectorAll('[data-tilt]');
-
-cards.forEach(card => {
+// 2. Interactive 3D Card Tilt Effect
+document.querySelectorAll('[data-tilt]').forEach(card => {
   card.addEventListener('mousemove', e => {
     const rect = card.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
-    
     const centerX = rect.width / 2;
     const centerY = rect.height / 2;
     
-    const rotateX = (y - centerY) / 10;
-    const rotateY = (centerX - x) / 10;
+    const rotateX = (y - centerY) / 12;
+    const rotateY = (centerX - x) / 12;
     
     card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
   });
@@ -446,15 +364,20 @@ cards.forEach(card => {
   });
 });
 
-// --- 4. ANAGLYPH 3D GLASSES TOGGLE MODE ---
-const anaglyphBtn = document.getElementById('anaglyphBtn');
-let isAnaglyph = false;
+// 3. Mode Kacamata 3D Toggle
+const glassesBtn = document.getElementById('glassesToggle');
+let isGlassesOn = false;
+glassesBtn.addEventListener('click', () => {
+  isGlassesOn = !isGlassesOn;
+  document.body.classList.toggle('anaglyph-active', isGlassesOn);
+  glassesBtn.textContent = isGlassesOn ? '👓 Mode Kacamata 3D (ON)' : '👓 Mode Kacamata 3D (OFF)';
+});
 
-anaglyphBtn.addEventListener('click', () => {
-  isAnaglyph = !isAnaglyph;
-  document.body.classList.toggle('anaglyph-mode', isAnaglyph);
-  anaglyphBtn.textContent = isAnaglyph ? '👓 Mode Kacamata 3D (ON)' : '👓 Mode Kacamata 3D (OFF)';
-  anaglyphBtn.style.borderColor = isAnaglyph ? '#38bdf8' : 'rgba(244, 63, 94, 0.4)';
+// 4. GSAP Scroll Entry Animations
+gsap.from('.hero h1', { opacity: 0, y: 40, duration: 1 });
+gsap.from('.hero p', { opacity: 0, y: 30, duration: 1, delay: 0.2 });
+gsap.from('.product-card', { 
+  opacity: 0, y: 50, duration: 0.8, stagger: 0.2, ease: "power2.out" 
 });
 </script>
 </body>
