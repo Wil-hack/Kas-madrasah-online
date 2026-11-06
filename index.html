@@ -53,9 +53,9 @@ nav a:hover{color:var(--soft);background:var(--bg2)}
 .swatch[data-c="purple"]{background:linear-gradient(135deg,#0e0714 50%,#a34fde 50%)}
 
 /* HERO SECTION WITH VIDEO BACKGROUND */
-.hero{position:relative;overflow:hidden;text-align:center;padding:90px 20px 60px;animation:fadeUp .8s ease both;z-index:1}
-.hero-video-bg{position:absolute;top:50%;left:50%;min-width:100%;min-height:100%;width:auto;height:auto;transform:translate(-50%,-50%);z-index:-2;object-fit:cover;opacity:.3}
-.hero-overlay{position:absolute;inset:0;background:radial-gradient(circle at center,transparent 0%,var(--bg) 90%),linear-gradient(to bottom,transparent 0%,var(--bg) 100%);z-index:-1;pointer-events:none}
+.hero{position:relative;overflow:hidden;text-align:center;padding:110px 20px 80px;min-height:75vh;display:flex;flex-direction:column;align-items:center;justify-content:center;animation:fadeUp .8s ease both;z-index:1}
+.hero-video-bg{position:absolute;top:50%;left:50%;min-width:100%;min-height:100%;width:auto;height:auto;transform:translate(-50%,-50%);z-index:-2;object-fit:cover;opacity:.65}
+.hero-overlay{position:absolute;inset:0;background:radial-gradient(circle at center,transparent 0%,var(--bg) 90%),linear-gradient(to bottom,rgba(0,0,0,0.4) 0%,var(--bg) 100%);z-index:-1;pointer-events:none}
 
 .badge-open{display:inline-flex;align-items:center;gap:7px;font-size:10.5px;letter-spacing:2px;text-transform:uppercase;color:var(--soft);background:color-mix(in srgb,var(--accent) 12%,transparent);border:1px solid var(--border);padding:7px 16px;border-radius:999px;margin-bottom:20px;font-weight:600;backdrop-filter:blur(8px)}
 .badge-open .dot{width:7px;height:7px;border-radius:50%;background:#4ade80;animation:pulse 2s infinite}
@@ -300,9 +300,9 @@ footer p{color:var(--muted);font-size:11px;letter-spacing:1.2px;text-transform:u
 
 <main id="main">
 <div class="hero">
-  <!-- VIDEO BACKGROUND -->
+  <!-- VIDEO BACKGROUND LOKAL (hero-bg.mp4) -->
   <video autoplay muted loop playsinline class="hero-video-bg">
-    <source src="https://assets.mixkit.co/videos/preview/mixkit-hands-holding-a-plate-with-traditional-food-42171-large.mp4" type="video/mp4">
+    <source src="hero-bg.mp4" type="video/mp4">
   </video>
   <div class="hero-overlay"></div>
 
