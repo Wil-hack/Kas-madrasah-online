@@ -3,75 +3,75 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Serabimu — Modern Dual-Tone Dashboard</title>
+<title>Serabimu — Contrast Glass Dashboard</title>
 <meta name="description" content="Serabimu — kelezatan autentik dalam setiap gigitan.">
-<meta name="theme-color" content="#0b1d33">
+<meta name="theme-color" content="#090d16">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://firestore.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
-/* 6 TEMA DUAL-TONE: BACKGROUND & KARTU KACA DIBUAT KONTRAS */
-:root[data-theme="aero"] {
-  --bg-gradient: linear-gradient(135deg, #071322 0%, #172554 100%);
-  --bg: #071322;
-  --glass-bg: rgba(15, 32, 60, 0.75);
-  --glass-border: rgba(147, 197, 253, 0.4);
-  --glass-glow: rgba(56, 189, 248, 0.4);
-  --accent: #38bdf8;
-  --soft: #7dd3fc;
-  --text: #f0f9ff;
-  --muted: #bae6fd;
+/* 6 TEMA DENGAN KONTRAS JELAS ANTARA BACKGROUND & KARTU KACA (BUBBLE) */
+:root[data-theme="indigo"] {
+  --bg-gradient: linear-gradient(135deg, #050b14 0%, #0f1c2e 100%);
+  --bg: #050b14;
+  --glass-bg: rgba(22, 38, 64, 0.88);
+  --glass-border: rgba(96, 165, 250, 0.45);
+  --glass-glow: rgba(59, 130, 246, 0.4);
+  --accent: #3b82f6;
+  --soft: #93c5fd;
+  --text: #f8fafc;
+  --muted: #94a3b8;
 }
-:root[data-theme="mint"] {
-  --bg-gradient: linear-gradient(135deg, #041510 0%, #064e3b 100%);
-  --bg: #041510;
-  --glass-bg: rgba(8, 40, 32, 0.75);
-  --glass-border: rgba(110, 231, 183, 0.4);
-  --glass-glow: rgba(52, 211, 153, 0.4);
-  --accent: #34d399;
+:root[data-theme="forest"] {
+  --bg-gradient: linear-gradient(135deg, #02120a 0%, #062e1c 100%);
+  --bg: #02120a;
+  --glass-bg: rgba(10, 48, 29, 0.88);
+  --glass-border: rgba(52, 211, 153, 0.45);
+  --glass-glow: rgba(16, 185, 129, 0.4);
+  --accent: #10b981;
   --soft: #6ee7b7;
   --text: #ecfdf5;
   --muted: #a7f3d0;
 }
-:root[data-theme="sunset"] {
-  --bg-gradient: linear-gradient(135deg, #180c05 0%, #78350f 100%);
-  --bg: #180c05;
-  --glass-bg: rgba(45, 22, 10, 0.75);
-  --glass-border: rgba(252, 211, 77, 0.4);
-  --glass-glow: rgba(251, 191, 36, 0.4);
-  --accent: #fbbf24;
+:root[data-theme="coffee"] {
+  --bg-gradient: linear-gradient(135deg, #140905 0%, #2e170d 100%);
+  --bg: #140905;
+  --glass-bg: rgba(51, 27, 16, 0.88);
+  --glass-border: rgba(251, 191, 36, 0.45);
+  --glass-glow: rgba(245, 158, 11, 0.4);
+  --accent: #f59e0b;
   --soft: #fde68a;
   --text: #fffbeb;
   --muted: #fef08a;
 }
-:root[data-theme="cyber"] {
-  --bg-gradient: linear-gradient(135deg, #0f051d 0%, #581c87 100%);
-  --bg: #0f051d;
-  --glass-bg: rgba(30, 12, 55, 0.75);
-  --glass-border: rgba(244, 114, 182, 0.4);
-  --glass-glow: rgba(192, 132, 252, 0.4);
-  --accent: #f472b6;
-  --soft: #c084fc;
+:root[data-theme="cosmic"] {
+  --bg-gradient: linear-gradient(135deg, #0d0617 0%, #281047 100%);
+  --bg: #0d0617;
+  --glass-bg: rgba(43, 19, 77, 0.88);
+  --glass-border: rgba(236, 72, 153, 0.45);
+  --glass-glow: rgba(217, 70, 239, 0.4);
+  --accent: #ec4899;
+  --soft: #f472b6;
   --text: #fdf4ff;
   --muted: #f5d0fe;
 }
-:root[data-theme="oled"] {
-  --bg-gradient: linear-gradient(135deg, #000000 0%, #18181b 100%);
+:root[data-theme="carbon"] {
+  --bg-gradient: linear-gradient(135deg, #000000 0%, #111113 100%);
   --bg: #000000;
-  --glass-bg: rgba(18, 18, 20, 0.85);
-  --glass-border: rgba(255, 255, 255, 0.25);
-  --glass-glow: rgba(255, 255, 255, 0.3);
+  --glass-bg: rgba(26, 26, 30, 0.92);
+  --glass-border: rgba(255, 255, 255, 0.3);
+  --glass-glow: rgba(255, 255, 255, 0.25);
   --accent: #ffffff;
-  --soft: #e4e4e7;
+  --soft: #f4f4f5;
   --text: #ffffff;
   --muted: #a1a1aa;
 }
-:root[data-theme="light"] {
-  --bg-gradient: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%);
-  --bg: #e2e8f0;
-  --glass-bg: rgba(255, 255, 255, 0.9);
-  --glass-border: rgba(203, 213, 225, 0.8);
+:root[data-theme="ice"] {
+  --bg-gradient: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
+  --bg: #e0f2fe;
+  --glass-bg: rgba(255, 255, 255, 0.92);
+  --glass-border: rgba(14, 165, 233, 0.4);
   --glass-glow: rgba(2, 132, 199, 0.25);
   --accent: #0284c7;
   --soft: #0369a1;
@@ -126,6 +126,7 @@ body::before {
   top: 0;
   height: 100vh;
   z-index: 100;
+  box-shadow: 10px 0 30px rgba(0,0,0,0.15);
 }
 .brand-box { margin-bottom: 35px; padding-left: 10px; }
 .brand-title {
@@ -142,7 +143,7 @@ body::before {
   border-radius: var(--radius-md); transition: .3s; border: 1px solid transparent;
 }
 .menu-item:hover, .menu-item.active {
-  color: var(--text); background: rgba(125, 125, 125, 0.12); border-color: var(--glass-border);
+  color: var(--text); background: rgba(125, 125, 125, 0.15); border-color: var(--glass-border);
 }
 .menu-item.active {
   background: linear-gradient(135deg, var(--glass-glow), transparent);
@@ -163,6 +164,7 @@ body::before {
   width: 100%; background: var(--glass-bg); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
   border: 1px solid var(--glass-border); padding: 11px 20px 11px 44px; border-radius: 99px;
   color: var(--text); font-family: var(--font-body); font-size: 13.5px; outline: none; transition: .3s;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
 }
 .search-widget input:focus { border-color: var(--soft); box-shadow: 0 0 25px var(--glass-glow); }
 .search-widget svg { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); width: 18px; height: 18px; color: var(--muted); }
@@ -171,7 +173,7 @@ body::before {
 .status-badge {
   display: inline-flex; align-items: center; gap: 8px; padding: 7px 16px;
   background: var(--glass-bg); backdrop-filter: blur(16px); border: 1px solid var(--glass-border);
-  border-radius: 99px; font-size: 12px; font-weight: 500;
+  border-radius: 99px; font-size: 12px; font-weight: 500; box-shadow: 0 8px 20px rgba(0,0,0,0.1);
 }
 .status-badge .dot { width: 8px; height: 8px; border-radius: 50%; background: #22c55e; box-shadow: 0 0 10px #22c55e; }
 .status-badge.closed .dot { background: #ef4444; box-shadow: 0 0 10px #ef4444; }
@@ -180,6 +182,7 @@ body::before {
   background: var(--glass-bg); backdrop-filter: blur(16px); border: 1px solid var(--glass-border);
   color: var(--text); width: 42px; height: 42px; border-radius: 50%;
   display: flex; align-items: center; justify-content: center; cursor: pointer; position: relative; transition: .3s;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
 }
 .icon-btn:hover { border-color: var(--soft); transform: translateY(-2px); }
 .cart-count {
@@ -188,10 +191,11 @@ body::before {
   display: none; align-items: center; justify-content: center; padding: 0 4px;
 }
 
-/* PEMILIH TEMA DUAL-TONE */
+/* PEMILIH TEMA */
 .theme-selector-panel {
   display: flex; gap: 6px; background: var(--glass-bg); border: 1px solid var(--glass-border);
   padding: 5px 8px; border-radius: 99px; backdrop-filter: blur(16px); align-items: center;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
 }
 .theme-dot {
   width: 22px; height: 22px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; transition: transform .2s;
@@ -202,7 +206,7 @@ body::before {
 .hero-dashboard {
   position: relative; border-radius: var(--radius-lg); overflow: hidden;
   padding: 40px 28px; margin-bottom: 30px; border: 1px solid var(--glass-border);
-  box-shadow: 0 25px 50px -15px rgba(0,0,0,0.25); min-height: 200px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.25); min-height: 200px;
   display: flex; flex-direction: column; justify-content: center;
   background: var(--glass-bg); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
 }
@@ -220,6 +224,7 @@ body::before {
 .chip {
   background: var(--glass-bg); backdrop-filter: blur(12px); border: 1px solid var(--glass-border);
   color: var(--muted); padding: 8px 18px; border-radius: 99px; font-size: 12px; font-weight: 500; cursor: pointer; transition: .3s; white-space: nowrap;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.1);
 }
 .chip:hover, .chip.active { color: var(--text); border-color: var(--soft); }
 .chip.active { background: linear-gradient(135deg, var(--glass-glow), transparent); color: var(--soft); font-weight: 700; }
@@ -239,7 +244,7 @@ body::before {
   min-width: 210px; max-width: 210px; background: var(--glass-bg); backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px); border: 1px solid var(--glass-border); border-radius: var(--radius-lg);
   overflow: hidden; transition: .35s; display: flex; flex-direction: column; position: relative; cursor: pointer;
-  box-shadow: 0 15px 35px rgba(0,0,0,0.2); flex-shrink: 0; scroll-snap-align: start;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.25); flex-shrink: 0; scroll-snap-align: start;
 }
 .glass-card:hover { transform: translateY(-4px); border-color: var(--soft); box-shadow: 0 20px 40px -15px rgba(0,0,0,0.4); }
 .card-img-wrap { position: relative; height: 135px; overflow: hidden; background: rgba(0,0,0,0.2); }
@@ -250,11 +255,11 @@ body::before {
 .badge-best { background: linear-gradient(100deg, #ff6b35, #f7c948); }
 .badge-new { background: linear-gradient(100deg, #22c55e, #16a34a); }
 .wishlist-btn {
-  position: absolute; top: 8px; right: 8px; background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(8px);
+  position: absolute; top: 8px; right: 8px; background: rgba(0, 0, 0, 0.45); backdrop-filter: blur(8px);
   border: none; width: 28px; height: 28px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center;
   color: #fff; font-size: 12px; transition: .25s; z-index: 2;
 }
-.wishlist-btn:hover { transform: scale(1.1); background: rgba(0,0,0,0.6); }
+.wishlist-btn:hover { transform: scale(1.1); background: rgba(0,0,0,0.65); }
 .wishlist-btn.active { background: #ff4757; }
 
 .card-body { padding: 12px; display: flex; flex-direction: column; flex: 1; }
@@ -270,20 +275,20 @@ body::before {
 
 /* FEED */
 .feed-container { max-width: 680px; margin: 0 auto; display: flex; flex-direction: column; gap: 24px; }
-.feed-post { background: var(--glass-bg); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border: 1px solid var(--glass-border); border-radius: var(--radius-lg); overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.2); }
+.feed-post { background: var(--glass-bg); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border: 1px solid var(--glass-border); border-radius: var(--radius-lg); overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.25); }
 .post-head { display: flex; align-items: center; gap: 12px; padding: 16px 18px 10px; }
 .avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--accent); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-family: var(--font-title); font-size: 14px; }
 .post-caption { padding: 0 18px 12px; font-size: 13.5px; color: var(--text); white-space: pre-wrap; word-break: break-word; }
 .post-media-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 4px; background: #000; }
 .post-media-grid img, .post-media-grid video { width: 100%; height: 240px; object-fit: cover; display: block; }
 .post-actions { padding: 10px 18px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--glass-border); font-size: 12px; color: var(--muted); }
-.btn-like { background: rgba(125,125,125,0.12); border: 1px solid var(--glass-border); color: var(--text); padding: 5px 12px; border-radius: 99px; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: .25s; font-family: var(--font-body); }
+.btn-like { background: rgba(125,125,125,0.15); border: 1px solid var(--glass-border); color: var(--text); padding: 5px 12px; border-radius: 99px; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: .25s; font-family: var(--font-body); }
 .btn-like.liked { color: #ff4757; border-color: rgba(255,71,87,0.4); background: rgba(255,71,87,0.15); }
 
 /* CART & MODALS */
 .cart-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.65); backdrop-filter: blur(8px); z-index: 500; opacity: 0; visibility: hidden; transition: .3s; }
 .cart-overlay.open { opacity: 1; visibility: visible; }
-.cart-drawer { position: fixed; top: 0; right: 0; height: 100%; width: min(400px, 90vw); background: var(--glass-bg); backdrop-filter: blur(25px); border-left: 1px solid var(--glass-border); z-index: 501; transform: translateX(100%); transition: transform .4s cubic-bezier(.2,.8,.2,1); display: flex; flex-direction: column; padding: 24px; color: var(--text); }
+.cart-drawer { position: fixed; top: 0; right: 0; height: 100%; width: min(400px, 90vw); background: var(--glass-bg); backdrop-filter: blur(25px); border-left: 1px solid var(--glass-border); z-index: 501; transform: translateX(100%); transition: transform .4s cubic-bezier(.2,.8,.2,1); display: flex; flex-direction: column; padding: 24px; color: var(--text); box-shadow: -10px 0 30px rgba(0,0,0,0.3); }
 .cart-drawer.open { transform: translateX(0); }
 .cart-body { flex: 1; overflow-y: auto; margin: 15px 0; }
 .cart-item { display: flex; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--glass-border); align-items: center; }
@@ -291,7 +296,7 @@ body::before {
 
 .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.75); backdrop-filter: blur(8px); z-index: 1000; display: none; align-items: center; justify-content: center; padding: 20px; }
 .modal-overlay.open { display: flex; }
-.modal-panel { background: var(--glass-bg); backdrop-filter: blur(25px); border: 1px solid var(--glass-border); border-radius: 20px; width: 100%; max-width: 500px; max-height: 90vh; overflow-y: auto; position: relative; padding: 24px; color: var(--text); }
+.modal-panel { background: var(--glass-bg); backdrop-filter: blur(25px); border: 1px solid var(--glass-border); border-radius: 20px; width: 100%; max-width: 500px; max-height: 90vh; overflow-y: auto; position: relative; padding: 24px; color: var(--text); box-shadow: 0 25px 50px rgba(0,0,0,0.35); }
 
 /* RESPONSIVE MOBILE */
 @media (max-width: 850px) {
@@ -318,6 +323,7 @@ body::before {
     background: var(--glass-bg); backdrop-filter: blur(22px); 
     border-top: 1px solid var(--glass-border); display: flex; 
     justify-content: space-around; align-items: center; z-index: 999; 
+    box-shadow: 0 -10px 25px rgba(0,0,0,0.2);
   }
   .mobile-nav a { color: var(--muted); text-decoration: none; font-size: 10px; display: flex; flex-direction: column; align-items: center; gap: 2px; }
   .mobile-nav a.active { color: var(--soft); font-weight: 600; }
@@ -327,7 +333,7 @@ body::before {
   .mobile-header { display: none; }
 }
 
-#toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(30px); background: var(--glass-bg); color: var(--text); border: 1px solid var(--glass-border); padding: 10px 22px; border-radius: 99px; font-size: 13px; font-weight: 500; opacity: 0; pointer-events: none; transition: .4s; z-index: 10000; }
+#toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(30px); background: var(--glass-bg); color: var(--text); border: 1px solid var(--glass-border); padding: 10px 22px; border-radius: 99px; font-size: 13px; font-weight: 500; opacity: 0; pointer-events: none; transition: .4s; z-index: 10000; box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
 #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 </style>
 </head>
@@ -366,12 +372,12 @@ body::before {
       </div>
       <div style="display: flex; align-items: center; gap: 8px;">
         <div class="theme-selector-panel">
-          <div class="theme-dot" data-t="aero" style="background:linear-gradient(135deg, #071322 50%, #38bdf8 50%);" title="Aero Blue"></div>
-          <div class="theme-dot" data-t="mint" style="background:linear-gradient(135deg, #041510 50%, #34d399 50%);" title="Emerald Mint"></div>
-          <div class="theme-dot" data-t="sunset" style="background:linear-gradient(135deg, #180c05 50%, #fbbf24 50%);" title="Sunset Gold"></div>
-          <div class="theme-dot" data-t="cyber" style="background:linear-gradient(135deg, #0f051d 50%, #f472b6 50%);" title="Cyberpunk"></div>
-          <div class="theme-dot" data-t="oled" style="background:linear-gradient(135deg, #000000 50%, #ffffff 50%);" title="Midnight OLED"></div>
-          <div class="theme-dot" data-t="light" style="background:linear-gradient(135deg, #e2e8f0 50%, #0284c7 50%); border:1px solid #cbd5e1;" title="Clean White"></div>
+          <div class="theme-dot" data-t="indigo" style="background:linear-gradient(135deg, #050b14 50%, #3b82f6 50%);" title="Midnight Indigo"></div>
+          <div class="theme-dot" data-t="forest" style="background:linear-gradient(135deg, #02120a 50%, #10b981 50%);" title="Deep Forest"></div>
+          <div class="theme-dot" data-t="coffee" style="background:linear-gradient(135deg, #140905 50%, #f59e0b 50%);" title="Coffee Latte"></div>
+          <div class="theme-dot" data-t="cosmic" style="background:linear-gradient(135deg, #0d0617 50%, #ec4899 50%);" title="Cosmic Violet"></div>
+          <div class="theme-dot" data-t="carbon" style="background:linear-gradient(135deg, #000000 50%, #ffffff 50%);" title="Carbon Silver"></div>
+          <div class="theme-dot" data-t="ice" style="background:linear-gradient(135deg, #e0f2fe 50%, #0284c7 50%); border:1px solid #bae6fd;" title="Fresh Ice"></div>
         </div>
       </div>
     </div>
@@ -383,12 +389,12 @@ body::before {
       </div>
       <div class="topbar-right">
         <div class="theme-selector-panel" style="margin-right: 8px;">
-          <div class="theme-dot" data-t="aero" style="background:linear-gradient(135deg, #071322 50%, #38bdf8 50%);" title="Aero Blue"></div>
-          <div class="theme-dot" data-t="mint" style="background:linear-gradient(135deg, #041510 50%, #34d399 50%);" title="Emerald Mint"></div>
-          <div class="theme-dot" data-t="sunset" style="background:linear-gradient(135deg, #180c05 50%, #fbbf24 50%);" title="Sunset Gold"></div>
-          <div class="theme-dot" data-t="cyber" style="background:linear-gradient(135deg, #0f051d 50%, #f472b6 50%);" title="Cyberpunk"></div>
-          <div class="theme-dot" data-t="oled" style="background:linear-gradient(135deg, #000000 50%, #ffffff 50%);" title="Midnight OLED"></div>
-          <div class="theme-dot" data-t="light" style="background:linear-gradient(135deg, #e2e8f0 50%, #0284c7 50%); border:1px solid #cbd5e1;" title="Clean White"></div>
+          <div class="theme-dot" data-t="indigo" style="background:linear-gradient(135deg, #050b14 50%, #3b82f6 50%);" title="Midnight Indigo"></div>
+          <div class="theme-dot" data-t="forest" style="background:linear-gradient(135deg, #02120a 50%, #10b981 50%);" title="Deep Forest"></div>
+          <div class="theme-dot" data-t="coffee" style="background:linear-gradient(135deg, #140905 50%, #f59e0b 50%);" title="Coffee Latte"></div>
+          <div class="theme-dot" data-t="cosmic" style="background:linear-gradient(135deg, #0d0617 50%, #ec4899 50%);" title="Cosmic Violet"></div>
+          <div class="theme-dot" data-t="carbon" style="background:linear-gradient(135deg, #000000 50%, #ffffff 50%);" title="Carbon Silver"></div>
+          <div class="theme-dot" data-t="ice" style="background:linear-gradient(135deg, #e0f2fe 50%, #0284c7 50%); border:1px solid #bae6fd;" title="Fresh Ice"></div>
         </div>
 
         <div class="status-badge" id="openBadge">
@@ -481,10 +487,10 @@ body::before {
     <h3 style="font-family:var(--font-title); font-size:20px; margin-bottom:12px; color:var(--text);">Detail Pesanan</h3>
     <form id="checkoutForm">
       <label style="font-size:12px; color:var(--muted);">Nama *</label>
-      <input type="text" id="coName" required style="width:100%; background:rgba(125,125,125,0.12); border:1px solid var(--glass-border); padding:10px; border-radius:8px; color:var(--text); margin-bottom:12px; outline:none;">
+      <input type="text" id="coName" required style="width:100%; background:rgba(125,125,125,0.15); border:1px solid var(--glass-border); padding:10px; border-radius:8px; color:var(--text); margin-bottom:12px; outline:none;">
       
       <label style="font-size:12px; color:var(--muted);">No. HP *</label>
-      <input type="tel" id="coPhone" required style="width:100%; background:rgba(125,125,125,0.12); border:1px solid var(--glass-border); padding:10px; border-radius:8px; color:var(--text); margin-bottom:12px; outline:none;">
+      <input type="tel" id="coPhone" required style="width:100%; background:rgba(125,125,125,0.15); border:1px solid var(--glass-border); padding:10px; border-radius:8px; color:var(--text); margin-bottom:12px; outline:none;">
       
       <label style="font-size:12px; color:var(--muted);">Tipe Pesanan *</label>
       <select id="coType" style="width:100%; background:var(--glass-bg); border:1px solid var(--glass-border); padding:10px; border-radius:8px; color:var(--text); margin-bottom:12px; outline:none;">
@@ -495,10 +501,10 @@ body::before {
       
       <div id="addressField" style="display:none;">
         <label style="font-size:12px; color:var(--muted);">Alamat *</label>
-        <textarea id="coAddress" rows="2" style="width:100%; background:rgba(125,125,125,0.12); border:1px solid var(--glass-border); padding:10px; border-radius:8px; color:var(--text); margin-bottom:12px; outline:none;"></textarea>
+        <textarea id="coAddress" rows="2" style="width:100%; background:rgba(125,125,125,0.15); border:1px solid var(--glass-border); padding:10px; border-radius:8px; color:var(--text); margin-bottom:12px; outline:none;"></textarea>
       </div>
 
-      <div id="checkoutSummary" style="background:rgba(125,125,125,0.12); padding:12px; border-radius:8px; margin-bottom:16px; font-size:13px; color:var(--text);"></div>
+      <div id="checkoutSummary" style="background:rgba(125,125,125,0.15); padding:12px; border-radius:8px; margin-bottom:16px; font-size:13px; color:var(--text);"></div>
       <button type="submit" style="width:100%; background:var(--accent); color:#fff; border:none; padding:12px; border-radius:8px; font-weight:700; cursor:pointer;">Kirim ke WhatsApp</button>
     </form>
   </div>
@@ -510,7 +516,7 @@ body::before {
     <button id="cancelPinBtn" style="float:right; background:none; border:none; color:var(--text); cursor:pointer; font-size:18px;">✕</button>
     <h3 style="font-family:var(--font-title); font-size:20px; color:var(--soft); margin-bottom:8px;">Masuk Mode Admin</h3>
     <p style="font-size:12px; color:var(--muted); margin-bottom:16px;">Masukkan PIN Admin</p>
-    <input type="password" id="adminPinInput" placeholder="••••" style="width:140px; text-align:center; letter-spacing:6px; font-size:20px; background:rgba(125,125,125,0.12); border:1px solid var(--glass-border); padding:10px; border-radius:8px; color:var(--text); margin-bottom:16px; outline:none;">
+    <input type="password" id="adminPinInput" placeholder="••••" style="width:140px; text-align:center; letter-spacing:6px; font-size:20px; background:rgba(125,125,125,0.15); border:1px solid var(--glass-border); padding:10px; border-radius:8px; color:var(--text); margin-bottom:16px; outline:none;">
     <br>
     <button id="submitPinBtn" style="background:var(--accent); color:#fff; border:none; padding:10px 24px; border-radius:8px; font-weight:700; cursor:pointer;">Masuk</button>
   </div>
@@ -550,8 +556,8 @@ const toast = msg => {
   setTimeout(() => t.classList.remove('show'), 2500);
 };
 
-// MANAJEMEN TEMA DUAL-TONE
-const savedTheme = localStorage.getItem('serabimu_theme') || 'aero';
+// MANAJEMEN TEMA BARU (KONTRAS TINGGI)
+const savedTheme = localStorage.getItem('serabimu_theme') || 'indigo';
 document.documentElement.setAttribute('data-theme', savedTheme);
 
 function applyTheme(themeName) {
