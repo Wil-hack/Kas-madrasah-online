@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Serabimu — Collapsible Glass Dashboard</title>
+<title>Serabimu — Smooth Collapsible Dashboard</title>
 <meta name="description" content="Serabimu — kelezatan autentik dalam setiap gigitan.">
 <meta name="theme-color" content="#020617">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -111,7 +111,7 @@ body::before {
 
 .app-layout { display: flex; min-height: 100vh; position: relative; gap: 24px; padding: 24px; max-width: 1500px; margin: 0 auto; }
 
-/* SIDEBAR KIRI DESKTOP - COLLAPSIBLE MODE */
+/* SIDEBAR KIRI DESKTOP - SMOOTH COLLAPSIBLE */
 .app-sidebar {
   width: 260px;
   background: var(--glass-bg);
@@ -127,18 +127,34 @@ body::before {
   height: calc(100vh - 48px);
   z-index: 100;
   box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-  transition: width 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  /* Transisi lebar kotak dipercepat & mulus */
+  transition: width 0.3s cubic-bezier(0.25, 1, 0.5, 1), padding 0.3s ease;
+  overflow: hidden;
 }
 
+/* Saat diciutkan: kotak mengecil dulu */
 .app-sidebar.collapsed {
-  width: 80px;
+  width: 76px;
   padding: 24px 10px;
 }
+
+/* Teks/tulisan di dalam sidebar disembunyikan pakai opacity & delay agar kotak melebar/menyusut dulu dengan rapi */
+.app-sidebar .brand-sub,
+.app-sidebar .brand-title,
+.app-sidebar .menu-item span {
+  opacity: 1;
+  white-space: nowrap;
+  transition: opacity 0.15s ease-in-out;
+}
+
 .app-sidebar.collapsed .brand-sub,
 .app-sidebar.collapsed .brand-title,
 .app-sidebar.collapsed .menu-item span {
-  display: none;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.05s ease-in-out;
 }
+
 .app-sidebar.collapsed .brand-box {
   text-align: center;
   padding-left: 0;
@@ -190,8 +206,7 @@ body::before {
 .menu-item {
   display: flex; align-items: center; gap: 12px; padding: 12px 16px;
   color: var(--muted); text-decoration: none; font-size: 13.5px; font-weight: 500;
-  border-radius: var(--radius-md); transition: .3s; border: 1px solid transparent;
-  white-space: nowrap;
+  border-radius: var(--radius-md); transition: background .3s, border-color .3s, color .3s; border: 1px solid transparent;
 }
 .menu-item:hover, .menu-item.active {
   color: var(--text); background: rgba(255, 255, 255, 0.08); border-color: var(--glass-border);
@@ -201,9 +216,6 @@ body::before {
   border-color: var(--glass-border); color: var(--soft); font-weight: 600;
 }
 .menu-item svg { width: 20px; height: 20px; flex-shrink: 0; }
-
-/* MOBILE HEADER */
-.mobile-header { display: none; }
 
 /* MAIN CONTENT */
 .app-main { flex: 1; padding: 0; max-width: 100%; overflow-x: hidden; transition: all 0.35s ease; }
@@ -243,7 +255,7 @@ body::before {
   display: none; align-items: center; justify-content: center; padding: 0 4px;
 }
 
-/* PEMILIH TEMA (HANYA 1 DI ATAS) */
+/* PEMILIH TEMA (TUNGGAL DI ATAS) */
 .theme-selector-panel {
   display: flex; gap: 6px; background: var(--glass-bg); border: 1px solid var(--glass-border);
   padding: 5px 8px; border-radius: 99px; backdrop-filter: blur(16px); align-items: center;
@@ -356,19 +368,6 @@ body::before {
   .app-sidebar { display: none; }
   .app-main { padding: 0 0 85px 0; }
   
-  .mobile-header {
-    display: flex; justify-content: space-between; align-items: center;
-    background: var(--glass-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-    border: 1px solid var(--glass-border); padding: 12px 16px; border-radius: var(--radius-md);
-    margin-bottom: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-  }
-  .mobile-brand-title {
-    font-family: var(--font-title); font-size: 19px; font-weight: 700;
-    background: linear-gradient(135deg, var(--text) 30%, var(--soft));
-    -webkit-background-clip: text; background-clip: text; color: transparent;
-  }
-  .mobile-brand-sub { font-size: 8.5px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); }
-
   .dashboard-topbar { margin-bottom: 16px; }
 
   /* BILAH NAVIGASI BAWAH BERBENTUK KAPSUL KACA (FLOATING PILL NAVBAR) */
@@ -393,7 +392,6 @@ body::before {
 }
 @media (min-width: 851px) { 
   .mobile-nav { display: none; } 
-  .mobile-header { display: none; }
 }
 
 #toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(30px); background: var(--glass-bg); color: var(--text); border: 1px solid var(--glass-border); padding: 10px 22px; border-radius: 99px; font-size: 13px; font-weight: 500; opacity: 0; pointer-events: none; transition: .4s; z-index: 10000; box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
@@ -403,7 +401,7 @@ body::before {
 <body>
 
 <div class="app-layout">
-  <!-- SIDEBAR DESKTOP (COLLAPSIBLE MODE) -->
+  <!-- SIDEBAR DESKTOP (SMOOTH COLLAPSIBLE MODE) -->
   <aside class="app-sidebar" id="sidebar">
     <button class="sidebar-toggle-btn" id="sidebarToggle" title="Buka/Tutup Sidebar">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>
@@ -430,31 +428,14 @@ body::before {
 
   <!-- MAIN AREA -->
   <main class="app-main">
-    <!-- HEADER MOBILE -->
-    <div class="mobile-header">
-      <div>
-        <div class="mobile-brand-title">Serabimu</div>
-        <div class="mobile-brand-sub">Culinary Dashboard</div>
-      </div>
-      <!-- PEMILIH TEMA MOBILE (HANYA 1) -->
-      <div class="theme-selector-panel">
-        <div class="theme-dot" data-t="indigo" style="background:linear-gradient(135deg, #020617 50%, #38bdf8 50%);" title="Midnight Indigo"></div>
-        <div class="theme-dot" data-t="forest" style="background:linear-gradient(135deg, #022c22 50%, #34d399 50%);" title="Deep Forest"></div>
-        <div class="theme-dot" data-t="coffee" style="background:linear-gradient(135deg, #1c100b 50%, #fbbf24 50%);" title="Coffee Latte"></div>
-        <div class="theme-dot" data-t="cosmic" style="background:linear-gradient(135deg, #1e1b4b 50%, #f472b6 50%);" title="Cosmic Violet"></div>
-        <div class="theme-dot" data-t="carbon" style="background:linear-gradient(135deg, #09090b 50%, #ffffff 50%);" title="Carbon Silver"></div>
-        <div class="theme-dot" data-t="ice" style="background:linear-gradient(135deg, #f0f9ff 50%, #0284c7 50%); border:1px solid #bae6fd;" title="Fresh Ice"></div>
-      </div>
-    </div>
-
     <div class="dashboard-topbar">
       <div class="search-widget">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
         <input type="text" id="searchInput" placeholder="Cari serabi, cireng, kuah...">
       </div>
       <div class="topbar-right">
-        <!-- PEMILIH TEMA DESKTOP (HANYA 1) -->
-        <div class="theme-selector-panel" style="margin-right: 4px;">
+        <!-- PEMILIH TEMA TUNGGAL DI ATAS (RESPONSIF DI HP DAN WEB) -->
+        <div class="theme-selector-panel">
           <div class="theme-dot" data-t="indigo" style="background:linear-gradient(135deg, #020617 50%, #38bdf8 50%);" title="Midnight Indigo"></div>
           <div class="theme-dot" data-t="forest" style="background:linear-gradient(135deg, #022c22 50%, #34d399 50%);" title="Deep Forest"></div>
           <div class="theme-dot" data-t="coffee" style="background:linear-gradient(135deg, #1c100b 50%, #fbbf24 50%);" title="Coffee Latte"></div>
@@ -468,7 +449,6 @@ body::before {
           <span id="openText">Memuat...</span>
         </div>
         
-        <!-- IKON KERANJANG DIKEMBALIKAN DI KANAN ATAS -->
         <button class="icon-btn" id="cartBtn" aria-label="Keranjang">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
           <span class="cart-count" id="cartCount">0</span>
@@ -624,7 +604,7 @@ const toast = msg => {
   setTimeout(() => t.classList.remove('show'), 2500);
 };
 
-// LOGIKA COLLAPSIBLE SIDEBAR DESKTOP
+// LOGIKA SMOOTH COLLAPSIBLE SIDEBAR DESKTOP
 const sidebar = $('#sidebar');
 const sidebarToggle = $('#sidebarToggle');
 const savedSidebarState = localStorage.getItem('serabimu_sidebar_collapsed');
@@ -638,7 +618,7 @@ sidebarToggle.addEventListener('click', () => {
   localStorage.setItem('serabimu_sidebar_collapsed', sidebar.classList.contains('collapsed'));
 });
 
-// MANAJEMEN TEMA (SINKRON ANTAR SEMUA TOMBOL TEMA)
+// MANAJEMEN TEMA (TUNGGAL DAN SINKRON)
 const savedTheme = localStorage.getItem('serabimu_theme') || 'indigo';
 document.documentElement.setAttribute('data-theme', savedTheme);
 
