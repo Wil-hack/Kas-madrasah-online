@@ -3,17 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Serabimu — Modern Windows 7 Aero Dashboard</title>
+<title>Serabimu — Modern Culinary Dashboard</title>
 <meta name="description" content="Serabimu — kelezatan autentik dalam setiap gigitan.">
-<meta name="theme-color" content="#0f2b48">
+<meta name="theme-color" content="#0b1d33">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://firestore.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root {
-  --font-title: 'Playfair Display', serif;
-  --font-body: 'Inter', sans-serif;
+/* 5 TEMA VISUAL */
+:root[data-theme="aero"] {
   --bg: #0b1d33;
   --glass-bg: rgba(20, 45, 80, 0.55);
   --glass-border: rgba(147, 197, 253, 0.35);
@@ -22,6 +21,51 @@
   --soft: #7dd3fc;
   --text: #f0f9ff;
   --muted: #bae6fd;
+}
+:root[data-theme="mint"] {
+  --bg: #06231b;
+  --glass-bg: rgba(13, 60, 48, 0.55);
+  --glass-border: rgba(110, 231, 183, 0.35);
+  --glass-glow: rgba(52, 211, 153, 0.45);
+  --accent: #34d399;
+  --soft: #6ee7b7;
+  --text: #ecfdf5;
+  --muted: #a7f3d0;
+}
+:root[data-theme="sunset"] {
+  --bg: #26150b;
+  --glass-bg: rgba(65, 35, 18, 0.55);
+  --glass-border: rgba(252, 211, 77, 0.35);
+  --glass-glow: rgba(251, 191, 36, 0.45);
+  --accent: #fbbf24;
+  --soft: #fde68a;
+  --text: #fffbeb;
+  --muted: #fef08a;
+}
+:root[data-theme="cyber"] {
+  --bg: #180b2e;
+  --glass-bg: rgba(45, 20, 80, 0.55);
+  --glass-border: rgba(244, 114, 182, 0.35);
+  --glass-glow: rgba(192, 132, 252, 0.45);
+  --accent: #f472b6;
+  --soft: #c084fc;
+  --text: #fdf4ff;
+  --muted: #f5d0fe;
+}
+:root[data-theme="oled"] {
+  --bg: #000000;
+  --glass-bg: rgba(24, 24, 27, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.2);
+  --glass-glow: rgba(255, 255, 255, 0.25);
+  --accent: #ffffff;
+  --soft: #e4e4e7;
+  --text: #ffffff;
+  --muted: #a1a1aa;
+}
+
+:root {
+  --font-title: 'Playfair Display', serif;
+  --font-body: 'Inter', sans-serif;
   --radius-lg: 20px;
   --radius-md: 14px;
 }
@@ -35,10 +79,10 @@ body {
   line-height: 1.6;
   min-height: 100vh;
   overflow-x: hidden;
+  transition: background 0.4s ease, color 0.4s ease;
   background-image: 
-    radial-gradient(circle at 15% 15%, rgba(56, 189, 248, 0.4) 0%, transparent 45%),
-    radial-gradient(circle at 85% 85%, rgba(37, 99, 235, 0.3) 0%, transparent 45%),
-    radial-gradient(circle at 50% 50%, rgba(11, 29, 51, 0.9) 0%, transparent 80%);
+    radial-gradient(circle at 15% 15%, var(--glass-glow) 0%, transparent 45%),
+    radial-gradient(circle at 85% 85%, var(--glass-bg) 0%, transparent 45%);
   background-attachment: fixed;
 }
 
@@ -49,7 +93,7 @@ body {
 /* SIDEBAR KIRI (DESKTOP) */
 .app-sidebar {
   width: 260px;
-  background: rgba(15, 35, 65, 0.7);
+  background: var(--glass-bg);
   backdrop-filter: blur(25px);
   -webkit-backdrop-filter: blur(25px);
   border-right: 1px solid var(--glass-border);
@@ -79,8 +123,8 @@ body {
   color: var(--text); background: rgba(255, 255, 255, 0.1); border-color: var(--glass-border);
 }
 .menu-item.active {
-  background: linear-gradient(135deg, rgba(56, 189, 248, 0.35), rgba(125, 211, 252, 0.1));
-  border-color: rgba(125, 211, 252, 0.6); color: var(--soft);
+  background: linear-gradient(135deg, var(--glass-glow), transparent);
+  border-color: var(--glass-border); color: var(--soft);
 }
 .menu-item svg { width: 18px; height: 18px; }
 
@@ -122,7 +166,17 @@ body {
   display: none; align-items: center; justify-content: center; padding: 0 4px;
 }
 
-/* HERO DASHBOARD BANNER KACA AERO */
+/* PEMILIH TEMA MODAL / POPUP */
+.theme-selector-panel {
+  display: flex; gap: 6px; background: var(--glass-bg); border: 1px solid var(--glass-border);
+  padding: 4px; border-radius: 99px; backdrop-filter: blur(16px);
+}
+.theme-dot {
+  width: 24px; height: 24px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; transition: transform .2s;
+}
+.theme-dot:hover, .theme-dot.active { transform: scale(1.15); border-color: #fff; }
+
+/* HERO DASHBOARD */
 .hero-dashboard {
   position: relative; border-radius: var(--radius-lg); overflow: hidden;
   padding: 40px 28px; margin-bottom: 30px; border: 1px solid var(--glass-border);
@@ -130,8 +184,8 @@ body {
   display: flex; flex-direction: column; justify-content: center;
   background: var(--glass-bg); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
 }
-.hero-video-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; opacity: 0.45; }
-.hero-overlay { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(11, 29, 51, 0.85) 0%, rgba(11, 29, 51, 0.3) 100%); z-index: -1; }
+.hero-video-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; opacity: 0.4; }
+.hero-overlay { position: absolute; inset: 0; background: linear-gradient(135deg, var(--bg) 0%, transparent 100%); z-index: -1; opacity: 0.8; }
 .hero-dashboard h1 {
   font-family: var(--font-title); font-size: clamp(26px, 4vw, 40px); font-weight: 700; margin-bottom: 8px;
   background: linear-gradient(180deg, #fff 0%, var(--soft) 100%); -webkit-background-clip: text; background-clip: text; color: transparent;
@@ -146,7 +200,7 @@ body {
   color: var(--muted); padding: 8px 18px; border-radius: 99px; font-size: 12px; font-weight: 500; cursor: pointer; transition: .3s; white-space: nowrap;
 }
 .chip:hover, .chip.active { color: var(--text); border-color: var(--soft); }
-.chip.active { background: linear-gradient(135deg, rgba(56, 189, 248, 0.4), rgba(125, 211, 252, 0.15)); color: var(--soft); font-weight: 700; }
+.chip.active { background: linear-gradient(135deg, var(--glass-glow), transparent); color: var(--soft); font-weight: 700; }
 
 /* KATALOG GESER KE SAMPING */
 .section-header { font-family: var(--font-title); font-size: 20px; font-weight: 600; margin-bottom: 14px; display: flex; justify-content: space-between; align-items: center; }
@@ -184,7 +238,7 @@ body {
   scroll-snap-align: start;
 }
 .glass-card:hover { transform: translateY(-4px); border-color: var(--soft); box-shadow: 0 20px 40px -15px rgba(0,0,0,0.7), 0 0 25px var(--glass-glow); }
-.card-img-wrap { position: relative; height: 135px; overflow: hidden; background: #071322; }
+.card-img-wrap { position: relative; height: 135px; overflow: hidden; background: rgba(0,0,0,0.3); }
 .card-img-wrap img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s cubic-bezier(.2,.8,.2,1); }
 .glass-card:hover .card-img-wrap img { transform: scale(1.08); }
 .card-badges { position: absolute; top: 8px; left: 8px; display: flex; flex-direction: column; gap: 4px; z-index: 2; }
@@ -206,7 +260,7 @@ body {
 .card-footer { display: flex; align-items: center; justify-content: space-between; margin-top: auto; padding-top: 8px; border-top: 1px solid rgba(255, 255, 255, 0.1); }
 .card-price { font-weight: 700; color: var(--soft); font-size: 13px; }
 .btn-glass-add {
-  background: linear-gradient(135deg, var(--accent), #0284c7); color: #0b1d33; border: none;
+  background: var(--accent); color: var(--bg); border: none;
   padding: 6px 12px; border-radius: 99px; font-size: 10.5px; font-weight: 700; cursor: pointer; transition: .3s;
 }
 .btn-glass-add:hover { filter: brightness(1.15); transform: scale(1.04); }
@@ -215,7 +269,7 @@ body {
 .feed-container { max-width: 680px; margin: 0 auto; display: flex; flex-direction: column; gap: 24px; }
 .feed-post { background: var(--glass-bg); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border: 1px solid var(--glass-border); border-radius: var(--radius-lg); overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.4); }
 .post-head { display: flex; align-items: center; gap: 12px; padding: 16px 18px 10px; }
-.avatar { width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), #0284c7); color: #0b1d33; display: flex; align-items: center; justify-content: center; font-weight: 700; font-family: var(--font-title); font-size: 14px; }
+.avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--accent); color: var(--bg); display: flex; align-items: center; justify-content: center; font-weight: 700; font-family: var(--font-title); font-size: 14px; }
 .post-caption { padding: 0 18px 12px; font-size: 13.5px; color: var(--text); white-space: pre-wrap; word-break: break-word; }
 .post-media-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 4px; background: #000; }
 .post-media-grid img, .post-media-grid video { width: 100%; height: 240px; object-fit: cover; display: block; }
@@ -226,7 +280,7 @@ body {
 /* CART & MODALS */
 .cart-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.75); backdrop-filter: blur(8px); z-index: 500; opacity: 0; visibility: hidden; transition: .3s; }
 .cart-overlay.open { opacity: 1; visibility: visible; }
-.cart-drawer { position: fixed; top: 0; right: 0; height: 100%; width: min(400px, 90vw); background: rgba(15, 35, 65, 0.96); backdrop-filter: blur(25px); border-left: 1px solid var(--glass-border); z-index: 501; transform: translateX(100%); transition: transform .4s cubic-bezier(.2,.8,.2,1); display: flex; flex-direction: column; padding: 24px; }
+.cart-drawer { position: fixed; top: 0; right: 0; height: 100%; width: min(400px, 90vw); background: var(--bg); backdrop-filter: blur(25px); border-left: 1px solid var(--glass-border); z-index: 501; transform: translateX(100%); transition: transform .4s cubic-bezier(.2,.8,.2,1); display: flex; flex-direction: column; padding: 24px; }
 .cart-drawer.open { transform: translateX(0); }
 .cart-body { flex: 1; overflow-y: auto; margin: 15px 0; }
 .cart-item { display: flex; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--glass-border); align-items: center; }
@@ -234,19 +288,19 @@ body {
 
 .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); z-index: 1000; display: none; align-items: center; justify-content: center; padding: 20px; }
 .modal-overlay.open { display: flex; }
-.modal-panel { background: rgba(15, 35, 65, 0.96); backdrop-filter: blur(25px); border: 1px solid var(--glass-border); border-radius: 20px; width: 100%; max-width: 500px; max-height: 90vh; overflow-y: auto; position: relative; padding: 24px; }
+.modal-panel { background: var(--bg); backdrop-filter: blur(25px); border: 1px solid var(--glass-border); border-radius: 20px; width: 100%; max-width: 500px; max-height: 90vh; overflow-y: auto; position: relative; padding: 24px; }
 
 /* RESPONSIVE MOBILE ADJUSTMENTS */
 @media (max-width: 850px) {
   .app-sidebar { display: none; }
   .app-main { padding: 12px 14px 85px; }
   
-  /* HEADER MOBILE YANG BERSIH & TIDAK DOBEL */
+  /* MOBILE HEADER RAPI TANPA BUKA GANDA */
   .mobile-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: rgba(15, 35, 65, 0.75);
+    background: var(--glass-bg);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border: 1px solid var(--glass-border);
@@ -264,12 +318,11 @@ body {
   }
   .mobile-brand-sub { font-size: 8.5px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); }
 
-  /* SEMBUNYIKAN TOPBAR DESKTOP DI HP KARENA SUDAH ADA MOBILE HEADER & SEARCH DI BAWAHNYA */
   .dashboard-topbar { margin-bottom: 16px; }
 
   .mobile-nav { 
     position: fixed; bottom: 0; left: 0; right: 0; height: 60px; 
-    background: rgba(15, 35, 65, 0.95); backdrop-filter: blur(22px); 
+    background: var(--bg); backdrop-filter: blur(22px); 
     border-top: 1px solid var(--glass-border); display: flex; 
     justify-content: space-around; align-items: center; z-index: 999; 
   }
@@ -281,7 +334,7 @@ body {
   .mobile-header { display: none; }
 }
 
-#toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(30px); background: rgba(15, 35, 65, 0.95); color: var(--text); border: 1px solid var(--glass-border); padding: 10px 22px; border-radius: 99px; font-size: 13px; font-weight: 500; opacity: 0; pointer-events: none; transition: .4s; z-index: 10000; }
+#toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(30px); background: var(--glass-bg); color: var(--text); border: 1px solid var(--glass-border); padding: 10px 22px; border-radius: 99px; font-size: 13px; font-weight: 500; opacity: 0; pointer-events: none; transition: .4s; z-index: 10000; }
 #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 </style>
 </head>
@@ -318,10 +371,14 @@ body {
         <div class="mobile-brand-title">Serabimu</div>
         <div class="mobile-brand-sub">Culinary Dashboard</div>
       </div>
-      <div style="display: flex; align-items: center; gap: 10px;">
-        <div class="status-badge" id="openBadgeMobile" style="padding: 4px 10px; font-size: 10px;">
-          <span class="dot" style="width: 6px; height: 6px;"></span>
-          <span id="openTextMobile">...</span>
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <!-- PEMILIH TEMA DI HEADER MOBILE -->
+        <div class="theme-selector-panel">
+          <div class="theme-dot" data-t="aero" style="background:#38bdf8;" title="Aero Blue"></div>
+          <div class="theme-dot" data-t="mint" style="background:#34d399;" title="Emerald Mint"></div>
+          <div class="theme-dot" data-t="sunset" style="background:#fbbf24;" title="Sunset Gold"></div>
+          <div class="theme-dot" data-t="cyber" style="background:#f472b6;" title="Cyberpunk"></div>
+          <div class="theme-dot" data-t="oled" style="background:#ffffff;" title="Midnight OLED"></div>
         </div>
       </div>
     </div>
@@ -332,6 +389,15 @@ body {
         <input type="text" id="searchInput" placeholder="Cari serabi, cireng, kuah...">
       </div>
       <div class="topbar-right">
+        <!-- PEMILIH TEMA DESKTOP -->
+        <div class="theme-selector-panel" style="margin-right: 8px;">
+          <div class="theme-dot" data-t="aero" style="background:#38bdf8;" title="Aero Blue"></div>
+          <div class="theme-dot" data-t="mint" style="background:#34d399;" title="Emerald Mint"></div>
+          <div class="theme-dot" data-t="sunset" style="background:#fbbf24;" title="Sunset Gold"></div>
+          <div class="theme-dot" data-t="cyber" style="background:#f472b6;" title="Cyberpunk"></div>
+          <div class="theme-dot" data-t="oled" style="background:#ffffff;" title="Midnight OLED"></div>
+        </div>
+
         <div class="status-badge" id="openBadge">
           <span class="dot"></span>
           <span id="openText">Memuat...</span>
@@ -403,7 +469,7 @@ body {
     <div style="display:flex; justify-content:space-between; margin-bottom:14px; font-weight:700;">
       <span>Total</span><span id="cartTotal" style="color:var(--soft)">Rp 0</span>
     </div>
-    <button id="checkoutBtn" style="width:100%; background:linear-gradient(135deg, var(--accent), #0284c7); border:none; padding:12px; border-radius:12px; font-weight:700; color:#0b1d33; cursor:pointer;">Checkout WhatsApp</button>
+    <button id="checkoutBtn" style="width:100%; background:var(--accent); color:var(--bg); border:none; padding:12px; border-radius:12px; font-weight:700; cursor:pointer;">Checkout WhatsApp</button>
   </div>
 </div>
 
@@ -440,7 +506,7 @@ body {
       </div>
 
       <div id="checkoutSummary" style="background:rgba(0,0,0,0.2); padding:12px; border-radius:8px; margin-bottom:16px; font-size:13px;"></div>
-      <button type="submit" style="width:100%; background:var(--accent); color:#0b1d33; border:none; padding:12px; border-radius:8px; font-weight:700; cursor:pointer;">Kirim ke WhatsApp</button>
+      <button type="submit" style="width:100%; background:var(--accent); color:var(--bg); border:none; padding:12px; border-radius:8px; font-weight:700; cursor:pointer;">Kirim ke WhatsApp</button>
     </form>
   </div>
 </div>
@@ -453,7 +519,7 @@ body {
     <p style="font-size:12px; color:var(--muted); margin-bottom:16px;">Masukkan PIN Admin</p>
     <input type="password" id="adminPinInput" placeholder="••••" style="width:140px; text-align:center; letter-spacing:6px; font-size:20px; background:rgba(0,0,0,0.3); border:1px solid var(--glass-border); padding:10px; border-radius:8px; color:var(--text); margin-bottom:16px; outline:none;">
     <br>
-    <button id="submitPinBtn" style="background:var(--accent); color:#0b1d33; border:none; padding:10px 24px; border-radius:8px; font-weight:700; cursor:pointer;">Masuk</button>
+    <button id="submitPinBtn" style="background:var(--accent); color:var(--bg); border:none; padding:10px 24px; border-radius:8px; font-weight:700; cursor:pointer;">Masuk</button>
   </div>
 </div>
 
@@ -491,6 +557,22 @@ const toast = msg => {
   setTimeout(() => t.classList.remove('show'), 2500);
 };
 
+// MANAJEMEN TEMA (LOCALSTORAGE)
+const savedTheme = localStorage.getItem('serabimu_theme') || 'aero';
+document.documentElement.setAttribute('data-theme', savedTheme);
+
+function applyTheme(themeName) {
+  document.documentElement.setAttribute('data-theme', themeName);
+  localStorage.setItem('serabimu_theme', themeName);
+  document.querySelectorAll('.theme-dot').forEach(dot => {
+    dot.classList.toggle('active', dot.dataset.t === themeName);
+  });
+}
+document.querySelectorAll('.theme-dot').forEach(dot => {
+  if(dot.dataset.t === savedTheme) dot.classList.add('active');
+  dot.addEventListener('click', () => applyTheme(dot.dataset.t));
+});
+
 // JAM TOKO STATUS
 function isOpenNow() {
   const now = new Date();
@@ -498,14 +580,11 @@ function isOpenNow() {
   return (cur >= 480 && cur < 1260);
 }
 const badge = $('#openBadge'), text = $('#openText');
-const badgeMob = $('#openBadgeMobile'), textMob = $('#openTextMobile');
 
 if(isOpenNow()) { 
   text.textContent = 'Buka Sekarang'; badge.classList.remove('closed'); 
-  if(textMob) { textMob.textContent = 'Buka'; badgeMob.classList.remove('closed'); }
 } else { 
   text.textContent = 'Tutup'; badge.classList.add('closed'); 
-  if(textMob) { textMob.textContent = 'Tutup'; badgeMob.classList.add('closed'); }
 }
 
 // LOCAL STORAGE DATA
@@ -625,7 +704,7 @@ function openProductModal(id) {
     <div style="font-size:12px; color:var(--soft); margin-bottom:8px;">${avg > 0 ? '★ '+avg.toFixed(1) : 'Belum ada rating'}</div>
     <p style="font-size:13px; color:var(--muted); margin-bottom:14px;">${esc(p.description||'')}</p>
     <div style="font-size:18px; font-weight:700; color:var(--soft); margin-bottom:14px;">${price}</div>
-    <button id="pmAddCart" style="width:100%; background:var(--accent); color:#0b1d33; border:none; padding:10px; border-radius:8px; font-weight:700; cursor:pointer;">+ Keranjang</button>
+    <button id="pmAddCart" style="width:100%; background:var(--accent); color:var(--bg); border:none; padding:10px; border-radius:8px; font-weight:700; cursor:pointer;">+ Keranjang</button>
   `;
   productModal.classList.add('open');
   productModalBody.querySelector('#pmAddCart').addEventListener('click', () => { addToCart(p); productModal.classList.remove('open'); });
