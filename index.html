@@ -127,30 +127,30 @@ body::before {
 
 ::selection { background: var(--soft); color: #fff; }
 
-.app-layout { display: flex; min-height: 100vh; position: relative; gap: 24px; padding: 24px; max-width: 1500px; margin: 0 auto; }
+.app-layout { display: flex; min-height: 100vh; position: relative; gap: 16px; padding: 16px; max-width: 1500px; margin: 0 auto; }
 
-/* SIDEBAR KIRI - SMOOTH COLLAPSIBLE */
+/* SIDEBAR KIRI - DIPERBAIKI AGAR PAS & NYAMAN DI HP */
 .app-sidebar {
-  width: 260px;
+  width: 220px;
   background: var(--glass-bg);
   backdrop-filter: blur(25px);
   -webkit-backdrop-filter: blur(25px);
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-lg);
-  padding: 24px 14px;
+  padding: 20px 10px;
   display: flex;
   flex-direction: column;
   position: sticky;
-  top: 24px;
-  height: calc(100vh - 48px);
+  top: 16px;
+  height: calc(100vh - 32px);
   z-index: 100;
   box-shadow: 0 20px 40px rgba(0,0,0,0.3);
   transition: width 0.3s cubic-bezier(0.25, 1, 0.5, 1), padding 0.3s ease;
-  overflow: hidden;
+  overflow: visible; /* Biar tombol toggle tidak terpotong */
   flex-shrink: 0;
 }
 
-.app-sidebar.collapsed { width: 76px; padding: 24px 10px; }
+.app-sidebar.collapsed { width: 64px; padding: 20px 8px; }
 .app-sidebar .brand-sub,
 .app-sidebar .brand-title,
 .app-sidebar .menu-item span {
@@ -161,32 +161,33 @@ body::before {
 .app-sidebar.collapsed .menu-item span {
   opacity: 0; pointer-events: none; transition: opacity 0.05s ease-in-out;
 }
-.app-sidebar.collapsed .brand-box { text-align: center; padding-left: 0; margin-bottom: 24px; }
+.app-sidebar.collapsed .brand-box { text-align: center; padding-left: 0; margin-bottom: 20px; }
 .app-sidebar.collapsed .brand-box::after {
-  content: 'S'; font-family: var(--font-title); font-size: 24px; font-weight: 700; color: var(--soft);
+  content: 'S'; font-family: var(--font-title); font-size: 20px; font-weight: 700; color: var(--soft);
 }
-.app-sidebar.collapsed .menu-item { justify-content: center; padding: 12px; }
+.app-sidebar.collapsed .menu-item { justify-content: center; padding: 10px; }
 
+/* TOMBOL TOGGLE SIDEBAR DIPERBESAR DAN POSISINYA AMAN DI DALAM/TEPI */
 .sidebar-toggle-btn {
-  position: absolute; top: 20px; right: -14px; width: 28px; height: 28px;
-  background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 50%;
+  position: absolute; top: 16px; right: -12px; width: 32px; height: 32px;
+  background: var(--glass-bg); border: 2px solid var(--glass-border); border-radius: 50%;
   color: var(--text); display: flex; align-items: center; justify-content: center;
-  cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.3); transition: transform 0.3s ease; z-index: 101;
+  cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.4); transition: transform 0.3s ease; z-index: 105;
 }
 .app-sidebar.collapsed .sidebar-toggle-btn svg { transform: rotate(180deg); }
 
-.brand-box { margin-bottom: 30px; padding-left: 8px; position: relative; }
+.brand-box { margin-bottom: 24px; padding-left: 6px; position: relative; }
 .brand-title {
-  font-family: var(--font-title); font-size: 22px; font-weight: 700;
+  font-family: var(--font-title); font-size: 19px; font-weight: 700;
   background: linear-gradient(135deg, var(--text) 30%, var(--soft));
   -webkit-background-clip: text; background-clip: text; color: transparent;
 }
-.brand-sub { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--muted); margin-top: 2px; }
+.brand-sub { font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-top: 2px; }
 
-.sidebar-menu { display: flex; flex-direction: column; gap: 8px; flex: 1; }
+.sidebar-menu { display: flex; flex-direction: column; gap: 6px; flex: 1; }
 .menu-item {
-  display: flex; align-items: center; gap: 12px; padding: 12px 16px;
-  color: var(--muted); text-decoration: none; font-size: 13.5px; font-weight: 500;
+  display: flex; align-items: center; gap: 10px; padding: 10px 12px;
+  color: var(--muted); text-decoration: none; font-size: 13px; font-weight: 500;
   border-radius: var(--radius-md); transition: background .3s, border-color .3s, color .3s; border: 1px solid transparent;
 }
 .menu-item:hover, .menu-item.active {
@@ -196,173 +197,172 @@ body::before {
   background: linear-gradient(135deg, var(--glass-glow), transparent);
   border-color: var(--glass-border); color: var(--soft); font-weight: 600;
 }
-.menu-item svg { width: 20px; height: 20px; flex-shrink: 0; }
+.menu-item svg { width: 18px; height: 18px; flex-shrink: 0; }
 
 /* MAIN CONTENT */
 .app-main { flex: 1; padding: 0; max-width: 100%; overflow-x: hidden; transition: all 0.35s ease; min-width: 0; }
 
 /* TOPBAR */
-.dashboard-topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; gap: 16px; flex-wrap: wrap; }
-.search-widget { position: relative; flex: 1; max-width: 450px; }
+.dashboard-topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; gap: 12px; flex-wrap: wrap; }
+.search-widget { position: relative; flex: 1; max-width: 380px; }
 .search-widget input {
   width: 100%; background: var(--glass-bg); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
-  border: 1px solid var(--glass-border); padding: 11px 20px 11px 44px; border-radius: 99px;
-  color: var(--text); font-family: var(--font-body); font-size: 13.5px; outline: none; transition: .3s;
+  border: 1px solid var(--glass-border); padding: 10px 18px 10px 40px; border-radius: 99px;
+  color: var(--text); font-family: var(--font-body); font-size: 13px; outline: none; transition: .3s;
   box-shadow: 0 8px 20px rgba(0,0,0,0.15);
 }
 .search-widget input:focus { border-color: var(--soft); box-shadow: 0 0 25px var(--glass-glow); }
-.search-widget svg { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); width: 18px; height: 18px; color: var(--muted); }
+.search-widget svg { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); width: 16px; height: 16px; color: var(--muted); }
 
-.topbar-right { display: flex; align-items: center; gap: 12px; }
+.topbar-right { display: flex; align-items: center; gap: 10px; }
 .status-badge {
-  display: inline-flex; align-items: center; gap: 8px; padding: 7px 16px;
+  display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px;
   background: var(--glass-bg); backdrop-filter: blur(16px); border: 1px solid var(--glass-border);
-  border-radius: 99px; font-size: 12px; font-weight: 500; box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  border-radius: 99px; font-size: 11.5px; font-weight: 500; box-shadow: 0 8px 20px rgba(0,0,0,0.15);
 }
-.status-badge .dot { width: 8px; height: 8px; border-radius: 50%; background: #22c55e; box-shadow: 0 0 10px #22c55e; }
-.status-badge.closed .dot { background: #ef4444; box-shadow: 0 0 10px #ef4444; }
+.status-badge .dot { width: 7px; height: 7px; border-radius: 50%; background: #22c55e; box-shadow: 0 0 8px #22c55e; }
+.status-badge.closed .dot { background: #ef4444; box-shadow: 0 0 8px #ef4444; }
 
 .icon-btn {
   background: var(--glass-bg); backdrop-filter: blur(16px); border: 1px solid var(--glass-border);
-  color: var(--text); width: 42px; height: 42px; border-radius: 50%;
+  color: var(--text); width: 38px; height: 38px; border-radius: 50%;
   display: flex; align-items: center; justify-content: center; cursor: pointer; position: relative; transition: .3s;
   box-shadow: 0 8px 20px rgba(0,0,0,0.15);
 }
 .icon-btn:hover { border-color: var(--soft); transform: translateY(-2px); }
-.icon-btn svg { width: 20px; height: 20px; }
+.icon-btn svg { width: 18px; height: 18px; }
 .cart-count {
   position: absolute; top: -3px; right: -3px; background: #f43f5e; color: #fff;
-  font-size: 10px; font-weight: 700; min-width: 18px; height: 18px; border-radius: 99px;
-  display: none; align-items: center; justify-content: center; padding: 0 4px;
+  font-size: 10px; font-weight: 700; min-width: 16px; height: 16px; border-radius: 8px;
+  display: none; align-items: center; justify-content: center; padding: 0 3px;
 }
 
 /* PEMILIH TEMA (TUNGGAL DI ATAS) */
 .theme-selector-panel {
-  display: flex; gap: 6px; background: var(--glass-bg); border: 1px solid var(--glass-border);
-  padding: 5px 8px; border-radius: 99px; backdrop-filter: blur(16px); align-items: center;
+  display: flex; gap: 5px; background: var(--glass-bg); border: 1px solid var(--glass-border);
+  padding: 4px 6px; border-radius: 99px; backdrop-filter: blur(16px); align-items: center;
   box-shadow: 0 8px 20px rgba(0,0,0,0.15);
 }
 .theme-dot {
-  width: 22px; height: 22px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; transition: transform .2s;
+  width: 20px; height: 20px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; transition: transform .2s;
 }
 .theme-dot:hover, .theme-dot.active { transform: scale(1.2); border-color: #fff; }
 
 /* HERO DASHBOARD */
 .hero-dashboard {
   position: relative; border-radius: var(--radius-lg); overflow: hidden;
-  padding: 40px 28px; margin-bottom: 30px; border: 1px solid var(--glass-border);
-  box-shadow: 0 20px 40px rgba(0,0,0,0.3); min-height: 200px;
+  padding: 30px 24px; margin-bottom: 24px; border: 1px solid var(--glass-border);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.3); min-height: 180px;
   display: flex; flex-direction: column; justify-content: center;
   background: var(--glass-bg); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
 }
 .hero-video-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; opacity: 0.35; }
 .hero-overlay { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(0,0,0,0.4) 0%, transparent 100%); z-index: -1; }
 .hero-dashboard h1 {
-  font-family: var(--font-title); font-size: clamp(26px, 4vw, 40px); font-weight: 700; margin-bottom: 8px;
+  font-family: var(--font-title); font-size: clamp(24px, 3.5vw, 36px); font-weight: 700; margin-bottom: 6px;
   background: linear-gradient(180deg, var(--text) 0%, var(--soft) 100%); -webkit-background-clip: text; background-clip: text; color: transparent;
 }
-.hero-dashboard p { color: var(--muted); max-width: 500px; font-size: 13.5px; }
+.hero-dashboard p { color: var(--muted); max-width: 480px; font-size: 13px; }
 
 /* CHIPS */
-.category-wrapper { display: flex; gap: 8px; overflow-x: auto; margin-bottom: 20px; scrollbar-width: none; }
+.category-wrapper { display: flex; gap: 8px; overflow-x: auto; margin-bottom: 16px; scrollbar-width: none; }
 .category-wrapper::-webkit-scrollbar { display: none; }
 .chip {
   background: var(--glass-bg); backdrop-filter: blur(12px); border: 1px solid var(--glass-border);
-  color: var(--muted); padding: 8px 18px; border-radius: 99px; font-size: 12px; font-weight: 500; cursor: pointer; transition: .3s; white-space: nowrap;
+  color: var(--muted); padding: 7px 16px; border-radius: 99px; font-size: 11.5px; font-weight: 500; cursor: pointer; transition: .3s; white-space: nowrap;
   box-shadow: 0 6px 15px rgba(0,0,0,0.15);
 }
 .chip:hover, .chip.active { color: var(--text); border-color: var(--soft); }
 .chip.active { background: linear-gradient(135deg, var(--glass-glow), transparent); color: var(--soft); font-weight: 700; }
 
 /* KATALOG */
-.section-header { font-family: var(--font-title); font-size: 20px; font-weight: 600; margin-bottom: 14px; display: flex; justify-content: space-between; align-items: center; color: var(--text); }
+.section-header { font-family: var(--font-title); font-size: 18px; font-weight: 600; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; color: var(--text); }
 .scroll-hint { font-size: 11px; color: var(--soft); font-family: var(--font-body); font-weight: 500; }
 
 .products-scroll-container {
-  display: flex; gap: 16px; overflow-x: auto; padding: 4px 4px 20px 4px; margin-bottom: 35px;
+  display: flex; gap: 14px; overflow-x: auto; padding: 4px 4px 16px 4px; margin-bottom: 28px;
   scrollbar-width: thin; scrollbar-color: var(--accent) transparent; scroll-snap-type: x mandatory;
 }
 .products-scroll-container::-webkit-scrollbar { height: 6px; }
 .products-scroll-container::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 99px; }
 
 .glass-card {
-  min-width: 210px; max-width: 210px; background: var(--glass-bg); backdrop-filter: blur(24px);
+  min-width: 200px; max-width: 200px; background: var(--glass-bg); backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px); border: 1px solid var(--glass-border); border-radius: var(--radius-lg);
   overflow: hidden; transition: .35s; display: flex; flex-direction: column; position: relative; cursor: pointer;
   box-shadow: 0 15px 35px rgba(0,0,0,0.3); flex-shrink: 0; scroll-snap-align: start;
 }
 .glass-card:hover { transform: translateY(-4px); border-color: var(--soft); box-shadow: 0 20px 40px -15px rgba(0,0,0,0.5); }
-.card-img-wrap { position: relative; height: 135px; overflow: hidden; background: rgba(0,0,0,0.2); }
+.card-img-wrap { position: relative; height: 125px; overflow: hidden; background: rgba(0,0,0,0.2); }
 .card-img-wrap img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s cubic-bezier(.2,.8,.2,1); }
 .glass-card:hover .card-img-wrap img { transform: scale(1.08); }
 .card-badges { position: absolute; top: 8px; left: 8px; display: flex; flex-direction: column; gap: 4px; z-index: 2; }
-.badge-tag { font-size: 8.5px; font-weight: 700; letter-spacing: .5px; text-transform: uppercase; padding: 3px 6px; border-radius: 6px; color: #fff; }
+.badge-tag { font-size: 8px; font-weight: 700; letter-spacing: .5px; text-transform: uppercase; padding: 2px 5px; border-radius: 5px; color: #fff; }
 .badge-best { background: linear-gradient(100deg, #ff6b35, #f7c948); }
 .badge-new { background: linear-gradient(100deg, #22c55e, #16a34a); }
 .wishlist-btn {
   position: absolute; top: 8px; right: 8px; background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(8px);
-  border: none; width: 28px; height: 28px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center;
-  color: #fff; font-size: 12px; transition: .25s; z-index: 2;
+  border: none; width: 26px; height: 26px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center;
+  color: #fff; font-size: 11px; transition: .25s; z-index: 2;
 }
 .wishlist-btn:hover { transform: scale(1.1); background: rgba(0,0,0,0.7); }
 .wishlist-btn.active { background: #ff4757; }
 
-.card-body { padding: 12px; display: flex; flex-direction: column; flex: 1; }
-.card-title { font-family: var(--font-title); font-size: 14.5px; font-weight: 600; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--text); }
-.card-rating { font-size: 10.5px; color: var(--soft); margin-bottom: 4px; display: flex; align-items: center; gap: 4px; min-height: 16px; }
-.card-desc { color: var(--muted); font-size: 11px; margin-bottom: 10px; flex: 1; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-.card-footer { display: flex; align-items: center; justify-content: space-between; margin-top: auto; padding-top: 8px; border-top: 1px solid var(--glass-border); }
-.card-price { font-weight: 700; color: var(--soft); font-size: 13px; }
+.card-body { padding: 10px; display: flex; flex-direction: column; flex: 1; }
+.card-title { font-family: var(--font-title); font-size: 14px; font-weight: 600; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--text); }
+.card-rating { font-size: 10px; color: var(--soft); margin-bottom: 4px; display: flex; align-items: center; gap: 4px; min-height: 15px; }
+.card-desc { color: var(--muted); font-size: 10.5px; margin-bottom: 8px; flex: 1; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.card-footer { display: flex; align-items: center; justify-content: space-between; margin-top: auto; padding-top: 6px; border-top: 1px solid var(--glass-border); }
+.card-price { font-weight: 700; color: var(--soft); font-size: 12.5px; }
 .btn-glass-add {
-  background: var(--accent); color: #fff; border: none; padding: 6px 12px; border-radius: 99px; font-size: 10.5px; font-weight: 700; cursor: pointer; transition: .3s;
+  background: var(--accent); color: #fff; border: none; padding: 5px 10px; border-radius: 99px; font-size: 10px; font-weight: 700; cursor: pointer; transition: .3s;
 }
 .btn-glass-add:hover { filter: brightness(1.15); transform: scale(1.04); }
 
 /* FEED */
-.feed-container { max-width: 680px; margin: 0 auto; display: flex; flex-direction: column; gap: 24px; }
+.feed-container { max-width: 650px; margin: 0 auto; display: flex; flex-direction: column; gap: 20px; }
 .feed-post { background: var(--glass-bg); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border: 1px solid var(--glass-border); border-radius: var(--radius-lg); overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.3); }
-.post-head { display: flex; align-items: center; gap: 12px; padding: 16px 18px 10px; }
-.avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--accent); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-family: var(--font-title); font-size: 14px; }
-.post-caption { padding: 0 18px 12px; font-size: 13.5px; color: var(--text); white-space: pre-wrap; word-break: break-word; }
-.post-media-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 4px; background: #000; }
-.post-media-grid img, .post-media-grid video { width: 100%; height: 240px; object-fit: cover; display: block; }
-.post-actions { padding: 10px 18px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--glass-border); font-size: 12px; color: var(--muted); }
-.btn-like { background: rgba(255,255,255,0.08); border: 1px solid var(--glass-border); color: var(--text); padding: 5px 12px; border-radius: 99px; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: .25s; font-family: var(--font-body); }
+.post-head { display: flex; align-items: center; gap: 10px; padding: 14px 16px 8px; }
+.avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--accent); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-family: var(--font-title); font-size: 13px; }
+.post-caption { padding: 0 16px 10px; font-size: 13px; color: var(--text); white-space: pre-wrap; word-break: break-word; }
+.post-media-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 4px; background: #000; }
+.post-media-grid img, .post-media-grid video { width: 100%; height: 220px; object-fit: cover; display: block; }
+.post-actions { padding: 8px 16px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--glass-border); font-size: 11.5px; color: var(--muted); }
+.btn-like { background: rgba(255,255,255,0.08); border: 1px solid var(--glass-border); color: var(--text); padding: 4px 10px; border-radius: 99px; cursor: pointer; display: flex; align-items: center; gap: 5px; transition: .25s; font-family: var(--font-body); }
 .btn-like.liked { color: #ff4757; border-color: rgba(255,71,87,0.4); background: rgba(255,71,87,0.2); }
 
 /* CART & MODALS */
 .cart-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(8px); z-index: 500; opacity: 0; visibility: hidden; transition: .3s; }
 .cart-overlay.open { opacity: 1; visibility: visible; }
-.cart-drawer { position: fixed; top: 0; right: 0; height: 100%; width: min(400px, 90vw); background: var(--glass-bg); backdrop-filter: blur(25px); border-left: 1px solid var(--glass-border); z-index: 501; transform: translateX(100%); transition: transform .4s cubic-bezier(.2,.8,.2,1); display: flex; flex-direction: column; padding: 24px; color: var(--text); box-shadow: -15px 0 40px rgba(0,0,0,0.4); }
+.cart-drawer { position: fixed; top: 0; right: 0; height: 100%; width: min(380px, 90vw); background: var(--glass-bg); backdrop-filter: blur(25px); border-left: 1px solid var(--glass-border); z-index: 501; transform: translateX(100%); transition: transform .4s cubic-bezier(.2,.8,.2,1); display: flex; flex-direction: column; padding: 20px; color: var(--text); box-shadow: -15px 0 40px rgba(0,0,0,0.4); }
 .cart-drawer.open { transform: translateX(0); }
-.cart-body { flex: 1; overflow-y: auto; margin: 15px 0; }
-.cart-item { display: flex; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--glass-border); align-items: center; }
-.cart-item img { width: 55px; height: 55px; border-radius: 10px; object-fit: cover; }
+.cart-body { flex: 1; overflow-y: auto; margin: 12px 0; }
+.cart-item { display: flex; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--glass-border); align-items: center; }
+.cart-item img { width: 50px; height: 50px; border-radius: 8px; object-fit: cover; }
 
-.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(8px); z-index: 1000; display: none; align-items: center; justify-content: center; padding: 20px; }
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(8px); z-index: 1000; display: none; align-items: center; justify-content: center; padding: 16px; }
 .modal-overlay.open { display: flex; }
-.modal-panel { background: var(--glass-bg); backdrop-filter: blur(25px); border: 1px solid var(--glass-border); border-radius: 24px; width: 100%; max-width: 440px; overflow: hidden; position: relative; padding: 30px; color: var(--text); box-shadow: 0 25px 50px rgba(0,0,0,0.5); }
+.modal-panel { background: var(--glass-bg); backdrop-filter: blur(25px); border: 1px solid var(--glass-border); border-radius: 20px; width: 100%; max-width: 420px; overflow: hidden; position: relative; padding: 24px; color: var(--text); box-shadow: 0 25px 50px rgba(0,0,0,0.5); }
 
 /* 3D NEUMORPHISM ADMIN AUTH STYLES & GEMBOK SVG PRESISI */
 .auth-container { display: flex; flex-direction: column; align-items: center; text-align: center; }
 .lock-box-3d {
-  width: 80px; height: 80px; background: var(--neu-bg);
-  border-radius: 20px; display: flex; align-items: center; justify-content: center;
-  position: relative; margin-bottom: 20px;
-  box-shadow: 6px 6px 14px var(--neu-shadow-dark), -6px -6px 14px var(--neu-shadow-light);
+  width: 75px; height: 75px; background: var(--neu-bg);
+  border-radius: 18px; display: flex; align-items: center; justify-content: center;
+  position: relative; margin-bottom: 16px;
+  box-shadow: 5px 5px 12px var(--neu-shadow-dark), -5px -5px 12px var(--neu-shadow-light);
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 .lock-svg {
-  width: 40px; height: 40px; color: var(--soft);
+  width: 36px; height: 36px; color: var(--soft);
   transition: color 0.4s ease;
 }
 .shackle-path {
   transform-origin: 19px 11px;
   transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
-/* Animasi Gembok Terbuka Mulus */
 .lock-box-3d.unlocked {
-  box-shadow: inset 4px 4px 8px var(--neu-shadow-dark), inset -4px -4px 8px var(--neu-shadow-light);
+  box-shadow: inset 3px 3px 6px var(--neu-shadow-dark), inset -3px -3px 6px var(--neu-shadow-light);
 }
 .lock-box-3d.unlocked .lock-svg {
   color: #22c55e;
@@ -374,42 +374,33 @@ body::before {
 
 .neu-input {
   width: 100%; background: var(--neu-bg); border: none; outline: none;
-  padding: 14px 20px; border-radius: 14px; color: var(--text); font-size: 16px; text-align: center; letter-spacing: 4px;
-  box-shadow: inset 4px 4px 8px var(--neu-shadow-dark), inset -4px -4px 8px var(--neu-shadow-light);
-  margin-bottom: 20px; transition: box-shadow 0.3s;
+  padding: 12px 16px; border-radius: 12px; color: var(--text); font-size: 15px; text-align: center; letter-spacing: 4px;
+  box-shadow: inset 3px 3px 6px var(--neu-shadow-dark), inset -3px -3px 6px var(--neu-shadow-light);
+  margin-bottom: 16px; transition: box-shadow 0.3s;
 }
 .neu-input:focus {
-  box-shadow: inset 6px 6px 12px var(--neu-shadow-dark), inset -6px -6px 12px var(--neu-shadow-light), 0 0 15px var(--glass-glow);
+  box-shadow: inset 5px 5px 10px var(--neu-shadow-dark), inset -5px -5px 10px var(--neu-shadow-light), 0 0 12px var(--glass-glow);
 }
 .neu-btn {
   width: 100%; background: var(--neu-bg); border: none; outline: none;
-  padding: 14px; border-radius: 14px; color: var(--text); font-weight: 700; font-size: 14px; cursor: pointer;
-  box-shadow: 6px 6px 12px var(--neu-shadow-dark), -6px -6px 12px var(--neu-shadow-light);
+  padding: 12px; border-radius: 12px; color: var(--text); font-weight: 700; font-size: 13.5px; cursor: pointer;
+  box-shadow: 5px 5px 10px var(--neu-shadow-dark), -5px -5px 10px var(--neu-shadow-light);
   transition: all 0.2s ease;
 }
 .neu-btn:hover { filter: brightness(1.1); }
 .neu-btn:active {
-  box-shadow: inset 4px 4px 8px var(--neu-shadow-dark), inset -4px -4px 8px var(--neu-shadow-light);
+  box-shadow: inset 3px 3px 6px var(--neu-shadow-dark), inset -3px -3px 6px var(--neu-shadow-light);
   transform: scale(0.98);
 }
 
-/* RESPONSIVE LAYOUT - MENDUKUNG MODE DESKTOP DI BROWSER HP */
-@media (max-width: 850px) {
-  /* Jika browser tidak dalam mode desktop penuh, sembunyikan navigasi bawah bawaan agar sidebar tampil rapi */
-  .mobile-nav { display: none; }
-  .app-layout { padding: 16px; gap: 16px; }
-  .app-sidebar { display: flex; }
-  .app-main { padding-bottom: 20px; }
-}
-
-#toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(30px); background: var(--glass-bg); color: var(--text); border: 1px solid var(--glass-border); padding: 10px 22px; border-radius: 99px; font-size: 13px; font-weight: 500; opacity: 0; pointer-events: none; transition: .4s; z-index: 10000; box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
+#toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%) translateY(30px); background: var(--glass-bg); color: var(--text); border: 1px solid var(--glass-border); padding: 8px 18px; border-radius: 99px; font-size: 12.5px; font-weight: 500; opacity: 0; pointer-events: none; transition: .4s; z-index: 10000; box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
 #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 </style>
 </head>
 <body>
 
 <div class="app-layout">
-  <!-- SIDEBAR KIRI (MUNCUL DI MODE DESKTOP VIEW) -->
+  <!-- SIDEBAR KIRI -->
   <aside class="app-sidebar" id="sidebar">
     <button class="sidebar-toggle-btn" id="sidebarToggle" title="Buka/Tutup Sidebar">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>
@@ -487,7 +478,7 @@ body::before {
     </div>
 
     <!-- KABAR TOKO / FEED -->
-    <div id="feed" style="margin-top: 35px;">
+    <div id="feed" style="margin-top: 30px;">
       <div class="section-header" style="justify-content:center;">Kabar Toko</div>
       <div class="feed-container" id="publicFeedList">
         <div style="color:var(--muted); font-size:13px; text-align:center;">Memuat kabar toko...</div>
@@ -500,22 +491,22 @@ body::before {
 <div class="cart-overlay" id="cartOverlay"></div>
 <div class="cart-drawer" id="cartDrawer">
   <div style="display:flex; justify-content:space-between; align-items:center;">
-    <h3 style="font-family:var(--font-title); font-size:20px; color:var(--text);">Keranjang</h3>
-    <button id="cartClose" style="background:none; border:none; color:var(--text); cursor:pointer; font-size:18px;">✕</button>
+    <h3 style="font-family:var(--font-title); font-size:18px; color:var(--text);">Keranjang</h3>
+    <button id="cartClose" style="background:none; border:none; color:var(--text); cursor:pointer; font-size:16px;">✕</button>
   </div>
   <div class="cart-body" id="cartBody"></div>
   <div>
-    <div style="display:flex; justify-content:space-between; margin-bottom:14px; font-weight:700; color:var(--text);">
+    <div style="display:flex; justify-content:space-between; margin-bottom:12px; font-weight:700; color:var(--text);">
       <span>Total</span><span id="cartTotal" style="color:var(--soft)">Rp 0</span>
     </div>
-    <button id="checkoutBtn" style="width:100%; background:var(--accent); color:#fff; border:none; padding:12px; border-radius:12px; font-weight:700; cursor:pointer;">Checkout WhatsApp</button>
+    <button id="checkoutBtn" style="width:100%; background:var(--accent); color:#fff; border:none; padding:10px; border-radius:10px; font-weight:700; cursor:pointer;">Checkout WhatsApp</button>
   </div>
 </div>
 
 <!-- MODAL DETAIL PRODUK -->
 <div id="productModal" class="modal-overlay">
   <div class="modal-panel">
-    <button id="productModalClose" style="position:absolute; top:12px; right:12px; background:rgba(0,0,0,0.6); border:none; color:#fff; width:32px; height:32px; border-radius:50%; cursor:pointer; z-index:2;">✕</button>
+    <button id="productModalClose" style="position:absolute; top:10px; right:10px; background:rgba(0,0,0,0.6); border:none; color:#fff; width:28px; height:28px; border-radius:50%; cursor:pointer; z-index:2;">✕</button>
     <div id="productModalBody"></div>
   </div>
 </div>
@@ -523,39 +514,38 @@ body::before {
 <!-- MODAL CHECKOUT -->
 <div id="checkoutModal" class="modal-overlay">
   <div class="modal-panel">
-    <button id="checkoutClose" style="float:right; background:none; border:none; color:var(--text); cursor:pointer; font-size:18px;">✕</button>
-    <h3 style="font-family:var(--font-title); font-size:20px; margin-bottom:12px; color:var(--text);">Detail Pesanan</h3>
+    <button id="checkoutClose" style="float:right; background:none; border:none; color:var(--text); cursor:pointer; font-size:16px;">✕</button>
+    <h3 style="font-family:var(--font-title); font-size:18px; margin-bottom:10px; color:var(--text);">Detail Pesanan</h3>
     <form id="checkoutForm">
-      <label style="font-size:12px; color:var(--muted);">Nama *</label>
-      <input type="text" id="coName" required style="width:100%; background:rgba(255,255,255,0.08); border:1px solid var(--glass-border); padding:10px; border-radius:8px; color:var(--text); margin-bottom:12px; outline:none;">
+      <label style="font-size:11.5px; color:var(--muted);">Nama *</label>
+      <input type="text" id="coName" required style="width:100%; background:rgba(255,255,255,0.08); border:1px solid var(--glass-border); padding:8px 10px; border-radius:8px; color:var(--text); margin-bottom:10px; outline:none;">
       
-      <label style="font-size:12px; color:var(--muted);">No. HP *</label>
-      <input type="tel" id="coPhone" required style="width:100%; background:rgba(255,255,255,0.08); border:1px solid var(--glass-border); padding:10px; border-radius:8px; color:var(--text); margin-bottom:12px; outline:none;">
+      <label style="font-size:11.5px; color:var(--muted);">No. HP *</label>
+      <input type="tel" id="coPhone" required style="width:100%; background:rgba(255,255,255,0.08); border:1px solid var(--glass-border); padding:8px 10px; border-radius:8px; color:var(--text); margin-bottom:10px; outline:none;">
       
-      <label style="font-size:12px; color:var(--muted);">Tipe Pesanan *</label>
-      <select id="coType" style="width:100%; background:var(--glass-bg); border:1px solid var(--glass-border); padding:10px; border-radius:8px; color:var(--text); margin-bottom:12px; outline:none;">
+      <label style="font-size:11.5px; color:var(--muted);">Tipe Pesanan *</label>
+      <select id="coType" style="width:100%; background:var(--glass-bg); border:1px solid var(--glass-border); padding:8px 10px; border-radius:8px; color:var(--text); margin-bottom:10px; outline:none;">
         <option style="background:var(--bg); color:var(--text);">Dine-in</option>
         <option style="background:var(--bg); color:var(--text);">Take-away</option>
         <option style="background:var(--bg); color:var(--text);">Delivery</option>
       </select>
       
       <div id="addressField" style="display:none;">
-        <label style="font-size:12px; color:var(--muted);">Alamat *</label>
-        <textarea id="coAddress" rows="2" style="width:100%; background:rgba(255,255,255,0.08); border:1px solid var(--glass-border); padding:10px; border-radius:8px; color:var(--text); margin-bottom:12px; outline:none;"></textarea>
+        <label style="font-size:11.5px; color:var(--muted);">Alamat *</label>
+        <textarea id="coAddress" rows="2" style="width:100%; background:rgba(255,255,255,0.08); border:1px solid var(--glass-border); padding:8px 10px; border-radius:8px; color:var(--text); margin-bottom:10px; outline:none;"></textarea>
       </div>
 
-      <div id="checkoutSummary" style="background:rgba(255,255,255,0.08); padding:12px; border-radius:8px; margin-bottom:16px; font-size:13px; color:var(--text);"></div>
-      <button type="submit" style="width:100%; background:var(--accent); color:#fff; border:none; padding:12px; border-radius:8px; font-weight:700; cursor:pointer;">Kirim ke WhatsApp</button>
+      <div id="checkoutSummary" style="background:rgba(255,255,255,0.08); padding:10px; border-radius:8px; margin-bottom:12px; font-size:12.5px; color:var(--text);"></div>
+      <button type="submit" style="width:100%; background:var(--accent); color:#fff; border:none; padding:10px; border-radius:8px; font-weight:700; cursor:pointer;">Kirim ke WhatsApp</button>
     </form>
   </div>
 </div>
 
-<!-- MODAL ADMIN 3D NEUMORPHISM DENGAN ANIMASI GEMBOK SVG MULUS -->
+<!-- MODAL ADMIN -->
 <div id="adminModal" class="modal-overlay">
   <div class="modal-panel">
-    <button id="cancelPinBtn" style="position:absolute; top:16px; right:16px; background:none; border:none; color:var(--text); cursor:pointer; font-size:18px; z-index:2;">✕</button>
+    <button id="cancelPinBtn" style="position:absolute; top:12px; right:12px; background:none; border:none; color:var(--text); cursor:pointer; font-size:16px; z-index:2;">✕</button>
     <div class="auth-container">
-      <!-- 3D Neumorphic Lock Box -->
       <div class="lock-box-3d" id="lockBox">
         <svg class="lock-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
           <path class="shackle-path" d="M7 11V7a5 5 0 0 1 10 0v4"/>
@@ -563,8 +553,8 @@ body::before {
           <circle cx="12" cy="16" r="1"/>
         </svg>
       </div>
-      <h3 style="font-family:var(--font-title); font-size:22px; color:var(--text); margin-bottom:6px;">Verify Your Identity</h3>
-      <p style="font-size:12px; color:var(--muted); margin-bottom:24px;">Masukkan PIN Admin untuk masuk ke dashboard.</p>
+      <h3 style="font-family:var(--font-title); font-size:20px; color:var(--text); margin-bottom:4px;">Verify Your Identity</h3>
+      <p style="font-size:11.5px; color:var(--muted); margin-bottom:20px;">Masukkan PIN Admin untuk masuk ke dashboard.</p>
       
       <input type="password" id="adminPinInput" class="neu-input" placeholder="••••" maxlength="6" autofocus>
       <button id="submitPinBtn" class="neu-btn">VERIFY ACCESS</button>
@@ -606,7 +596,7 @@ const toast = msg => {
   setTimeout(() => t.classList.remove('show'), 2500);
 };
 
-// LOGIKA SMOOTH COLLAPSIBLE SIDEBAR DESKTOP
+// LOGIKA SIDEBAR
 const sidebar = $('#sidebar');
 const sidebarToggle = $('#sidebarToggle');
 const savedSidebarState = localStorage.getItem('serabimu_sidebar_collapsed');
@@ -622,7 +612,7 @@ if (sidebarToggle) {
   });
 }
 
-// MANAJEMEN TEMA (TUNGGAL DAN SINKRON)
+// MANAJEMEN TEMA
 const savedTheme = localStorage.getItem('serabimu_theme') || 'indigo';
 document.documentElement.setAttribute('data-theme', savedTheme);
 
@@ -652,7 +642,6 @@ if(isOpenNow()) {
   text.textContent = 'Tutup'; badge.classList.add('closed'); 
 }
 
-// LOCAL STORAGE DATA
 let wishlist = new Set(JSON.parse(localStorage.getItem('serabimu_wishlist') || '[]'));
 let cart = JSON.parse(localStorage.getItem('serabimu_cart') || '[]');
 let likedPosts = new Set(JSON.parse(localStorage.getItem('serabimu_liked') || '[]'));
@@ -664,7 +653,6 @@ function updateCartBadge() {
   else badgeEl.style.display = 'none';
 }
 
-/* KATALOG & RATING FITUR */
 let allProducts = [], activeCategory = 'all', searchTerm = '';
 const catalogGrid = $('#catalogGrid');
 const categoryChips = $('#categoryChips');
@@ -764,11 +752,11 @@ function openProductModal(id) {
   const avg = avgRating(p);
   const price = p.price ? (typeof p.price === 'number' ? fmt(p.price) : esc(p.price)) : '—';
   productModalBody.innerHTML = `
-    <img src="${esc(p.imageUrl || 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=600&q=80')}" style="width:100%; height:200px; object-fit:cover; border-radius:12px; margin-bottom:14px;">
-    <h2 style="font-family:var(--font-title); font-size:20px; color:var(--text);">${esc(p.title)}</h2>
-    <div style="font-size:12px; color:var(--soft); margin-bottom:8px;">${avg > 0 ? '★ '+avg.toFixed(1) : 'Belum ada rating'}</div>
-    <p style="font-size:13px; color:var(--muted); margin-bottom:14px;">${esc(p.description||'')}</p>
-    <div style="font-size:18px; font-weight:700; color:var(--soft); margin-bottom:14px;">${price}</div>
+    <img src="${esc(p.imageUrl || 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=600&q=80')}" style="width:100%; height:180px; object-fit:cover; border-radius:10px; margin-bottom:12px;">
+    <h2 style="font-family:var(--font-title); font-size:18px; color:var(--text);">${esc(p.title)}</h2>
+    <div style="font-size:11.5px; color:var(--soft); margin-bottom:6px;">${avg > 0 ? '★ '+avg.toFixed(1) : 'Belum ada rating'}</div>
+    <p style="font-size:12px; color:var(--muted); margin-bottom:12px;">${esc(p.description||'')}</p>
+    <div style="font-size:16px; font-weight:700; color:var(--soft); margin-bottom:12px;">${price}</div>
     <button id="pmAddCart" style="width:100%; background:var(--accent); color:#fff; border:none; padding:10px; border-radius:8px; font-weight:700; cursor:pointer;">+ Keranjang</button>
   `;
   productModal.classList.add('open');
@@ -790,7 +778,7 @@ const cartDrawer = $('#cartDrawer'), cartOverlay = $('#cartOverlay'), cartBody =
 function renderCart() {
   updateCartBadge();
   if(cart.length === 0) {
-    cartBody.innerHTML = `<div style="color:var(--muted); font-size:13px; text-align:center; padding:20px;">Keranjang kosong</div>`;
+    cartBody.innerHTML = `<div style="color:var(--muted); font-size:12.5px; text-align:center; padding:16px;">Keranjang kosong</div>`;
     cartTotal.textContent = 'Rp 0';
     return;
   }
@@ -798,7 +786,7 @@ function renderCart() {
     <div class="cart-item">
       <img src="${esc(it.imageUrl)}" alt="">
       <div style="flex:1; min-width:0;">
-        <div style="font-size:13px; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; color:var(--text);">${esc(it.title)}</div>
+        <div style="font-size:12.5px; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; color:var(--text);">${esc(it.title)}</div>
         <div style="font-size:11px; color:var(--soft);">${fmt(it.price)} × ${it.qty}</div>
       </div>
       <button style="background:none; border:none; color:#f87171; cursor:pointer;" onclick="window.removeCart(${i})">✕</button>
@@ -849,7 +837,7 @@ onSnapshot(query(collection(db, 'posts'), orderBy('createdAt', 'desc')), snap =>
       <div class="feed-post">
         <div class="post-head">
           <div class="avatar">S</div>
-          <div style="font-weight:600; font-size:14px; color:var(--text);">Serabimu</div>
+          <div style="font-weight:600; font-size:13.5px; color:var(--text);">Serabimu</div>
         </div>
         ${d.caption ? `<div class="post-caption">${esc(d.caption)}</div>` : ''}
         ${mediaHtml}
@@ -871,7 +859,7 @@ onSnapshot(query(collection(db, 'posts'), orderBy('createdAt', 'desc')), snap =>
   });
 });
 
-/* ADMIN 3D NEUMORPHISM LOGIN DENGAN ANIMASI GEMBOK SVG MULUS */
+/* ADMIN MODAL */
 const adminModal = $('#adminModal');
 const lockBox = $('#lockBox');
 const adminPinInput = $('#adminPinInput');
@@ -891,7 +879,6 @@ $('#cancelPinBtn').addEventListener('click', () => adminModal.classList.remove('
 
 $('#submitPinBtn').addEventListener('click', () => {
   if(adminPinInput.value === atob(ADMIN_PIN_OBF)) {
-    // Animasi Gembok SVG Terbuka Mulus
     lockBox.classList.add('unlocked');
     toast('Akses Diterima! Membuka Admin...');
     sessionStorage.setItem('isAdmin', 'true');
@@ -907,7 +894,6 @@ $('#submitPinBtn').addEventListener('click', () => {
   }
 });
 
-// Izinkan tekan Enter untuk submit
 adminPinInput.addEventListener('keypress', e => {
   if(e.key === 'Enter') $('#submitPinBtn').click();
 });
