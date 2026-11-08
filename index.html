@@ -84,6 +84,9 @@ body {
 }
 .menu-item svg { width: 18px; height: 18px; }
 
+/* MOBILE HEADER (Hanya tampil di HP) */
+.mobile-header { display: none; }
+
 /* MAIN CONTENT */
 .app-main { flex: 1; padding: 25px 35px 90px; max-width: 1400px; overflow-x: hidden; }
 
@@ -145,7 +148,7 @@ body {
 .chip:hover, .chip.active { color: var(--text); border-color: var(--soft); }
 .chip.active { background: linear-gradient(135deg, rgba(56, 189, 248, 0.4), rgba(125, 211, 252, 0.15)); color: var(--soft); font-weight: 700; }
 
-/* KATALOG GESER KE SAMPING (UKURAN LEBIH PAS DI HP) */
+/* KATALOG GESER KE SAMPING */
 .section-header { font-family: var(--font-title); font-size: 22px; font-weight: 600; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; }
 .scroll-hint { font-size: 11px; color: var(--soft); font-family: var(--font-body); font-weight: 500; }
 
@@ -233,11 +236,40 @@ body {
 .modal-overlay.open { display: flex; }
 .modal-panel { background: rgba(15, 35, 65, 0.96); backdrop-filter: blur(25px); border: 1px solid var(--glass-border); border-radius: 20px; width: 100%; max-width: 500px; max-height: 90vh; overflow-y: auto; position: relative; padding: 24px; }
 
-/* MOBILE NAV */
+/* RESPONSIVE MOBILE ADJUSTMENTS */
 @media (max-width: 850px) {
   .app-sidebar { display: none; }
-  .app-main { padding: 20px 16px 85px; }
-  .mobile-nav { position: fixed; bottom: 0; left: 0; right: 0; height: 62px; background: rgba(15, 35, 65, 0.94); backdrop-filter: blur(22px); border-top: 1px solid var(--glass-border); display: flex; justify-content: space-around; align-items: center; z-index: 999; }
+  .app-main { padding: 15px 16px 85px; }
+  
+  /* HEADER KHUSUS HP AGAR TIDAK KOSONG */
+  .mobile-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(15, 35, 65, 0.75);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    padding: 12px 18px;
+    border-radius: var(--radius-md);
+    margin-bottom: 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+  }
+  .mobile-brand-title {
+    font-family: var(--font-title);
+    font-size: 20px;
+    font-weight: 700;
+    background: linear-gradient(135deg, #fff 30%, var(--soft));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .mobile-brand-sub { font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); }
+
+  .mobile-nav { 
+    position: fixed; bottom: 0; left: 0; right: 0; height: 62px; 
+    background: rgba(15, 35, 65, 0.94); backdrop-filter: blur(22px); 
+    border-top: 1px solid var(--glass-border); display: flex; 
+    justify-content: space-around; align-items: center; z-index: 999; 
+  }
   .mobile-nav a { color: var(--muted); text-decoration: none; font-size: 10.5px; display: flex; flex-direction: column; align-items: center; gap: 3px; }
   .mobile-nav a.active { color: var(--soft); font-weight: 600; }
 }
@@ -274,6 +306,20 @@ body {
 
   <!-- MAIN AREA -->
   <main class="app-main">
+    <!-- HEADER KHUSUS MOBILE (TAMPIL DI HP) -->
+    <div class="mobile-header">
+      <div>
+        <div class="mobile-brand-title">Serabimu</div>
+        <div class="mobile-brand-sub">Culinary Dashboard</div>
+      </div>
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <div class="status-badge" id="openBadgeMobile" style="padding: 5px 10px; font-size: 10px;">
+          <span class="dot" style="width: 6px; height: 6px;"></span>
+          <span id="openTextMobile">...</span>
+        </div>
+      </div>
+    </div>
+
     <div class="dashboard-topbar">
       <div class="search-widget">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
@@ -334,7 +380,7 @@ body {
     <span>Feed</span>
   </a>
   <a href="#" id="mobileAdminTrigger">
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l-.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
     <span>Admin</span>
   </a>
 </nav>
@@ -446,8 +492,15 @@ function isOpenNow() {
   return (cur >= 480 && cur < 1260);
 }
 const badge = $('#openBadge'), text = $('#openText');
-if(isOpenNow()) { text.textContent = 'Buka Sekarang'; badge.classList.remove('closed'); }
-else { text.textContent = 'Tutup'; badge.classList.add('closed'); }
+const badgeMob = $('#openBadgeMobile'), textMob = $('#openTextMobile');
+
+if(isOpenNow()) { 
+  text.textContent = 'Buka Sekarang'; badge.classList.remove('closed'); 
+  if(textMob) { textMob.textContent = 'Buka'; badgeMob.classList.remove('closed'); }
+} else { 
+  text.textContent = 'Tutup'; badge.classList.add('closed'); 
+  if(textMob) { textMob.textContent = 'Tutup'; badgeMob.classList.add('closed'); }
+}
 
 // LOCAL STORAGE DATA
 let wishlist = new Set(JSON.parse(localStorage.getItem('serabimu_wishlist') || '[]'));
