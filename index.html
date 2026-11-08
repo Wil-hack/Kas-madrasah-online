@@ -11,9 +11,9 @@
 <link rel="preconnect" href="https://firestore.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
-/* 6 TEMA DUAL-TONE (2 WARNA DALAM 1 TEMA) */
+/* 6 TEMA DUAL-TONE (2 WARNA GRADASI) */
 :root[data-theme="aero"] {
-  --bg-gradient: linear-gradient(135deg, #0b1d33 0%, #1e3a8a 100%);
+  --bg-gradient: linear-gradient(135deg, #0b1d33 0%, #1d4ed8 100%);
   --bg: #0b1d33;
   --glass-bg: rgba(20, 45, 80, 0.6);
   --glass-border: rgba(147, 197, 253, 0.4);
@@ -24,7 +24,7 @@
   --muted: #bae6fd;
 }
 :root[data-theme="mint"] {
-  --bg-gradient: linear-gradient(135deg, #06231b 0%, #064e3b 100%);
+  --bg-gradient: linear-gradient(135deg, #06231b 0%, #047857 100%);
   --bg: #06231b;
   --glass-bg: rgba(13, 60, 48, 0.6);
   --glass-border: rgba(110, 231, 183, 0.4);
@@ -35,7 +35,7 @@
   --muted: #a7f3d0;
 }
 :root[data-theme="sunset"] {
-  --bg-gradient: linear-gradient(135deg, #26150b 0%, #78350f 100%);
+  --bg-gradient: linear-gradient(135deg, #26150b 0%, #b45309 100%);
   --bg: #26150b;
   --glass-bg: rgba(65, 35, 18, 0.6);
   --glass-border: rgba(252, 211, 77, 0.4);
@@ -46,7 +46,7 @@
   --muted: #fef08a;
 }
 :root[data-theme="cyber"] {
-  --bg-gradient: linear-gradient(135deg, #180b2e 0%, #581c87 100%);
+  --bg-gradient: linear-gradient(135deg, #180b2e 0%, #7e22ce 100%);
   --bg: #180b2e;
   --glass-bg: rgba(45, 20, 80, 0.6);
   --glass-border: rgba(244, 114, 182, 0.4);
@@ -57,7 +57,7 @@
   --muted: #f5d0fe;
 }
 :root[data-theme="oled"] {
-  --bg-gradient: linear-gradient(135deg, #000000 0%, #27272a 100%);
+  --bg-gradient: linear-gradient(135deg, #000000 0%, #3f3f46 100%);
   --bg: #000000;
   --glass-bg: rgba(24, 24, 27, 0.75);
   --glass-border: rgba(255, 255, 255, 0.25);
@@ -68,7 +68,7 @@
   --muted: #a1a1aa;
 }
 :root[data-theme="light"] {
-  --bg-gradient: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+  --bg-gradient: linear-gradient(135deg, #f1f5f9 0%, #bae6fd 100%);
   --bg: #f1f5f9;
   --glass-bg: rgba(255, 255, 255, 0.85);
   --glass-border: rgba(203, 213, 225, 0.7);
@@ -89,15 +89,14 @@
 * { margin: 0; padding: 0; box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 body {
-  background: var(--bg);
-  background-image: var(--bg-gradient);
+  background: var(--bg-gradient) !important;
   color: var(--text);
   font-family: var(--font-body);
   line-height: 1.6;
   min-height: 100vh;
   overflow-x: hidden;
   transition: background 0.4s ease, color 0.4s ease;
-  background-attachment: fixed;
+  background-attachment: scroll !important;
 }
 
 ::selection { background: var(--soft); color: #fff; }
@@ -180,7 +179,7 @@ body {
   display: none; align-items: center; justify-content: center; padding: 0 4px;
 }
 
-/* PEMILIH TEMA DUAL-TONE (IKON BELAH 2 WARNA) */
+/* PEMILIH TEMA DUAL-TONE */
 .theme-selector-panel {
   display: flex; gap: 6px; background: var(--glass-bg); border: 1px solid var(--glass-border);
   padding: 5px 8px; border-radius: 99px; backdrop-filter: blur(16px); align-items: center;
@@ -216,40 +215,22 @@ body {
 .chip:hover, .chip.active { color: var(--text); border-color: var(--soft); }
 .chip.active { background: linear-gradient(135deg, var(--glass-glow), transparent); color: var(--soft); font-weight: 700; }
 
-/* KATALOG GESER KE SAMPING */
+/* KATALOG */
 .section-header { font-family: var(--font-title); font-size: 20px; font-weight: 600; margin-bottom: 14px; display: flex; justify-content: space-between; align-items: center; }
 .scroll-hint { font-size: 11px; color: var(--soft); font-family: var(--font-body); font-weight: 500; }
 
 .products-scroll-container {
-  display: flex;
-  gap: 16px;
-  overflow-x: auto;
-  padding: 4px 4px 20px 4px;
-  margin-bottom: 35px;
-  scrollbar-width: thin;
-  scrollbar-color: var(--accent) transparent;
-  scroll-snap-type: x mandatory;
+  display: flex; gap: 16px; overflow-x: auto; padding: 4px 4px 20px 4px; margin-bottom: 35px;
+  scrollbar-width: thin; scrollbar-color: var(--accent) transparent; scroll-snap-type: x mandatory;
 }
 .products-scroll-container::-webkit-scrollbar { height: 6px; }
 .products-scroll-container::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 99px; }
 
 .glass-card {
-  min-width: 210px;
-  max-width: 210px;
-  background: var(--glass-bg); 
-  backdrop-filter: blur(24px); 
-  -webkit-backdrop-filter: blur(24px);
-  border: 1px solid var(--glass-border); 
-  border-radius: var(--radius-lg); 
-  overflow: hidden;
-  transition: .35s; 
-  display: flex; 
-  flex-direction: column; 
-  position: relative; 
-  cursor: pointer;
-  box-shadow: 0 15px 35px rgba(0,0,0,0.2);
-  flex-shrink: 0;
-  scroll-snap-align: start;
+  min-width: 210px; max-width: 210px; background: var(--glass-bg); backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px); border: 1px solid var(--glass-border); border-radius: var(--radius-lg);
+  overflow: hidden; transition: .35s; display: flex; flex-direction: column; position: relative; cursor: pointer;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.2); flex-shrink: 0; scroll-snap-align: start;
 }
 .glass-card:hover { transform: translateY(-4px); border-color: var(--soft); box-shadow: 0 20px 40px -15px rgba(0,0,0,0.4); }
 .card-img-wrap { position: relative; height: 135px; overflow: hidden; background: rgba(0,0,0,0.2); }
@@ -274,12 +255,11 @@ body {
 .card-footer { display: flex; align-items: center; justify-content: space-between; margin-top: auto; padding-top: 8px; border-top: 1px solid var(--glass-border); }
 .card-price { font-weight: 700; color: var(--soft); font-size: 13px; }
 .btn-glass-add {
-  background: var(--accent); color: #fff; border: none;
-  padding: 6px 12px; border-radius: 99px; font-size: 10.5px; font-weight: 700; cursor: pointer; transition: .3s;
+  background: var(--accent); color: #fff; border: none; padding: 6px 12px; border-radius: 99px; font-size: 10.5px; font-weight: 700; cursor: pointer; transition: .3s;
 }
 .btn-glass-add:hover { filter: brightness(1.15); transform: scale(1.04); }
 
-/* FEED / KABAR TOKO */
+/* FEED */
 .feed-container { max-width: 680px; margin: 0 auto; display: flex; flex-direction: column; gap: 24px; }
 .feed-post { background: var(--glass-bg); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border: 1px solid var(--glass-border); border-radius: var(--radius-lg); overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.2); }
 .post-head { display: flex; align-items: center; gap: 12px; padding: 16px 18px 10px; }
@@ -304,28 +284,19 @@ body {
 .modal-overlay.open { display: flex; }
 .modal-panel { background: var(--bg); backdrop-filter: blur(25px); border: 1px solid var(--glass-border); border-radius: 20px; width: 100%; max-width: 500px; max-height: 90vh; overflow-y: auto; position: relative; padding: 24px; color: var(--text); }
 
-/* RESPONSIVE MOBILE ADJUSTMENTS */
+/* RESPONSIVE MOBILE */
 @media (max-width: 850px) {
   .app-sidebar { display: none; }
   .app-main { padding: 12px 14px 85px; }
   
   .mobile-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: var(--glass-bg);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid var(--glass-border);
-    padding: 10px 16px;
-    border-radius: var(--radius-md);
-    margin-bottom: 16px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    display: flex; justify-content: space-between; align-items: center;
+    background: var(--glass-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border); padding: 10px 16px; border-radius: var(--radius-md);
+    margin-bottom: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.2);
   }
   .mobile-brand-title {
-    font-family: var(--font-title);
-    font-size: 19px;
-    font-weight: 700;
+    font-family: var(--font-title); font-size: 19px; font-weight: 700;
     background: linear-gradient(135deg, var(--text) 30%, var(--soft));
     -webkit-background-clip: text; background-clip: text; color: transparent;
   }
@@ -370,7 +341,7 @@ body {
         <span>Kabar Toko</span>
       </a>
       <a href="#" class="menu-item" id="adminLoginTrigger">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l-.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09A1.65 1.65 0 0 0-1.51 1z"/></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l-.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06-.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09A1.65 1.65 0 0 0-1.51 1z"/></svg>
         <span>Panel Admin</span>
       </a>
     </nav>
@@ -538,7 +509,7 @@ body {
 
 <div id="toast"></div>
 
-<!-- FIREBASE SCRIPT FULL FEATURE -->
+<!-- FIREBASE SCRIPT -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, serverTimestamp, doc, updateDoc, increment, getDoc, where } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
