@@ -11,7 +11,7 @@
 <link rel="preconnect" href="https://firestore.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
-/* 5 TEMA VISUAL */
+/* 6 PILIHAN TEMA */
 :root[data-theme="aero"] {
   --bg: #0b1d33;
   --glass-bg: rgba(20, 45, 80, 0.55);
@@ -62,6 +62,16 @@
   --text: #ffffff;
   --muted: #a1a1aa;
 }
+:root[data-theme="light"] {
+  --bg: #f1f5f9;
+  --glass-bg: rgba(255, 255, 255, 0.85);
+  --glass-border: rgba(203, 213, 225, 0.6);
+  --glass-glow: rgba(2, 132, 199, 0.2);
+  --accent: #0284c7;
+  --soft: #0369a1;
+  --text: #0f172a;
+  --muted: #475569;
+}
 
 :root {
   --font-title: 'Playfair Display', serif;
@@ -86,7 +96,7 @@ body {
   background-attachment: fixed;
 }
 
-::selection { background: var(--soft); color: var(--bg); }
+::selection { background: var(--soft); color: #fff; }
 
 .app-layout { display: flex; min-height: 100vh; position: relative; }
 
@@ -108,7 +118,7 @@ body {
 .brand-box { margin-bottom: 35px; padding-left: 10px; }
 .brand-title {
   font-family: var(--font-title); font-size: 24px; font-weight: 700;
-  background: linear-gradient(135deg, #fff 30%, var(--soft));
+  background: linear-gradient(135deg, var(--text) 30%, var(--soft));
   -webkit-background-clip: text; background-clip: text; color: transparent;
 }
 .brand-sub { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--muted); margin-top: 2px; }
@@ -120,7 +130,7 @@ body {
   border-radius: var(--radius-md); transition: .3s; border: 1px solid transparent;
 }
 .menu-item:hover, .menu-item.active {
-  color: var(--text); background: rgba(255, 255, 255, 0.1); border-color: var(--glass-border);
+  color: var(--text); background: rgba(125, 125, 125, 0.1); border-color: var(--glass-border);
 }
 .menu-item.active {
   background: linear-gradient(135deg, var(--glass-glow), transparent);
@@ -151,8 +161,8 @@ body {
   background: var(--glass-bg); backdrop-filter: blur(16px); border: 1px solid var(--glass-border);
   border-radius: 99px; font-size: 12px; font-weight: 500;
 }
-.status-badge .dot { width: 8px; height: 8px; border-radius: 50%; background: #4ade80; box-shadow: 0 0 10px #4ade80; }
-.status-badge.closed .dot { background: #f87171; box-shadow: 0 0 10px #f87171; }
+.status-badge .dot { width: 8px; height: 8px; border-radius: 50%; background: #22c55e; box-shadow: 0 0 10px #22c55e; }
+.status-badge.closed .dot { background: #ef4444; box-shadow: 0 0 10px #ef4444; }
 
 .icon-btn {
   background: var(--glass-bg); backdrop-filter: blur(16px); border: 1px solid var(--glass-border);
@@ -166,29 +176,29 @@ body {
   display: none; align-items: center; justify-content: center; padding: 0 4px;
 }
 
-/* PEMILIH TEMA MODAL / POPUP */
+/* PEMILIH TEMA (6 PILIHAN) */
 .theme-selector-panel {
-  display: flex; gap: 6px; background: var(--glass-bg); border: 1px solid var(--glass-border);
-  padding: 4px; border-radius: 99px; backdrop-filter: blur(16px);
+  display: flex; gap: 5px; background: var(--glass-bg); border: 1px solid var(--glass-border);
+  padding: 4px; border-radius: 99px; backdrop-filter: blur(16px); align-items: center;
 }
 .theme-dot {
-  width: 24px; height: 24px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; transition: transform .2s;
+  width: 22px; height: 22px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; transition: transform .2s;
 }
-.theme-dot:hover, .theme-dot.active { transform: scale(1.15); border-color: #fff; }
+.theme-dot:hover, .theme-dot.active { transform: scale(1.15); border-color: var(--text); }
 
 /* HERO DASHBOARD */
 .hero-dashboard {
   position: relative; border-radius: var(--radius-lg); overflow: hidden;
   padding: 40px 28px; margin-bottom: 30px; border: 1px solid var(--glass-border);
-  box-shadow: 0 25px 50px -15px rgba(0,0,0,0.6); min-height: 200px;
+  box-shadow: 0 25px 50px -15px rgba(0,0,0,0.2); min-height: 200px;
   display: flex; flex-direction: column; justify-content: center;
   background: var(--glass-bg); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
 }
-.hero-video-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; opacity: 0.4; }
-.hero-overlay { position: absolute; inset: 0; background: linear-gradient(135deg, var(--bg) 0%, transparent 100%); z-index: -1; opacity: 0.8; }
+.hero-video-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; opacity: 0.35; }
+.hero-overlay { position: absolute; inset: 0; background: linear-gradient(135deg, var(--bg) 0%, transparent 100%); z-index: -1; opacity: 0.85; }
 .hero-dashboard h1 {
   font-family: var(--font-title); font-size: clamp(26px, 4vw, 40px); font-weight: 700; margin-bottom: 8px;
-  background: linear-gradient(180deg, #fff 0%, var(--soft) 100%); -webkit-background-clip: text; background-clip: text; color: transparent;
+  background: linear-gradient(180deg, var(--text) 0%, var(--soft) 100%); -webkit-background-clip: text; background-clip: text; color: transparent;
 }
 .hero-dashboard p { color: var(--muted); max-width: 500px; font-size: 13.5px; }
 
@@ -233,52 +243,52 @@ body {
   flex-direction: column; 
   position: relative; 
   cursor: pointer;
-  box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+  box-shadow: 0 15px 35px rgba(0,0,0,0.15);
   flex-shrink: 0;
   scroll-snap-align: start;
 }
-.glass-card:hover { transform: translateY(-4px); border-color: var(--soft); box-shadow: 0 20px 40px -15px rgba(0,0,0,0.7), 0 0 25px var(--glass-glow); }
-.card-img-wrap { position: relative; height: 135px; overflow: hidden; background: rgba(0,0,0,0.3); }
+.glass-card:hover { transform: translateY(-4px); border-color: var(--soft); box-shadow: 0 20px 40px -15px rgba(0,0,0,0.3); }
+.card-img-wrap { position: relative; height: 135px; overflow: hidden; background: rgba(0,0,0,0.1); }
 .card-img-wrap img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s cubic-bezier(.2,.8,.2,1); }
 .glass-card:hover .card-img-wrap img { transform: scale(1.08); }
 .card-badges { position: absolute; top: 8px; left: 8px; display: flex; flex-direction: column; gap: 4px; z-index: 2; }
 .badge-tag { font-size: 8.5px; font-weight: 700; letter-spacing: .5px; text-transform: uppercase; padding: 3px 6px; border-radius: 6px; color: #fff; }
 .badge-best { background: linear-gradient(100deg, #ff6b35, #f7c948); }
-.badge-new { background: linear-gradient(100deg, #4ade80, #22c55e); }
+.badge-new { background: linear-gradient(100deg, #22c55e, #16a34a); }
 .wishlist-btn {
-  position: absolute; top: 8px; right: 8px; background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(8px);
+  position: absolute; top: 8px; right: 8px; background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(8px);
   border: none; width: 28px; height: 28px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center;
   color: #fff; font-size: 12px; transition: .25s; z-index: 2;
 }
-.wishlist-btn:hover { transform: scale(1.1); background: rgba(0,0,0,0.7); }
+.wishlist-btn:hover { transform: scale(1.1); background: rgba(0,0,0,0.6); }
 .wishlist-btn.active { background: #ff4757; }
 
 .card-body { padding: 12px; display: flex; flex-direction: column; flex: 1; }
-.card-title { font-family: var(--font-title); font-size: 14.5px; font-weight: 600; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.card-title { font-family: var(--font-title); font-size: 14.5px; font-weight: 600; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--text); }
 .card-rating { font-size: 10.5px; color: var(--soft); margin-bottom: 4px; display: flex; align-items: center; gap: 4px; min-height: 16px; }
 .card-desc { color: var(--muted); font-size: 11px; margin-bottom: 10px; flex: 1; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-.card-footer { display: flex; align-items: center; justify-content: space-between; margin-top: auto; padding-top: 8px; border-top: 1px solid rgba(255, 255, 255, 0.1); }
+.card-footer { display: flex; align-items: center; justify-content: space-between; margin-top: auto; padding-top: 8px; border-top: 1px solid var(--glass-border); }
 .card-price { font-weight: 700; color: var(--soft); font-size: 13px; }
 .btn-glass-add {
-  background: var(--accent); color: var(--bg); border: none;
+  background: var(--accent); color: #fff; border: none;
   padding: 6px 12px; border-radius: 99px; font-size: 10.5px; font-weight: 700; cursor: pointer; transition: .3s;
 }
 .btn-glass-add:hover { filter: brightness(1.15); transform: scale(1.04); }
 
 /* FEED / KABAR TOKO */
 .feed-container { max-width: 680px; margin: 0 auto; display: flex; flex-direction: column; gap: 24px; }
-.feed-post { background: var(--glass-bg); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border: 1px solid var(--glass-border); border-radius: var(--radius-lg); overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.4); }
+.feed-post { background: var(--glass-bg); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border: 1px solid var(--glass-border); border-radius: var(--radius-lg); overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.15); }
 .post-head { display: flex; align-items: center; gap: 12px; padding: 16px 18px 10px; }
-.avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--accent); color: var(--bg); display: flex; align-items: center; justify-content: center; font-weight: 700; font-family: var(--font-title); font-size: 14px; }
+.avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--accent); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-family: var(--font-title); font-size: 14px; }
 .post-caption { padding: 0 18px 12px; font-size: 13.5px; color: var(--text); white-space: pre-wrap; word-break: break-word; }
 .post-media-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 4px; background: #000; }
 .post-media-grid img, .post-media-grid video { width: 100%; height: 240px; object-fit: cover; display: block; }
 .post-actions { padding: 10px 18px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--glass-border); font-size: 12px; color: var(--muted); }
-.btn-like { background: rgba(255,255,255,0.08); border: 1px solid var(--glass-border); color: var(--text); padding: 5px 12px; border-radius: 99px; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: .25s; font-family: var(--font-body); }
+.btn-like { background: rgba(125,125,125,0.08); border: 1px solid var(--glass-border); color: var(--text); padding: 5px 12px; border-radius: 99px; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: .25s; font-family: var(--font-body); }
 .btn-like.liked { color: #ff4757; border-color: rgba(255,71,87,0.4); background: rgba(255,71,87,0.12); }
 
 /* CART & MODALS */
-.cart-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.75); backdrop-filter: blur(8px); z-index: 500; opacity: 0; visibility: hidden; transition: .3s; }
+.cart-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); z-index: 500; opacity: 0; visibility: hidden; transition: .3s; }
 .cart-overlay.open { opacity: 1; visibility: visible; }
 .cart-drawer { position: fixed; top: 0; right: 0; height: 100%; width: min(400px, 90vw); background: var(--bg); backdrop-filter: blur(25px); border-left: 1px solid var(--glass-border); z-index: 501; transform: translateX(100%); transition: transform .4s cubic-bezier(.2,.8,.2,1); display: flex; flex-direction: column; padding: 24px; }
 .cart-drawer.open { transform: translateX(0); }
@@ -286,16 +296,15 @@ body {
 .cart-item { display: flex; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--glass-border); align-items: center; }
 .cart-item img { width: 55px; height: 55px; border-radius: 10px; object-fit: cover; }
 
-.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); z-index: 1000; display: none; align-items: center; justify-content: center; padding: 20px; }
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(8px); z-index: 1000; display: none; align-items: center; justify-content: center; padding: 20px; }
 .modal-overlay.open { display: flex; }
-.modal-panel { background: var(--bg); backdrop-filter: blur(25px); border: 1px solid var(--glass-border); border-radius: 20px; width: 100%; max-width: 500px; max-height: 90vh; overflow-y: auto; position: relative; padding: 24px; }
+.modal-panel { background: var(--bg); backdrop-filter: blur(25px); border: 1px solid var(--glass-border); border-radius: 20px; width: 100%; max-width: 500px; max-height: 90vh; overflow-y: auto; position: relative; padding: 24px; color: var(--text); }
 
 /* RESPONSIVE MOBILE ADJUSTMENTS */
 @media (max-width: 850px) {
   .app-sidebar { display: none; }
   .app-main { padding: 12px 14px 85px; }
   
-  /* MOBILE HEADER RAPI TANPA BUKA GANDA */
   .mobile-header {
     display: flex;
     justify-content: space-between;
@@ -307,13 +316,13 @@ body {
     padding: 10px 16px;
     border-radius: var(--radius-md);
     margin-bottom: 16px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
   }
   .mobile-brand-title {
     font-family: var(--font-title);
     font-size: 19px;
     font-weight: 700;
-    background: linear-gradient(135deg, #fff 30%, var(--soft));
+    background: linear-gradient(135deg, var(--text) 30%, var(--soft));
     -webkit-background-clip: text; background-clip: text; color: transparent;
   }
   .mobile-brand-sub { font-size: 8.5px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); }
@@ -357,7 +366,7 @@ body {
         <span>Kabar Toko</span>
       </a>
       <a href="#" class="menu-item" id="adminLoginTrigger">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l-.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l-.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09A1.65 1.65 0 0 0-1.51 1z"/></svg>
         <span>Panel Admin</span>
       </a>
     </nav>
@@ -365,20 +374,21 @@ body {
 
   <!-- MAIN AREA -->
   <main class="app-main">
-    <!-- HEADER KHUSUS MOBILE (TAMPIL DI HP) -->
+    <!-- HEADER MOBILE -->
     <div class="mobile-header">
       <div>
         <div class="mobile-brand-title">Serabimu</div>
         <div class="mobile-brand-sub">Culinary Dashboard</div>
       </div>
       <div style="display: flex; align-items: center; gap: 8px;">
-        <!-- PEMILIH TEMA DI HEADER MOBILE -->
+        <!-- 6 PILIHAN TEMA DI MOBILE -->
         <div class="theme-selector-panel">
           <div class="theme-dot" data-t="aero" style="background:#38bdf8;" title="Aero Blue"></div>
           <div class="theme-dot" data-t="mint" style="background:#34d399;" title="Emerald Mint"></div>
           <div class="theme-dot" data-t="sunset" style="background:#fbbf24;" title="Sunset Gold"></div>
           <div class="theme-dot" data-t="cyber" style="background:#f472b6;" title="Cyberpunk"></div>
-          <div class="theme-dot" data-t="oled" style="background:#ffffff;" title="Midnight OLED"></div>
+          <div class="theme-dot" data-t="oled" style="background:#3f3f46;" title="Midnight OLED"></div>
+          <div class="theme-dot" data-t="light" style="background:#ffffff; border:1px solid #cbd5e1;" title="Clean White"></div>
         </div>
       </div>
     </div>
@@ -389,13 +399,14 @@ body {
         <input type="text" id="searchInput" placeholder="Cari serabi, cireng, kuah...">
       </div>
       <div class="topbar-right">
-        <!-- PEMILIH TEMA DESKTOP -->
+        <!-- 6 PILIHAN TEMA DI DESKTOP -->
         <div class="theme-selector-panel" style="margin-right: 8px;">
           <div class="theme-dot" data-t="aero" style="background:#38bdf8;" title="Aero Blue"></div>
           <div class="theme-dot" data-t="mint" style="background:#34d399;" title="Emerald Mint"></div>
           <div class="theme-dot" data-t="sunset" style="background:#fbbf24;" title="Sunset Gold"></div>
           <div class="theme-dot" data-t="cyber" style="background:#f472b6;" title="Cyberpunk"></div>
-          <div class="theme-dot" data-t="oled" style="background:#ffffff;" title="Midnight OLED"></div>
+          <div class="theme-dot" data-t="oled" style="background:#3f3f46;" title="Midnight OLED"></div>
+          <div class="theme-dot" data-t="light" style="background:#ffffff; border:1px solid #cbd5e1;" title="Clean White"></div>
         </div>
 
         <div class="status-badge" id="openBadge">
@@ -469,7 +480,7 @@ body {
     <div style="display:flex; justify-content:space-between; margin-bottom:14px; font-weight:700;">
       <span>Total</span><span id="cartTotal" style="color:var(--soft)">Rp 0</span>
     </div>
-    <button id="checkoutBtn" style="width:100%; background:var(--accent); color:var(--bg); border:none; padding:12px; border-radius:12px; font-weight:700; cursor:pointer;">Checkout WhatsApp</button>
+    <button id="checkoutBtn" style="width:100%; background:var(--accent); color:#fff; border:none; padding:12px; border-radius:12px; font-weight:700; cursor:pointer;">Checkout WhatsApp</button>
   </div>
 </div>
 
@@ -488,13 +499,13 @@ body {
     <h3 style="font-family:var(--font-title); font-size:20px; margin-bottom:12px;">Detail Pesanan</h3>
     <form id="checkoutForm">
       <label style="font-size:12px; color:var(--muted);">Nama *</label>
-      <input type="text" id="coName" required style="width:100%; background:rgba(0,0,0,0.3); border:1px solid var(--glass-border); padding:10px; border-radius:8px; color:var(--text); margin-bottom:12px; outline:none;">
+      <input type="text" id="coName" required style="width:100%; background:rgba(125,125,125,0.1); border:1px solid var(--glass-border); padding:10px; border-radius:8px; color:var(--text); margin-bottom:12px; outline:none;">
       
       <label style="font-size:12px; color:var(--muted);">No. HP *</label>
-      <input type="tel" id="coPhone" required style="width:100%; background:rgba(0,0,0,0.3); border:1px solid var(--glass-border); padding:10px; border-radius:8px; color:var(--text); margin-bottom:12px; outline:none;">
+      <input type="tel" id="coPhone" required style="width:100%; background:rgba(125,125,125,0.1); border:1px solid var(--glass-border); padding:10px; border-radius:8px; color:var(--text); margin-bottom:12px; outline:none;">
       
       <label style="font-size:12px; color:var(--muted);">Tipe Pesanan *</label>
-      <select id="coType" style="width:100%; background:rgba(0,0,0,0.3); border:1px solid var(--glass-border); padding:10px; border-radius:8px; color:var(--text); margin-bottom:12px; outline:none;">
+      <select id="coType" style="width:100%; background:var(--bg); border:1px solid var(--glass-border); padding:10px; border-radius:8px; color:var(--text); margin-bottom:12px; outline:none;">
         <option>Dine-in</option>
         <option>Take-away</option>
         <option>Delivery</option>
@@ -502,11 +513,11 @@ body {
       
       <div id="addressField" style="display:none;">
         <label style="font-size:12px; color:var(--muted);">Alamat *</label>
-        <textarea id="coAddress" rows="2" style="width:100%; background:rgba(0,0,0,0.3); border:1px solid var(--glass-border); padding:10px; border-radius:8px; color:var(--text); margin-bottom:12px; outline:none;"></textarea>
+        <textarea id="coAddress" rows="2" style="width:100%; background:rgba(125,125,125,0.1); border:1px solid var(--glass-border); padding:10px; border-radius:8px; color:var(--text); margin-bottom:12px; outline:none;"></textarea>
       </div>
 
-      <div id="checkoutSummary" style="background:rgba(0,0,0,0.2); padding:12px; border-radius:8px; margin-bottom:16px; font-size:13px;"></div>
-      <button type="submit" style="width:100%; background:var(--accent); color:var(--bg); border:none; padding:12px; border-radius:8px; font-weight:700; cursor:pointer;">Kirim ke WhatsApp</button>
+      <div id="checkoutSummary" style="background:rgba(125,125,125,0.1); padding:12px; border-radius:8px; margin-bottom:16px; font-size:13px;"></div>
+      <button type="submit" style="width:100%; background:var(--accent); color:#fff; border:none; padding:12px; border-radius:8px; font-weight:700; cursor:pointer;">Kirim ke WhatsApp</button>
     </form>
   </div>
 </div>
@@ -517,9 +528,9 @@ body {
     <button id="cancelPinBtn" style="float:right; background:none; border:none; color:var(--text); cursor:pointer; font-size:18px;">✕</button>
     <h3 style="font-family:var(--font-title); font-size:20px; color:var(--soft); margin-bottom:8px;">Masuk Mode Admin</h3>
     <p style="font-size:12px; color:var(--muted); margin-bottom:16px;">Masukkan PIN Admin</p>
-    <input type="password" id="adminPinInput" placeholder="••••" style="width:140px; text-align:center; letter-spacing:6px; font-size:20px; background:rgba(0,0,0,0.3); border:1px solid var(--glass-border); padding:10px; border-radius:8px; color:var(--text); margin-bottom:16px; outline:none;">
+    <input type="password" id="adminPinInput" placeholder="••••" style="width:140px; text-align:center; letter-spacing:6px; font-size:20px; background:rgba(125,125,125,0.1); border:1px solid var(--glass-border); padding:10px; border-radius:8px; color:var(--text); margin-bottom:16px; outline:none;">
     <br>
-    <button id="submitPinBtn" style="background:var(--accent); color:var(--bg); border:none; padding:10px 24px; border-radius:8px; font-weight:700; cursor:pointer;">Masuk</button>
+    <button id="submitPinBtn" style="background:var(--accent); color:#fff; border:none; padding:10px 24px; border-radius:8px; font-weight:700; cursor:pointer;">Masuk</button>
   </div>
 </div>
 
@@ -557,7 +568,7 @@ const toast = msg => {
   setTimeout(() => t.classList.remove('show'), 2500);
 };
 
-// MANAJEMEN TEMA (LOCALSTORAGE)
+// MANAJEMEN TEMA (6 PILIHAN)
 const savedTheme = localStorage.getItem('serabimu_theme') || 'aero';
 document.documentElement.setAttribute('data-theme', savedTheme);
 
@@ -700,11 +711,11 @@ function openProductModal(id) {
   const price = p.price ? (typeof p.price === 'number' ? fmt(p.price) : esc(p.price)) : '—';
   productModalBody.innerHTML = `
     <img src="${esc(p.imageUrl || 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=600&q=80')}" style="width:100%; height:200px; object-fit:cover; border-radius:12px; margin-bottom:14px;">
-    <h2 style="font-family:var(--font-title); font-size:20px;">${esc(p.title)}</h2>
+    <h2 style="font-family:var(--font-title); font-size:20px; color:var(--text);">${esc(p.title)}</h2>
     <div style="font-size:12px; color:var(--soft); margin-bottom:8px;">${avg > 0 ? '★ '+avg.toFixed(1) : 'Belum ada rating'}</div>
     <p style="font-size:13px; color:var(--muted); margin-bottom:14px;">${esc(p.description||'')}</p>
     <div style="font-size:18px; font-weight:700; color:var(--soft); margin-bottom:14px;">${price}</div>
-    <button id="pmAddCart" style="width:100%; background:var(--accent); color:var(--bg); border:none; padding:10px; border-radius:8px; font-weight:700; cursor:pointer;">+ Keranjang</button>
+    <button id="pmAddCart" style="width:100%; background:var(--accent); color:#fff; border:none; padding:10px; border-radius:8px; font-weight:700; cursor:pointer;">+ Keranjang</button>
   `;
   productModal.classList.add('open');
   productModalBody.querySelector('#pmAddCart').addEventListener('click', () => { addToCart(p); productModal.classList.remove('open'); });
@@ -733,7 +744,7 @@ function renderCart() {
     <div class="cart-item">
       <img src="${esc(it.imageUrl)}" alt="">
       <div style="flex:1; min-width:0;">
-        <div style="font-size:13px; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${esc(it.title)}</div>
+        <div style="font-size:13px; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; color:var(--text);">${esc(it.title)}</div>
         <div style="font-size:11px; color:var(--soft);">${fmt(it.price)} × ${it.qty}</div>
       </div>
       <button style="background:none; border:none; color:#f87171; cursor:pointer;" onclick="window.removeCart(${i})">✕</button>
@@ -781,7 +792,7 @@ onSnapshot(query(collection(db, 'posts'), orderBy('createdAt', 'desc')), snap =>
       <div class="feed-post">
         <div class="post-head">
           <div class="avatar">S</div>
-          <div style="font-weight:600; font-size:14px;">Serabimu</div>
+          <div style="font-weight:600; font-size:14px; color:var(--text);">Serabimu</div>
         </div>
         ${d.caption ? `<div class="post-caption">${esc(d.caption)}</div>` : ''}
         ${mediaHtml}
