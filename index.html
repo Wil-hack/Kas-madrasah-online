@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Serabimu — Modern Culinary Dashboard</title>
+<title>Serabimu — Modern Dual-Tone Dashboard</title>
 <meta name="description" content="Serabimu — kelezatan autentik dalam setiap gigitan.">
 <meta name="theme-color" content="#0b1d33">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -11,62 +11,68 @@
 <link rel="preconnect" href="https://firestore.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
-/* 6 PILIHAN TEMA */
+/* 6 TEMA DUAL-TONE (2 WARNA DALAM 1 TEMA) */
 :root[data-theme="aero"] {
+  --bg-gradient: linear-gradient(135deg, #0b1d33 0%, #1e3a8a 100%);
   --bg: #0b1d33;
-  --glass-bg: rgba(20, 45, 80, 0.55);
-  --glass-border: rgba(147, 197, 253, 0.35);
-  --glass-glow: rgba(59, 130, 246, 0.45);
+  --glass-bg: rgba(20, 45, 80, 0.6);
+  --glass-border: rgba(147, 197, 253, 0.4);
+  --glass-glow: rgba(56, 189, 248, 0.4);
   --accent: #38bdf8;
   --soft: #7dd3fc;
   --text: #f0f9ff;
   --muted: #bae6fd;
 }
 :root[data-theme="mint"] {
+  --bg-gradient: linear-gradient(135deg, #06231b 0%, #064e3b 100%);
   --bg: #06231b;
-  --glass-bg: rgba(13, 60, 48, 0.55);
-  --glass-border: rgba(110, 231, 183, 0.35);
-  --glass-glow: rgba(52, 211, 153, 0.45);
+  --glass-bg: rgba(13, 60, 48, 0.6);
+  --glass-border: rgba(110, 231, 183, 0.4);
+  --glass-glow: rgba(52, 211, 153, 0.4);
   --accent: #34d399;
   --soft: #6ee7b7;
   --text: #ecfdf5;
   --muted: #a7f3d0;
 }
 :root[data-theme="sunset"] {
+  --bg-gradient: linear-gradient(135deg, #26150b 0%, #78350f 100%);
   --bg: #26150b;
-  --glass-bg: rgba(65, 35, 18, 0.55);
-  --glass-border: rgba(252, 211, 77, 0.35);
-  --glass-glow: rgba(251, 191, 36, 0.45);
+  --glass-bg: rgba(65, 35, 18, 0.6);
+  --glass-border: rgba(252, 211, 77, 0.4);
+  --glass-glow: rgba(251, 191, 36, 0.4);
   --accent: #fbbf24;
   --soft: #fde68a;
   --text: #fffbeb;
   --muted: #fef08a;
 }
 :root[data-theme="cyber"] {
+  --bg-gradient: linear-gradient(135deg, #180b2e 0%, #581c87 100%);
   --bg: #180b2e;
-  --glass-bg: rgba(45, 20, 80, 0.55);
-  --glass-border: rgba(244, 114, 182, 0.35);
-  --glass-glow: rgba(192, 132, 252, 0.45);
+  --glass-bg: rgba(45, 20, 80, 0.6);
+  --glass-border: rgba(244, 114, 182, 0.4);
+  --glass-glow: rgba(192, 132, 252, 0.4);
   --accent: #f472b6;
   --soft: #c084fc;
   --text: #fdf4ff;
   --muted: #f5d0fe;
 }
 :root[data-theme="oled"] {
+  --bg-gradient: linear-gradient(135deg, #000000 0%, #27272a 100%);
   --bg: #000000;
-  --glass-bg: rgba(24, 24, 27, 0.7);
-  --glass-border: rgba(255, 255, 255, 0.2);
-  --glass-glow: rgba(255, 255, 255, 0.25);
+  --glass-bg: rgba(24, 24, 27, 0.75);
+  --glass-border: rgba(255, 255, 255, 0.25);
+  --glass-glow: rgba(255, 255, 255, 0.3);
   --accent: #ffffff;
   --soft: #e4e4e7;
   --text: #ffffff;
   --muted: #a1a1aa;
 }
 :root[data-theme="light"] {
+  --bg-gradient: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
   --bg: #f1f5f9;
   --glass-bg: rgba(255, 255, 255, 0.85);
-  --glass-border: rgba(203, 213, 225, 0.6);
-  --glass-glow: rgba(2, 132, 199, 0.2);
+  --glass-border: rgba(203, 213, 225, 0.7);
+  --glass-glow: rgba(2, 132, 199, 0.25);
   --accent: #0284c7;
   --soft: #0369a1;
   --text: #0f172a;
@@ -84,15 +90,13 @@
 html { scroll-behavior: smooth; }
 body {
   background: var(--bg);
+  background-image: var(--bg-gradient);
   color: var(--text);
   font-family: var(--font-body);
   line-height: 1.6;
   min-height: 100vh;
   overflow-x: hidden;
   transition: background 0.4s ease, color 0.4s ease;
-  background-image: 
-    radial-gradient(circle at 15% 15%, var(--glass-glow) 0%, transparent 45%),
-    radial-gradient(circle at 85% 85%, var(--glass-bg) 0%, transparent 45%);
   background-attachment: fixed;
 }
 
@@ -176,26 +180,26 @@ body {
   display: none; align-items: center; justify-content: center; padding: 0 4px;
 }
 
-/* PEMILIH TEMA (6 PILIHAN) */
+/* PEMILIH TEMA DUAL-TONE (IKON BELAH 2 WARNA) */
 .theme-selector-panel {
-  display: flex; gap: 5px; background: var(--glass-bg); border: 1px solid var(--glass-border);
-  padding: 4px; border-radius: 99px; backdrop-filter: blur(16px); align-items: center;
+  display: flex; gap: 6px; background: var(--glass-bg); border: 1px solid var(--glass-border);
+  padding: 5px 8px; border-radius: 99px; backdrop-filter: blur(16px); align-items: center;
 }
 .theme-dot {
   width: 22px; height: 22px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; transition: transform .2s;
 }
-.theme-dot:hover, .theme-dot.active { transform: scale(1.15); border-color: var(--text); }
+.theme-dot:hover, .theme-dot.active { transform: scale(1.2); border-color: #fff; }
 
 /* HERO DASHBOARD */
 .hero-dashboard {
   position: relative; border-radius: var(--radius-lg); overflow: hidden;
   padding: 40px 28px; margin-bottom: 30px; border: 1px solid var(--glass-border);
-  box-shadow: 0 25px 50px -15px rgba(0,0,0,0.2); min-height: 200px;
+  box-shadow: 0 25px 50px -15px rgba(0,0,0,0.25); min-height: 200px;
   display: flex; flex-direction: column; justify-content: center;
   background: var(--glass-bg); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
 }
 .hero-video-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; opacity: 0.35; }
-.hero-overlay { position: absolute; inset: 0; background: linear-gradient(135deg, var(--bg) 0%, transparent 100%); z-index: -1; opacity: 0.85; }
+.hero-overlay { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(0,0,0,0.4) 0%, transparent 100%); z-index: -1; }
 .hero-dashboard h1 {
   font-family: var(--font-title); font-size: clamp(26px, 4vw, 40px); font-weight: 700; margin-bottom: 8px;
   background: linear-gradient(180deg, var(--text) 0%, var(--soft) 100%); -webkit-background-clip: text; background-clip: text; color: transparent;
@@ -243,12 +247,12 @@ body {
   flex-direction: column; 
   position: relative; 
   cursor: pointer;
-  box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+  box-shadow: 0 15px 35px rgba(0,0,0,0.2);
   flex-shrink: 0;
   scroll-snap-align: start;
 }
-.glass-card:hover { transform: translateY(-4px); border-color: var(--soft); box-shadow: 0 20px 40px -15px rgba(0,0,0,0.3); }
-.card-img-wrap { position: relative; height: 135px; overflow: hidden; background: rgba(0,0,0,0.1); }
+.glass-card:hover { transform: translateY(-4px); border-color: var(--soft); box-shadow: 0 20px 40px -15px rgba(0,0,0,0.4); }
+.card-img-wrap { position: relative; height: 135px; overflow: hidden; background: rgba(0,0,0,0.2); }
 .card-img-wrap img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s cubic-bezier(.2,.8,.2,1); }
 .glass-card:hover .card-img-wrap img { transform: scale(1.08); }
 .card-badges { position: absolute; top: 8px; left: 8px; display: flex; flex-direction: column; gap: 4px; z-index: 2; }
@@ -277,18 +281,18 @@ body {
 
 /* FEED / KABAR TOKO */
 .feed-container { max-width: 680px; margin: 0 auto; display: flex; flex-direction: column; gap: 24px; }
-.feed-post { background: var(--glass-bg); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border: 1px solid var(--glass-border); border-radius: var(--radius-lg); overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.15); }
+.feed-post { background: var(--glass-bg); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border: 1px solid var(--glass-border); border-radius: var(--radius-lg); overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.2); }
 .post-head { display: flex; align-items: center; gap: 12px; padding: 16px 18px 10px; }
 .avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--accent); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-family: var(--font-title); font-size: 14px; }
 .post-caption { padding: 0 18px 12px; font-size: 13.5px; color: var(--text); white-space: pre-wrap; word-break: break-word; }
 .post-media-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 4px; background: #000; }
 .post-media-grid img, .post-media-grid video { width: 100%; height: 240px; object-fit: cover; display: block; }
 .post-actions { padding: 10px 18px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--glass-border); font-size: 12px; color: var(--muted); }
-.btn-like { background: rgba(125,125,125,0.08); border: 1px solid var(--glass-border); color: var(--text); padding: 5px 12px; border-radius: 99px; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: .25s; font-family: var(--font-body); }
-.btn-like.liked { color: #ff4757; border-color: rgba(255,71,87,0.4); background: rgba(255,71,87,0.12); }
+.btn-like { background: rgba(125,125,125,0.1); border: 1px solid var(--glass-border); color: var(--text); padding: 5px 12px; border-radius: 99px; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: .25s; font-family: var(--font-body); }
+.btn-like.liked { color: #ff4757; border-color: rgba(255,71,87,0.4); background: rgba(255,71,87,0.15); }
 
 /* CART & MODALS */
-.cart-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); z-index: 500; opacity: 0; visibility: hidden; transition: .3s; }
+.cart-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.65); backdrop-filter: blur(8px); z-index: 500; opacity: 0; visibility: hidden; transition: .3s; }
 .cart-overlay.open { opacity: 1; visibility: visible; }
 .cart-drawer { position: fixed; top: 0; right: 0; height: 100%; width: min(400px, 90vw); background: var(--bg); backdrop-filter: blur(25px); border-left: 1px solid var(--glass-border); z-index: 501; transform: translateX(100%); transition: transform .4s cubic-bezier(.2,.8,.2,1); display: flex; flex-direction: column; padding: 24px; }
 .cart-drawer.open { transform: translateX(0); }
@@ -296,7 +300,7 @@ body {
 .cart-item { display: flex; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--glass-border); align-items: center; }
 .cart-item img { width: 55px; height: 55px; border-radius: 10px; object-fit: cover; }
 
-.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(8px); z-index: 1000; display: none; align-items: center; justify-content: center; padding: 20px; }
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.75); backdrop-filter: blur(8px); z-index: 1000; display: none; align-items: center; justify-content: center; padding: 20px; }
 .modal-overlay.open { display: flex; }
 .modal-panel { background: var(--bg); backdrop-filter: blur(25px); border: 1px solid var(--glass-border); border-radius: 20px; width: 100%; max-width: 500px; max-height: 90vh; overflow-y: auto; position: relative; padding: 24px; color: var(--text); }
 
@@ -316,7 +320,7 @@ body {
     padding: 10px 16px;
     border-radius: var(--radius-md);
     margin-bottom: 16px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
   }
   .mobile-brand-title {
     font-family: var(--font-title);
@@ -381,14 +385,13 @@ body {
         <div class="mobile-brand-sub">Culinary Dashboard</div>
       </div>
       <div style="display: flex; align-items: center; gap: 8px;">
-        <!-- 6 PILIHAN TEMA DI MOBILE -->
         <div class="theme-selector-panel">
-          <div class="theme-dot" data-t="aero" style="background:#38bdf8;" title="Aero Blue"></div>
-          <div class="theme-dot" data-t="mint" style="background:#34d399;" title="Emerald Mint"></div>
-          <div class="theme-dot" data-t="sunset" style="background:#fbbf24;" title="Sunset Gold"></div>
-          <div class="theme-dot" data-t="cyber" style="background:#f472b6;" title="Cyberpunk"></div>
-          <div class="theme-dot" data-t="oled" style="background:#3f3f46;" title="Midnight OLED"></div>
-          <div class="theme-dot" data-t="light" style="background:#ffffff; border:1px solid #cbd5e1;" title="Clean White"></div>
+          <div class="theme-dot" data-t="aero" style="background:linear-gradient(135deg, #0b1d33 50%, #38bdf8 50%);" title="Aero Blue"></div>
+          <div class="theme-dot" data-t="mint" style="background:linear-gradient(135deg, #06231b 50%, #34d399 50%);" title="Emerald Mint"></div>
+          <div class="theme-dot" data-t="sunset" style="background:linear-gradient(135deg, #26150b 50%, #fbbf24 50%);" title="Sunset Gold"></div>
+          <div class="theme-dot" data-t="cyber" style="background:linear-gradient(135deg, #180b2e 50%, #f472b6 50%);" title="Cyberpunk"></div>
+          <div class="theme-dot" data-t="oled" style="background:linear-gradient(135deg, #000000 50%, #ffffff 50%);" title="Midnight OLED"></div>
+          <div class="theme-dot" data-t="light" style="background:linear-gradient(135deg, #f1f5f9 50%, #0284c7 50%); border:1px solid #cbd5e1;" title="Clean White"></div>
         </div>
       </div>
     </div>
@@ -399,14 +402,13 @@ body {
         <input type="text" id="searchInput" placeholder="Cari serabi, cireng, kuah...">
       </div>
       <div class="topbar-right">
-        <!-- 6 PILIHAN TEMA DI DESKTOP -->
         <div class="theme-selector-panel" style="margin-right: 8px;">
-          <div class="theme-dot" data-t="aero" style="background:#38bdf8;" title="Aero Blue"></div>
-          <div class="theme-dot" data-t="mint" style="background:#34d399;" title="Emerald Mint"></div>
-          <div class="theme-dot" data-t="sunset" style="background:#fbbf24;" title="Sunset Gold"></div>
-          <div class="theme-dot" data-t="cyber" style="background:#f472b6;" title="Cyberpunk"></div>
-          <div class="theme-dot" data-t="oled" style="background:#3f3f46;" title="Midnight OLED"></div>
-          <div class="theme-dot" data-t="light" style="background:#ffffff; border:1px solid #cbd5e1;" title="Clean White"></div>
+          <div class="theme-dot" data-t="aero" style="background:linear-gradient(135deg, #0b1d33 50%, #38bdf8 50%);" title="Aero Blue"></div>
+          <div class="theme-dot" data-t="mint" style="background:linear-gradient(135deg, #06231b 50%, #34d399 50%);" title="Emerald Mint"></div>
+          <div class="theme-dot" data-t="sunset" style="background:linear-gradient(135deg, #26150b 50%, #fbbf24 50%);" title="Sunset Gold"></div>
+          <div class="theme-dot" data-t="cyber" style="background:linear-gradient(135deg, #180b2e 50%, #f472b6 50%);" title="Cyberpunk"></div>
+          <div class="theme-dot" data-t="oled" style="background:linear-gradient(135deg, #000000 50%, #ffffff 50%);" title="Midnight OLED"></div>
+          <div class="theme-dot" data-t="light" style="background:linear-gradient(135deg, #f1f5f9 50%, #0284c7 50%); border:1px solid #cbd5e1;" title="Clean White"></div>
         </div>
 
         <div class="status-badge" id="openBadge">
@@ -463,7 +465,7 @@ body {
     <span>Feed</span>
   </a>
   <a href="#" id="mobileAdminTrigger">
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l-.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09A1.65 1.65 0 0 0-1.51 1z"/></svg>
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l-.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06-.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09A1.65 1.65 0 0 0-1.51 1z"/></svg>
     <span>Admin</span>
   </a>
 </nav>
@@ -568,7 +570,7 @@ const toast = msg => {
   setTimeout(() => t.classList.remove('show'), 2500);
 };
 
-// MANAJEMEN TEMA (6 PILIHAN)
+// MANAJEMEN TEMA DUAL-TONE
 const savedTheme = localStorage.getItem('serabimu_theme') || 'aero';
 document.documentElement.setAttribute('data-theme', savedTheme);
 
