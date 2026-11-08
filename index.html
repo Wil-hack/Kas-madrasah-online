@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Serabimu — Smooth Collapsible Dashboard</title>
+<title>Serabimu — Culinary Dashboard</title>
 <meta name="description" content="Serabimu — kelezatan autentik dalam setiap gigitan.">
 <meta name="theme-color" content="#020617">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -22,6 +22,9 @@
   --soft: #bae6fd;
   --text: #f8fafc;
   --muted: #94a3b8;
+  --neu-bg: #1e293b;
+  --neu-shadow-dark: #0f172a;
+  --neu-shadow-light: #334155;
 }
 :root[data-theme="forest"] {
   --bg-gradient: linear-gradient(135deg, #022c22 0%, #064e3b 100%);
@@ -33,6 +36,9 @@
   --soft: #a7f3d0;
   --text: #ecfdf5;
   --muted: #6ee7b7;
+  --neu-bg: #064e3b;
+  --neu-shadow-dark: #022c22;
+  --neu-shadow-light: #065f46;
 }
 :root[data-theme="coffee"] {
   --bg-gradient: linear-gradient(135deg, #1c100b 0%, #431407 100%);
@@ -44,6 +50,9 @@
   --soft: #fde68a;
   --text: #fffbeb;
   --muted: #fef08a;
+  --neu-bg: #431407;
+  --neu-shadow-dark: #1c100b;
+  --neu-shadow-light: #5c1d0a;
 }
 :root[data-theme="cosmic"] {
   --bg-gradient: linear-gradient(135deg, #1e1b4b 0%, #311042 100%);
@@ -55,6 +64,9 @@
   --soft: #fbcfe8;
   --text: #fdf4ff;
   --muted: #f5d0fe;
+  --neu-bg: #3b0764;
+  --neu-shadow-dark: #1e1b4b;
+  --neu-shadow-light: #4c1d95;
 }
 :root[data-theme="carbon"] {
   --bg-gradient: linear-gradient(135deg, #09090b 0%, #18181b 100%);
@@ -66,6 +78,9 @@
   --soft: #e4e4e7;
   --text: #ffffff;
   --muted: #a1a1aa;
+  --neu-bg: #27272a;
+  --neu-shadow-dark: #121214;
+  --neu-shadow-light: #3f3f46;
 }
 :root[data-theme="ice"] {
   --bg-gradient: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
@@ -77,6 +92,9 @@
   --soft: #0369a1;
   --text: #0f172a;
   --muted: #475569;
+  --neu-bg: #e2e8f0;
+  --neu-shadow-dark: #cbd5e1;
+  --neu-shadow-light: #ffffff;
 }
 
 :root {
@@ -127,72 +145,34 @@ body::before {
   height: calc(100vh - 48px);
   z-index: 100;
   box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-  /* Transisi lebar kotak dipercepat & mulus */
   transition: width 0.3s cubic-bezier(0.25, 1, 0.5, 1), padding 0.3s ease;
   overflow: hidden;
 }
 
-/* Saat diciutkan: kotak mengecil dulu */
-.app-sidebar.collapsed {
-  width: 76px;
-  padding: 24px 10px;
-}
-
-/* Teks/tulisan di dalam sidebar disembunyikan pakai opacity & delay agar kotak melebar/menyusut dulu dengan rapi */
+.app-sidebar.collapsed { width: 76px; padding: 24px 10px; }
 .app-sidebar .brand-sub,
 .app-sidebar .brand-title,
 .app-sidebar .menu-item span {
-  opacity: 1;
-  white-space: nowrap;
-  transition: opacity 0.15s ease-in-out;
+  opacity: 1; white-space: nowrap; transition: opacity 0.15s ease-in-out;
 }
-
 .app-sidebar.collapsed .brand-sub,
 .app-sidebar.collapsed .brand-title,
 .app-sidebar.collapsed .menu-item span {
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.05s ease-in-out;
+  opacity: 0; pointer-events: none; transition: opacity 0.05s ease-in-out;
 }
-
-.app-sidebar.collapsed .brand-box {
-  text-align: center;
-  padding-left: 0;
-  margin-bottom: 24px;
-}
+.app-sidebar.collapsed .brand-box { text-align: center; padding-left: 0; margin-bottom: 24px; }
 .app-sidebar.collapsed .brand-box::after {
-  content: 'S';
-  font-family: var(--font-title);
-  font-size: 24px;
-  font-weight: 700;
-  color: var(--soft);
+  content: 'S'; font-family: var(--font-title); font-size: 24px; font-weight: 700; color: var(--soft);
 }
-.app-sidebar.collapsed .menu-item {
-  justify-content: center;
-  padding: 12px;
-}
+.app-sidebar.collapsed .menu-item { justify-content: center; padding: 12px; }
 
 .sidebar-toggle-btn {
-  position: absolute;
-  top: 20px;
-  right: -14px;
-  width: 28px;
-  height: 28px;
-  background: var(--glass-bg);
-  border: 1px solid var(--glass-border);
-  border-radius: 50%;
-  color: var(--text);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-  transition: transform 0.3s ease;
-  z-index: 101;
+  position: absolute; top: 20px; right: -14px; width: 28px; height: 28px;
+  background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 50%;
+  color: var(--text); display: flex; align-items: center; justify-content: center;
+  cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.3); transition: transform 0.3s ease; z-index: 101;
 }
-.app-sidebar.collapsed .sidebar-toggle-btn svg {
-  transform: rotate(180deg);
-}
+.app-sidebar.collapsed .sidebar-toggle-btn svg { transform: rotate(180deg); }
 
 .brand-box { margin-bottom: 30px; padding-left: 8px; position: relative; }
 .brand-title {
@@ -360,7 +340,52 @@ body::before {
 
 .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(8px); z-index: 1000; display: none; align-items: center; justify-content: center; padding: 20px; }
 .modal-overlay.open { display: flex; }
-.modal-panel { background: var(--glass-bg); backdrop-filter: blur(25px); border: 1px solid var(--glass-border); border-radius: 20px; width: 100%; max-width: 500px; max-height: 90vh; overflow-y: auto; position: relative; padding: 24px; color: var(--text); box-shadow: 0 25px 50px rgba(0,0,0,0.4); }
+.modal-panel { background: var(--glass-bg); backdrop-filter: blur(25px); border: 1px solid var(--glass-border); border-radius: 24px; width: 100%; max-width: 440px; overflow: hidden; position: relative; padding: 30px; color: var(--text); box-shadow: 0 25px 50px rgba(0,0,0,0.5); }
+
+/* 3D NEUMORPHISM ADMIN AUTH STYLES */
+.auth-container { display: flex; flex-direction: column; align-items: center; text-align: center; }
+.lock-box-3d {
+  width: 90px; height: 90px; background: var(--neu-bg);
+  border-radius: 22px; display: flex; align-items: center; justify-content: center;
+  position: relative; margin-bottom: 20px;
+  box-shadow: 8px 8px 16px var(--neu-shadow-dark), -8px -8px 16px var(--neu-shadow-light);
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.lock-shackle {
+  position: absolute; top: -26px; width: 44px; height: 38px;
+  border: 7px solid var(--soft); border-bottom: none;
+  border-top-left-radius: 22px; border-top-right-radius: 22px;
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-origin: bottom right;
+}
+/* Animasi Gembok Terbuka */
+.lock-box-3d.unlocked .lock-shackle {
+  transform: translateY(-8px) rotate(28deg);
+  border-color: #22c55e;
+}
+.lock-body-icon { color: var(--soft); font-size: 24px; transition: color 0.3s; }
+.lock-box-3d.unlocked .lock-body-icon { color: #22c55e; }
+
+.neu-input {
+  width: 100%; background: var(--neu-bg); border: none; outline: none;
+  padding: 14px 20px; border-radius: 14px; color: var(--text); font-size: 16px; text-align: center; letter-spacing: 4px;
+  box-shadow: inset 4px 4px 8px var(--neu-shadow-dark), inset -4px -4px 8px var(--neu-shadow-light);
+  margin-bottom: 20px; transition: box-shadow 0.3s;
+}
+.neu-input:focus {
+  box-shadow: inset 6px 6px 12px var(--neu-shadow-dark), inset -6px -6px 12px var(--neu-shadow-light), 0 0 15px var(--glass-glow);
+}
+.neu-btn {
+  width: 100%; background: var(--neu-bg); border: none; outline: none;
+  padding: 14px; border-radius: 14px; color: var(--text); font-weight: 700; font-size: 14px; cursor: pointer;
+  box-shadow: 6px 6px 12px var(--neu-shadow-dark), -6px -6px 12px var(--neu-shadow-light);
+  transition: all 0.2s ease;
+}
+.neu-btn:hover { filter: brightness(1.1); }
+.neu-btn:active {
+  box-shadow: inset 4px 4px 8px var(--neu-shadow-dark), inset -4px -4px 8px var(--neu-shadow-light);
+  transform: scale(0.98);
+}
 
 /* RESPONSIVE MOBILE - GLASSY CAPSULE NAVIGATION TABS */
 @media (max-width: 850px) {
@@ -370,7 +395,6 @@ body::before {
   
   .dashboard-topbar { margin-bottom: 16px; }
 
-  /* BILAH NAVIGASI BAWAH BERBENTUK KAPSUL KACA (FLOATING PILL NAVBAR) */
   .mobile-nav { 
     position: fixed; bottom: 16px; left: 16px; right: 16px; height: 62px; 
     background: var(--glass-bg); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
@@ -434,7 +458,7 @@ body::before {
         <input type="text" id="searchInput" placeholder="Cari serabi, cireng, kuah...">
       </div>
       <div class="topbar-right">
-        <!-- PEMILIH TEMA TUNGGAL DI ATAS (RESPONSIF DI HP DAN WEB) -->
+        <!-- PEMILIH TEMA TUNGGAL DI ATAS -->
         <div class="theme-selector-panel">
           <div class="theme-dot" data-t="indigo" style="background:linear-gradient(135deg, #020617 50%, #38bdf8 50%);" title="Midnight Indigo"></div>
           <div class="theme-dot" data-t="forest" style="background:linear-gradient(135deg, #022c22 50%, #34d399 50%);" title="Deep Forest"></div>
@@ -558,15 +582,24 @@ body::before {
   </div>
 </div>
 
-<!-- MODAL ADMIN PIN -->
+<!-- MODAL ADMIN 3D NEUMORPHISM DENGAN ANIMASI GEMBOK -->
 <div id="adminModal" class="modal-overlay">
-  <div class="modal-panel" style="text-align:center;">
-    <button id="cancelPinBtn" style="float:right; background:none; border:none; color:var(--text); cursor:pointer; font-size:18px;">✕</button>
-    <h3 style="font-family:var(--font-title); font-size:20px; color:var(--soft); margin-bottom:8px;">Masuk Mode Admin</h3>
-    <p style="font-size:12px; color:var(--muted); margin-bottom:16px;">Masukkan PIN Admin</p>
-    <input type="password" id="adminPinInput" placeholder="••••" style="width:140px; text-align:center; letter-spacing:6px; font-size:20px; background:rgba(255,255,255,0.08); border:1px solid var(--glass-border); padding:10px; border-radius:8px; color:var(--text); margin-bottom:16px; outline:none;">
-    <br>
-    <button id="submitPinBtn" style="background:var(--accent); color:#fff; border:none; padding:10px 24px; border-radius:8px; font-weight:700; cursor:pointer;">Masuk</button>
+  <div class="modal-panel">
+    <button id="cancelPinBtn" style="position:absolute; top:16px; right:16px; background:none; border:none; color:var(--text); cursor:pointer; font-size:18px; z-index:2;">✕</button>
+    <div class="auth-container">
+      <!-- 3D Neumorphic Lock Element -->
+      <div class="lock-box-3d" id="lockBox">
+        <div class="lock-shackle" id="lockShackle"></div>
+        <div class="lock-body-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        </div>
+      </div>
+      <h3 style="font-family:var(--font-title); font-size:22px; color:var(--text); margin-bottom:6px;">Verify Your Identity</h3>
+      <p style="font-size:12px; color:var(--muted); margin-bottom:24px;">Masukkan PIN Admin untuk masuk ke dashboard.</p>
+      
+      <input type="password" id="adminPinInput" class="neu-input" placeholder="••••" maxlength="6" autofocus>
+      <button id="submitPinBtn" class="neu-btn">VERIFY ACCESS</button>
+    </div>
   </div>
 </div>
 
@@ -827,7 +860,7 @@ $('#checkoutClose').addEventListener('click', () => $('#checkoutModal').classLis
 $('#coType').addEventListener('change', e => { $('#addressField').style.display = e.target.value === 'Delivery' ? 'block' : 'none'; });
 $('#checkoutForm').addEventListener('submit', e => {
   e.preventDefault();
-  const name = $('#coName').value, phone = $('#coPhone').value, type = $('#coType').value, address = $('#coAddress').value;
+  const name = $('#coName', phone = $('#coPhone').value, type = $('#coType').value, address = $('#coAddress').value;
   let msg = `*Pesanan Baru — Serabimu*\n\n👤 Nama: ${name}\n📱 HP: ${phone}\n📦 Tipe: ${type}\n`;
   if(type === 'Delivery') msg += `📍 Alamat: ${address}\n`;
   msg += '\n*Detail Pesanan:*\n' + cart.map((it,i)=>`${i+1}. ${it.title} × ${it.qty} = ${fmt(it.price*it.qty)}`).join('\n');
@@ -873,17 +906,43 @@ onSnapshot(query(collection(db, 'posts'), orderBy('createdAt', 'desc')), snap =>
   });
 });
 
-/* ADMIN PIN */
+/* ADMIN 3D NEUMORPHISM LOGIN DENGAN ANIMASI GEMBOK TERBUKA */
 const adminModal = $('#adminModal');
-const handleAdminOpen = e => { e.preventDefault(); adminModal.classList.add('open'); $('#adminPinInput').focus(); };
+const lockBox = $('#lockBox');
+const adminPinInput = $('#adminPinInput');
+
+const handleAdminOpen = e => { 
+  e.preventDefault(); 
+  lockBox.classList.remove('unlocked');
+  adminPinInput.value = '';
+  adminModal.classList.add('open'); 
+  adminPinInput.focus(); 
+};
 $('#adminLoginTrigger').addEventListener('click', handleAdminOpen);
 $('#mobileAdminTrigger').addEventListener('click', handleAdminOpen);
 $('#cancelPinBtn').addEventListener('click', () => adminModal.classList.remove('open'));
+
 $('#submitPinBtn').addEventListener('click', () => {
-  if($('#adminPinInput').value === atob(ADMIN_PIN_OBF)) {
+  if(adminPinInput.value === atob(ADMIN_PIN_OBF)) {
+    // Animasi Gembok Terbuka Hijau
+    lockBox.classList.add('unlocked');
+    toast('Akses Diterima! Membuka Admin...');
     sessionStorage.setItem('isAdmin', 'true');
-    window.location.href = 'admin.html';
-  } else { toast('PIN Admin Salah!'); }
+    setTimeout(() => {
+      window.location.href = 'admin.html';
+    }, 700); // Jeda transisi animasi mulus
+  } else { 
+    toast('PIN Admin Salah!');
+    adminPinInput.style.transform = 'translateX(8px)';
+    setTimeout(() => adminPinInput.style.transform = 'translateX(-8px)', 100);
+    setTimeout(() => adminPinInput.style.transform = 'translateX(0)', 200);
+    adminPinInput.value = '';
+  }
+});
+
+// Izinkan tekan Enter untuk submit
+adminPinInput.addEventListener('keypress', e => {
+  if(e.key === 'Enter') $('#submitPinBtn').click();
 });
 
 updateCartBadge();
