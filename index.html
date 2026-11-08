@@ -130,7 +130,6 @@ body::before {
   transition: width 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* KETIKA SIDEBAR DICIUTKAN (COLLAPSED) */
 .app-sidebar.collapsed {
   width: 80px;
   padding: 24px 10px;
@@ -157,7 +156,6 @@ body::before {
   padding: 12px;
 }
 
-/* TOGGLE BUTTON SIDEBAR */
 .sidebar-toggle-btn {
   position: absolute;
   top: 20px;
@@ -238,13 +236,14 @@ body::before {
   box-shadow: 0 8px 20px rgba(0,0,0,0.15);
 }
 .icon-btn:hover { border-color: var(--soft); transform: translateY(-2px); }
+.icon-btn svg { width: 20px; height: 20px; }
 .cart-count {
   position: absolute; top: -3px; right: -3px; background: #f43f5e; color: #fff;
   font-size: 10px; font-weight: 700; min-width: 18px; height: 18px; border-radius: 9px;
   display: none; align-items: center; justify-content: center; padding: 0 4px;
 }
 
-/* PEMILIH TEMA */
+/* PEMILIH TEMA (HANYA 1 DI ATAS) */
 .theme-selector-panel {
   display: flex; gap: 6px; background: var(--glass-bg); border: 1px solid var(--glass-border);
   padding: 5px 8px; border-radius: 99px; backdrop-filter: blur(16px); align-items: center;
@@ -437,15 +436,14 @@ body::before {
         <div class="mobile-brand-title">Serabimu</div>
         <div class="mobile-brand-sub">Culinary Dashboard</div>
       </div>
-      <div style="display: flex; align-items: center; gap: 8px;">
-        <div class="theme-selector-panel">
-          <div class="theme-dot" data-t="indigo" style="background:linear-gradient(135deg, #020617 50%, #38bdf8 50%);" title="Midnight Indigo"></div>
-          <div class="theme-dot" data-t="forest" style="background:linear-gradient(135deg, #022c22 50%, #34d399 50%);" title="Deep Forest"></div>
-          <div class="theme-dot" data-t="coffee" style="background:linear-gradient(135deg, #1c100b 50%, #fbbf24 50%);" title="Coffee Latte"></div>
-          <div class="theme-dot" data-t="cosmic" style="background:linear-gradient(135deg, #1e1b4b 50%, #f472b6 50%);" title="Cosmic Violet"></div>
-          <div class="theme-dot" data-t="carbon" style="background:linear-gradient(135deg, #09090b 50%, #ffffff 50%);" title="Carbon Silver"></div>
-          <div class="theme-dot" data-t="ice" style="background:linear-gradient(135deg, #f0f9ff 50%, #0284c7 50%); border:1px solid #bae6fd;" title="Fresh Ice"></div>
-        </div>
+      <!-- PEMILIH TEMA MOBILE (HANYA 1) -->
+      <div class="theme-selector-panel">
+        <div class="theme-dot" data-t="indigo" style="background:linear-gradient(135deg, #020617 50%, #38bdf8 50%);" title="Midnight Indigo"></div>
+        <div class="theme-dot" data-t="forest" style="background:linear-gradient(135deg, #022c22 50%, #34d399 50%);" title="Deep Forest"></div>
+        <div class="theme-dot" data-t="coffee" style="background:linear-gradient(135deg, #1c100b 50%, #fbbf24 50%);" title="Coffee Latte"></div>
+        <div class="theme-dot" data-t="cosmic" style="background:linear-gradient(135deg, #1e1b4b 50%, #f472b6 50%);" title="Cosmic Violet"></div>
+        <div class="theme-dot" data-t="carbon" style="background:linear-gradient(135deg, #09090b 50%, #ffffff 50%);" title="Carbon Silver"></div>
+        <div class="theme-dot" data-t="ice" style="background:linear-gradient(135deg, #f0f9ff 50%, #0284c7 50%); border:1px solid #bae6fd;" title="Fresh Ice"></div>
       </div>
     </div>
 
@@ -455,7 +453,8 @@ body::before {
         <input type="text" id="searchInput" placeholder="Cari serabi, cireng, kuah...">
       </div>
       <div class="topbar-right">
-        <div class="theme-selector-panel" style="margin-right: 8px;">
+        <!-- PEMILIH TEMA DESKTOP (HANYA 1) -->
+        <div class="theme-selector-panel" style="margin-right: 4px;">
           <div class="theme-dot" data-t="indigo" style="background:linear-gradient(135deg, #020617 50%, #38bdf8 50%);" title="Midnight Indigo"></div>
           <div class="theme-dot" data-t="forest" style="background:linear-gradient(135deg, #022c22 50%, #34d399 50%);" title="Deep Forest"></div>
           <div class="theme-dot" data-t="coffee" style="background:linear-gradient(135deg, #1c100b 50%, #fbbf24 50%);" title="Coffee Latte"></div>
@@ -468,6 +467,8 @@ body::before {
           <span class="dot"></span>
           <span id="openText">Memuat...</span>
         </div>
+        
+        <!-- IKON KERANJANG DIKEMBALIKAN DI KANAN ATAS -->
         <button class="icon-btn" id="cartBtn" aria-label="Keranjang">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
           <span class="cart-count" id="cartCount">0</span>
@@ -637,7 +638,7 @@ sidebarToggle.addEventListener('click', () => {
   localStorage.setItem('serabimu_sidebar_collapsed', sidebar.classList.contains('collapsed'));
 });
 
-// MANAJEMEN TEMA
+// MANAJEMEN TEMA (SINKRON ANTAR SEMUA TOMBOL TEMA)
 const savedTheme = localStorage.getItem('serabimu_theme') || 'indigo';
 document.documentElement.setAttribute('data-theme', savedTheme);
 
