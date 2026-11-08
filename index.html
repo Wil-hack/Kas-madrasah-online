@@ -11,7 +11,7 @@
 <link rel="preconnect" href="https://firestore.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
-/* 6 TEMA DUAL-TONE (2 WARNA GRADASI) */
+/* 6 TEMA DUAL-TONE (2 WARNA GRADASI MIX) */
 :root[data-theme="aero"] {
   --bg-gradient: linear-gradient(135deg, #0b1d33 0%, #1d4ed8 100%);
   --bg: #0b1d33;
@@ -89,14 +89,24 @@
 * { margin: 0; padding: 0; box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 body {
-  background: var(--bg-gradient) !important;
+  background: var(--bg);
   color: var(--text);
   font-family: var(--font-body);
   line-height: 1.6;
   min-height: 100vh;
   overflow-x: hidden;
-  transition: background 0.4s ease, color 0.4s ease;
-  background-attachment: scroll !important;
+  position: relative;
+  transition: color 0.4s ease;
+}
+
+/* LAPISAN BACKGROUND GRADASI MIX YANG TERKUNCI PENUH DI LAYAR HP */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: var(--bg-gradient);
+  z-index: -99;
+  pointer-events: none;
 }
 
 ::selection { background: var(--soft); color: #fff; }
@@ -179,7 +189,7 @@ body {
   display: none; align-items: center; justify-content: center; padding: 0 4px;
 }
 
-/* PEMILIH TEMA DUAL-TONE */
+/* PEMILIH TEMA DUAL-TONE (IKON BELAH 2 WARNA) */
 .theme-selector-panel {
   display: flex; gap: 6px; background: var(--glass-bg); border: 1px solid var(--glass-border);
   padding: 5px 8px; border-radius: 99px; backdrop-filter: blur(16px); align-items: center;
