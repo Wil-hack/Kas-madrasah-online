@@ -860,7 +860,10 @@ $('#checkoutClose').addEventListener('click', () => $('#checkoutModal').classLis
 $('#coType').addEventListener('change', e => { $('#addressField').style.display = e.target.value === 'Delivery' ? 'block' : 'none'; });
 $('#checkoutForm').addEventListener('submit', e => {
   e.preventDefault();
-  const name = $('#coName', phone = $('#coPhone').value, type = $('#coType').value, address = $('#coAddress').value;
+  const name = $('#coName').value;
+  const phone = $('#coPhone').value;
+  const type = $('#coType').value;
+  const address = $('#coAddress').value;
   let msg = `*Pesanan Baru — Serabimu*\n\n👤 Nama: ${name}\n📱 HP: ${phone}\n📦 Tipe: ${type}\n`;
   if(type === 'Delivery') msg += `📍 Alamat: ${address}\n`;
   msg += '\n*Detail Pesanan:*\n' + cart.map((it,i)=>`${i+1}. ${it.title} × ${it.qty} = ${fmt(it.price*it.qty)}`).join('\n');
