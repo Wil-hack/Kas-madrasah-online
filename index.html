@@ -84,7 +84,7 @@ body {
 }
 .menu-item svg { width: 18px; height: 18px; }
 
-/* MOBILE HEADER (Hanya tampil di HP) */
+/* MOBILE HEADER */
 .mobile-header { display: none; }
 
 /* MAIN CONTENT */
@@ -125,18 +125,18 @@ body {
 /* HERO DASHBOARD BANNER KACA AERO */
 .hero-dashboard {
   position: relative; border-radius: var(--radius-lg); overflow: hidden;
-  padding: 50px 36px; margin-bottom: 35px; border: 1px solid var(--glass-border);
-  box-shadow: 0 25px 50px -15px rgba(0,0,0,0.6); min-height: 240px;
+  padding: 40px 28px; margin-bottom: 30px; border: 1px solid var(--glass-border);
+  box-shadow: 0 25px 50px -15px rgba(0,0,0,0.6); min-height: 200px;
   display: flex; flex-direction: column; justify-content: center;
   background: var(--glass-bg); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
 }
 .hero-video-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; opacity: 0.45; }
 .hero-overlay { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(11, 29, 51, 0.85) 0%, rgba(11, 29, 51, 0.3) 100%); z-index: -1; }
 .hero-dashboard h1 {
-  font-family: var(--font-title); font-size: clamp(30px, 4vw, 44px); font-weight: 700; margin-bottom: 10px;
+  font-family: var(--font-title); font-size: clamp(26px, 4vw, 40px); font-weight: 700; margin-bottom: 8px;
   background: linear-gradient(180deg, #fff 0%, var(--soft) 100%); -webkit-background-clip: text; background-clip: text; color: transparent;
 }
-.hero-dashboard p { color: var(--muted); max-width: 500px; font-size: 14px; }
+.hero-dashboard p { color: var(--muted); max-width: 500px; font-size: 13.5px; }
 
 /* CHIPS */
 .category-wrapper { display: flex; gap: 8px; overflow-x: auto; margin-bottom: 20px; scrollbar-width: none; }
@@ -149,7 +149,7 @@ body {
 .chip.active { background: linear-gradient(135deg, rgba(56, 189, 248, 0.4), rgba(125, 211, 252, 0.15)); color: var(--soft); font-weight: 700; }
 
 /* KATALOG GESER KE SAMPING */
-.section-header { font-family: var(--font-title); font-size: 22px; font-weight: 600; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; }
+.section-header { font-family: var(--font-title); font-size: 20px; font-weight: 600; margin-bottom: 14px; display: flex; justify-content: space-between; align-items: center; }
 .scroll-hint { font-size: 11px; color: var(--soft); font-family: var(--font-body); font-weight: 500; }
 
 .products-scroll-container {
@@ -157,7 +157,7 @@ body {
   gap: 16px;
   overflow-x: auto;
   padding: 4px 4px 20px 4px;
-  margin-bottom: 40px;
+  margin-bottom: 35px;
   scrollbar-width: thin;
   scrollbar-color: var(--accent) transparent;
   scroll-snap-type: x mandatory;
@@ -166,8 +166,8 @@ body {
 .products-scroll-container::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 99px; }
 
 .glass-card {
-  min-width: 220px;
-  max-width: 220px;
+  min-width: 210px;
+  max-width: 210px;
   background: var(--glass-bg); 
   backdrop-filter: blur(24px); 
   -webkit-backdrop-filter: blur(24px);
@@ -183,44 +183,44 @@ body {
   flex-shrink: 0;
   scroll-snap-align: start;
 }
-.glass-card:hover { transform: translateY(-6px); border-color: var(--soft); box-shadow: 0 25px 50px -15px rgba(0,0,0,0.7), 0 0 35px var(--glass-glow); }
-.card-img-wrap { position: relative; height: 140px; overflow: hidden; background: #071322; }
+.glass-card:hover { transform: translateY(-4px); border-color: var(--soft); box-shadow: 0 20px 40px -15px rgba(0,0,0,0.7), 0 0 25px var(--glass-glow); }
+.card-img-wrap { position: relative; height: 135px; overflow: hidden; background: #071322; }
 .card-img-wrap img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s cubic-bezier(.2,.8,.2,1); }
 .glass-card:hover .card-img-wrap img { transform: scale(1.08); }
 .card-badges { position: absolute; top: 8px; left: 8px; display: flex; flex-direction: column; gap: 4px; z-index: 2; }
-.badge-tag { font-size: 9px; font-weight: 700; letter-spacing: .5px; text-transform: uppercase; padding: 3px 6px; border-radius: 6px; color: #fff; }
+.badge-tag { font-size: 8.5px; font-weight: 700; letter-spacing: .5px; text-transform: uppercase; padding: 3px 6px; border-radius: 6px; color: #fff; }
 .badge-best { background: linear-gradient(100deg, #ff6b35, #f7c948); }
 .badge-new { background: linear-gradient(100deg, #4ade80, #22c55e); }
 .wishlist-btn {
   position: absolute; top: 8px; right: 8px; background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(8px);
-  border: none; width: 30px; height: 30px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center;
-  color: #fff; font-size: 13px; transition: .25s; z-index: 2;
+  border: none; width: 28px; height: 28px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center;
+  color: #fff; font-size: 12px; transition: .25s; z-index: 2;
 }
 .wishlist-btn:hover { transform: scale(1.1); background: rgba(0,0,0,0.7); }
 .wishlist-btn.active { background: #ff4757; }
 
-.card-body { padding: 14px; display: flex; flex-direction: column; flex: 1; }
-.card-title { font-family: var(--font-title); font-size: 15px; font-weight: 600; margin-bottom: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.card-rating { font-size: 11px; color: var(--soft); margin-bottom: 6px; display: flex; align-items: center; gap: 4px; min-height: 16px; }
-.card-desc { color: var(--muted); font-size: 11.5px; margin-bottom: 12px; flex: 1; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-.card-footer { display: flex; align-items: center; justify-content: space-between; margin-top: auto; padding-top: 10px; border-top: 1px solid rgba(255, 255, 255, 0.1); }
-.card-price { font-weight: 700; color: var(--soft); font-size: 13.5px; }
+.card-body { padding: 12px; display: flex; flex-direction: column; flex: 1; }
+.card-title { font-family: var(--font-title); font-size: 14.5px; font-weight: 600; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.card-rating { font-size: 10.5px; color: var(--soft); margin-bottom: 4px; display: flex; align-items: center; gap: 4px; min-height: 16px; }
+.card-desc { color: var(--muted); font-size: 11px; margin-bottom: 10px; flex: 1; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.card-footer { display: flex; align-items: center; justify-content: space-between; margin-top: auto; padding-top: 8px; border-top: 1px solid rgba(255, 255, 255, 0.1); }
+.card-price { font-weight: 700; color: var(--soft); font-size: 13px; }
 .btn-glass-add {
   background: linear-gradient(135deg, var(--accent), #0284c7); color: #0b1d33; border: none;
-  padding: 6px 12px; border-radius: 99px; font-size: 11px; font-weight: 700; cursor: pointer; transition: .3s;
+  padding: 6px 12px; border-radius: 99px; font-size: 10.5px; font-weight: 700; cursor: pointer; transition: .3s;
 }
 .btn-glass-add:hover { filter: brightness(1.15); transform: scale(1.04); }
 
 /* FEED / KABAR TOKO */
 .feed-container { max-width: 680px; margin: 0 auto; display: flex; flex-direction: column; gap: 24px; }
 .feed-post { background: var(--glass-bg); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border: 1px solid var(--glass-border); border-radius: var(--radius-lg); overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.4); }
-.post-head { display: flex; align-items: center; gap: 12px; padding: 18px 20px 12px; }
-.avatar { width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), #0284c7); color: #0b1d33; display: flex; align-items: center; justify-content: center; font-weight: 700; font-family: var(--font-title); }
-.post-caption { padding: 0 20px 14px; font-size: 14px; color: var(--text); white-space: pre-wrap; word-break: break-word; }
+.post-head { display: flex; align-items: center; gap: 12px; padding: 16px 18px 10px; }
+.avatar { width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), #0284c7); color: #0b1d33; display: flex; align-items: center; justify-content: center; font-weight: 700; font-family: var(--font-title); font-size: 14px; }
+.post-caption { padding: 0 18px 12px; font-size: 13.5px; color: var(--text); white-space: pre-wrap; word-break: break-word; }
 .post-media-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 4px; background: #000; }
-.post-media-grid img, .post-media-grid video { width: 100%; height: 260px; object-fit: cover; display: block; }
-.post-actions { padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--glass-border); font-size: 12px; color: var(--muted); }
-.btn-like { background: rgba(255,255,255,0.08); border: 1px solid var(--glass-border); color: var(--text); padding: 6px 14px; border-radius: 99px; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: .25s; font-family: var(--font-body); }
+.post-media-grid img, .post-media-grid video { width: 100%; height: 240px; object-fit: cover; display: block; }
+.post-actions { padding: 10px 18px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--glass-border); font-size: 12px; color: var(--muted); }
+.btn-like { background: rgba(255,255,255,0.08); border: 1px solid var(--glass-border); color: var(--text); padding: 5px 12px; border-radius: 99px; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: .25s; font-family: var(--font-body); }
 .btn-like.liked { color: #ff4757; border-color: rgba(255,71,87,0.4); background: rgba(255,71,87,0.12); }
 
 /* CART & MODALS */
@@ -239,9 +239,9 @@ body {
 /* RESPONSIVE MOBILE ADJUSTMENTS */
 @media (max-width: 850px) {
   .app-sidebar { display: none; }
-  .app-main { padding: 15px 16px 85px; }
+  .app-main { padding: 12px 14px 85px; }
   
-  /* HEADER KHUSUS HP AGAR TIDAK KOSONG */
+  /* HEADER MOBILE YANG BERSIH & TIDAK DOBEL */
   .mobile-header {
     display: flex;
     justify-content: space-between;
@@ -250,30 +250,36 @@ body {
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border: 1px solid var(--glass-border);
-    padding: 12px 18px;
+    padding: 10px 16px;
     border-radius: var(--radius-md);
-    margin-bottom: 20px;
+    margin-bottom: 16px;
     box-shadow: 0 10px 25px rgba(0,0,0,0.4);
   }
   .mobile-brand-title {
     font-family: var(--font-title);
-    font-size: 20px;
+    font-size: 19px;
     font-weight: 700;
     background: linear-gradient(135deg, #fff 30%, var(--soft));
     -webkit-background-clip: text; background-clip: text; color: transparent;
   }
-  .mobile-brand-sub { font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); }
+  .mobile-brand-sub { font-size: 8.5px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); }
+
+  /* SEMBUNYIKAN TOPBAR DESKTOP DI HP KARENA SUDAH ADA MOBILE HEADER & SEARCH DI BAWAHNYA */
+  .dashboard-topbar { margin-bottom: 16px; }
 
   .mobile-nav { 
-    position: fixed; bottom: 0; left: 0; right: 0; height: 62px; 
-    background: rgba(15, 35, 65, 0.94); backdrop-filter: blur(22px); 
+    position: fixed; bottom: 0; left: 0; right: 0; height: 60px; 
+    background: rgba(15, 35, 65, 0.95); backdrop-filter: blur(22px); 
     border-top: 1px solid var(--glass-border); display: flex; 
     justify-content: space-around; align-items: center; z-index: 999; 
   }
-  .mobile-nav a { color: var(--muted); text-decoration: none; font-size: 10.5px; display: flex; flex-direction: column; align-items: center; gap: 3px; }
+  .mobile-nav a { color: var(--muted); text-decoration: none; font-size: 10px; display: flex; flex-direction: column; align-items: center; gap: 2px; }
   .mobile-nav a.active { color: var(--soft); font-weight: 600; }
 }
-@media (min-width: 851px) { .mobile-nav { display: none; } }
+@media (min-width: 851px) { 
+  .mobile-nav { display: none; } 
+  .mobile-header { display: none; }
+}
 
 #toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(30px); background: rgba(15, 35, 65, 0.95); color: var(--text); border: 1px solid var(--glass-border); padding: 10px 22px; border-radius: 99px; font-size: 13px; font-weight: 500; opacity: 0; pointer-events: none; transition: .4s; z-index: 10000; }
 #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
@@ -312,8 +318,8 @@ body {
         <div class="mobile-brand-title">Serabimu</div>
         <div class="mobile-brand-sub">Culinary Dashboard</div>
       </div>
-      <div style="display: flex; align-items: center; gap: 8px;">
-        <div class="status-badge" id="openBadgeMobile" style="padding: 5px 10px; font-size: 10px;">
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <div class="status-badge" id="openBadgeMobile" style="padding: 4px 10px; font-size: 10px;">
           <span class="dot" style="width: 6px; height: 6px;"></span>
           <span id="openTextMobile">...</span>
         </div>
@@ -360,7 +366,7 @@ body {
     </div>
 
     <!-- KABAR TOKO / FEED -->
-    <div id="feed" style="margin-top: 40px;">
+    <div id="feed" style="margin-top: 35px;">
       <div class="section-header" style="justify-content:center;">Kabar Toko</div>
       <div class="feed-container" id="publicFeedList">
         <div style="color:var(--muted); font-size:13px; text-align:center;">Memuat kabar toko...</div>
@@ -380,7 +386,7 @@ body {
     <span>Feed</span>
   </a>
   <a href="#" id="mobileAdminTrigger">
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l-.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l-.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09A1.65 1.65 0 0 0-1.51 1z"/></svg>
     <span>Admin</span>
   </a>
 </nav>
