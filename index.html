@@ -129,7 +129,7 @@ body::before {
 
 .app-layout { display: flex; min-height: 100vh; position: relative; gap: 24px; padding: 24px; max-width: 1500px; margin: 0 auto; }
 
-/* SIDEBAR KIRI DESKTOP - SMOOTH COLLAPSIBLE */
+/* SIDEBAR KIRI - SMOOTH COLLAPSIBLE */
 .app-sidebar {
   width: 260px;
   background: var(--glass-bg);
@@ -147,6 +147,7 @@ body::before {
   box-shadow: 0 20px 40px rgba(0,0,0,0.3);
   transition: width 0.3s cubic-bezier(0.25, 1, 0.5, 1), padding 0.3s ease;
   overflow: hidden;
+  flex-shrink: 0;
 }
 
 .app-sidebar.collapsed { width: 76px; padding: 24px 10px; }
@@ -198,7 +199,7 @@ body::before {
 .menu-item svg { width: 20px; height: 20px; flex-shrink: 0; }
 
 /* MAIN CONTENT */
-.app-main { flex: 1; padding: 0; max-width: 100%; overflow-x: hidden; transition: all 0.35s ease; }
+.app-main { flex: 1; padding: 0; max-width: 100%; overflow-x: hidden; transition: all 0.35s ease; min-width: 0; }
 
 /* TOPBAR */
 .dashboard-topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; gap: 16px; flex-wrap: wrap; }
@@ -392,35 +393,13 @@ body::before {
   transform: scale(0.98);
 }
 
-/* RESPONSIVE MOBILE - SEMBUNYIKAN SIDEBAR DESKTOP PADA LAYAR MOBILE */
-@media (max-width: 1024px) {
-  .app-layout { padding: 12px; gap: 0; }
-  .app-sidebar { display: none !important; }
-  .app-main { padding: 0 0 85px 0; }
-  
-  .dashboard-topbar { margin-bottom: 16px; }
-
-  .mobile-nav { 
-    position: fixed; bottom: 16px; left: 16px; right: 16px; height: 62px; 
-    background: var(--glass-bg); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
-    border: 1px solid var(--glass-border); border-radius: 99px; display: flex; 
-    justify-content: space-around; align-items: center; z-index: 999; 
-    box-shadow: 0 15px 35px rgba(0,0,0,0.4); padding: 0 8px;
-  }
-  .mobile-nav a { 
-    color: var(--muted); text-decoration: none; font-size: 11px; font-weight: 500;
-    display: flex; align-items: center; gap: 6px; padding: 8px 16px; border-radius: 99px;
-    transition: all 0.3s ease;
-  }
-  .mobile-nav a svg { width: 16px; height: 16px; }
-  .mobile-nav a.active { 
-    color: var(--text); background: rgba(255, 255, 255, 0.15); 
-    border: 1px solid var(--glass-border); font-weight: 600;
-    box-shadow: 0 4px 15px var(--glass-glow);
-  }
-}
-@media (min-width: 1025px) { 
-  .mobile-nav { display: none; } 
+/* RESPONSIVE LAYOUT - MENDUKUNG MODE DESKTOP DI BROWSER HP */
+@media (max-width: 850px) {
+  /* Jika browser tidak dalam mode desktop penuh, sembunyikan navigasi bawah bawaan agar sidebar tampil rapi */
+  .mobile-nav { display: none; }
+  .app-layout { padding: 16px; gap: 16px; }
+  .app-sidebar { display: flex; }
+  .app-main { padding-bottom: 20px; }
 }
 
 #toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(30px); background: var(--glass-bg); color: var(--text); border: 1px solid var(--glass-border); padding: 10px 22px; border-radius: 99px; font-size: 13px; font-weight: 500; opacity: 0; pointer-events: none; transition: .4s; z-index: 10000; box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
@@ -430,7 +409,7 @@ body::before {
 <body>
 
 <div class="app-layout">
-  <!-- SIDEBAR DESKTOP (SMOOTH COLLAPSIBLE MODE) -->
+  <!-- SIDEBAR KIRI (MUNCUL DI MODE DESKTOP VIEW) -->
   <aside class="app-sidebar" id="sidebar">
     <button class="sidebar-toggle-btn" id="sidebarToggle" title="Buka/Tutup Sidebar">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>
@@ -517,22 +496,6 @@ body::before {
   </main>
 </div>
 
-<!-- MOBILE BOTTOM NAV - GLASSY CAPSULE -->
-<nav class="mobile-nav">
-  <a href="#katalog" class="active">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
-    <span>Menu</span>
-  </a>
-  <a href="#feed">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
-    <span>Feed</span>
-  </a>
-  <a href="#" id="mobileAdminTrigger">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l-.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06-.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09A1.65 1.65 0 0 0-1.51 1z"/></svg>
-    <span>Admin</span>
-  </a>
-</nav>
-
 <!-- CART DRAWER -->
 <div class="cart-overlay" id="cartOverlay"></div>
 <div class="cart-drawer" id="cartDrawer">
@@ -595,9 +558,7 @@ body::before {
       <!-- 3D Neumorphic Lock Box -->
       <div class="lock-box-3d" id="lockBox">
         <svg class="lock-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-          <!-- Gagang Gembok Terpisah untuk Animasi Mulur & Terbuka -->
           <path class="shackle-path" d="M7 11V7a5 5 0 0 1 10 0v4"/>
-          <!-- Badan Gembok -->
           <rect x="5" y="11" width="14" height="10" rx="2" fill="currentColor" fill-opacity="0.15"/>
           <circle cx="12" cy="16" r="1"/>
         </svg>
@@ -675,15 +636,6 @@ function applyTheme(themeName) {
 document.querySelectorAll('.theme-dot').forEach(dot => {
   if(dot.dataset.t === savedTheme) dot.classList.add('active');
   dot.addEventListener('click', () => applyTheme(dot.dataset.t));
-});
-
-// INTERAKTIVITAS TOMBOL MOBILE NAV (TAB ACTIVE)
-document.querySelectorAll('.mobile-nav a').forEach(navLink => {
-  navLink.addEventListener('click', function(e) {
-    if(this.id === 'mobileAdminTrigger') return;
-    document.querySelectorAll('.mobile-nav a').forEach(l => l.classList.remove('active'));
-    this.classList.add('active');
-  });
 });
 
 // JAM TOKO STATUS
@@ -934,9 +886,6 @@ const handleAdminOpen = e => {
 
 const adminTrigger = $('#adminLoginTrigger');
 if(adminTrigger) adminTrigger.addEventListener('click', handleAdminOpen);
-
-const mobileAdminTrigger = $('#mobileAdminTrigger');
-if(mobileAdminTrigger) mobileAdminTrigger.addEventListener('click', handleAdminOpen);
 
 $('#cancelPinBtn').addEventListener('click', () => adminModal.classList.remove('open'));
 
