@@ -231,7 +231,7 @@ body::before {
 .icon-btn svg { width: 20px; height: 20px; }
 .cart-count {
   position: absolute; top: -3px; right: -3px; background: #f43f5e; color: #fff;
-  font-size: 10px; font-weight: 700; min-width: 18px; height: 18px; border-radius: 9px;
+  font-size: 10px; font-weight: 700; min-width: 18px; height: 18px; border-radius: 99px;
   display: none; align-items: center; justify-content: center; padding: 0 4px;
 }
 
@@ -342,29 +342,34 @@ body::before {
 .modal-overlay.open { display: flex; }
 .modal-panel { background: var(--glass-bg); backdrop-filter: blur(25px); border: 1px solid var(--glass-border); border-radius: 24px; width: 100%; max-width: 440px; overflow: hidden; position: relative; padding: 30px; color: var(--text); box-shadow: 0 25px 50px rgba(0,0,0,0.5); }
 
-/* 3D NEUMORPHISM ADMIN AUTH STYLES */
+/* 3D NEUMORPHISM ADMIN AUTH STYLES & GEMBOK SVG PRESISI */
 .auth-container { display: flex; flex-direction: column; align-items: center; text-align: center; }
 .lock-box-3d {
-  width: 90px; height: 90px; background: var(--neu-bg);
-  border-radius: 22px; display: flex; align-items: center; justify-content: center;
+  width: 80px; height: 80px; background: var(--neu-bg);
+  border-radius: 20px; display: flex; align-items: center; justify-content: center;
   position: relative; margin-bottom: 20px;
-  box-shadow: 8px 8px 16px var(--neu-shadow-dark), -8px -8px 16px var(--neu-shadow-light);
-  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 6px 6px 14px var(--neu-shadow-dark), -6px -6px 14px var(--neu-shadow-light);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
-.lock-shackle {
-  position: absolute; top: -26px; width: 44px; height: 38px;
-  border: 7px solid var(--soft); border-bottom: none;
-  border-top-left-radius: 22px; border-top-right-radius: 22px;
+.lock-svg {
+  width: 40px; height: 40px; color: var(--soft);
+  transition: color 0.4s ease;
+}
+.shackle-path {
+  transform-origin: 19px 11px;
   transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  transform-origin: bottom right;
 }
-/* Animasi Gembok Terbuka */
-.lock-box-3d.unlocked .lock-shackle {
-  transform: translateY(-8px) rotate(28deg);
-  border-color: #22c55e;
+/* Animasi Gembok Terbuka Mulus */
+.lock-box-3d.unlocked {
+  box-shadow: inset 4px 4px 8px var(--neu-shadow-dark), inset -4px -4px 8px var(--neu-shadow-light);
 }
-.lock-body-icon { color: var(--soft); font-size: 24px; transition: color 0.3s; }
-.lock-box-3d.unlocked .lock-body-icon { color: #22c55e; }
+.lock-box-3d.unlocked .lock-svg {
+  color: #22c55e;
+  filter: drop-shadow(0 0 8px rgba(34, 197, 94, 0.4));
+}
+.lock-box-3d.unlocked .shackle-path {
+  transform: translateY(-4px) rotate(-35deg);
+}
 
 .neu-input {
   width: 100%; background: var(--neu-bg); border: none; outline: none;
@@ -387,10 +392,10 @@ body::before {
   transform: scale(0.98);
 }
 
-/* RESPONSIVE MOBILE - GLASSY CAPSULE NAVIGATION TABS */
-@media (max-width: 850px) {
+/* RESPONSIVE MOBILE - SEMBUNYIKAN SIDEBAR DESKTOP PADA LAYAR MOBILE */
+@media (max-width: 1024px) {
   .app-layout { padding: 12px; gap: 0; }
-  .app-sidebar { display: none; }
+  .app-sidebar { display: none !important; }
   .app-main { padding: 0 0 85px 0; }
   
   .dashboard-topbar { margin-bottom: 16px; }
@@ -414,7 +419,7 @@ body::before {
     box-shadow: 0 4px 15px var(--glass-glow);
   }
 }
-@media (min-width: 851px) { 
+@media (min-width: 1025px) { 
   .mobile-nav { display: none; } 
 }
 
@@ -582,17 +587,20 @@ body::before {
   </div>
 </div>
 
-<!-- MODAL ADMIN 3D NEUMORPHISM DENGAN ANIMASI GEMBOK -->
+<!-- MODAL ADMIN 3D NEUMORPHISM DENGAN ANIMASI GEMBOK SVG MULUS -->
 <div id="adminModal" class="modal-overlay">
   <div class="modal-panel">
     <button id="cancelPinBtn" style="position:absolute; top:16px; right:16px; background:none; border:none; color:var(--text); cursor:pointer; font-size:18px; z-index:2;">✕</button>
     <div class="auth-container">
-      <!-- 3D Neumorphic Lock Element -->
+      <!-- 3D Neumorphic Lock Box -->
       <div class="lock-box-3d" id="lockBox">
-        <div class="lock-shackle" id="lockShackle"></div>
-        <div class="lock-body-icon">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-        </div>
+        <svg class="lock-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <!-- Gagang Gembok Terpisah untuk Animasi Mulur & Terbuka -->
+          <path class="shackle-path" d="M7 11V7a5 5 0 0 1 10 0v4"/>
+          <!-- Badan Gembok -->
+          <rect x="5" y="11" width="14" height="10" rx="2" fill="currentColor" fill-opacity="0.15"/>
+          <circle cx="12" cy="16" r="1"/>
+        </svg>
       </div>
       <h3 style="font-family:var(--font-title); font-size:22px; color:var(--text); margin-bottom:6px;">Verify Your Identity</h3>
       <p style="font-size:12px; color:var(--muted); margin-bottom:24px;">Masukkan PIN Admin untuk masuk ke dashboard.</p>
@@ -642,14 +650,16 @@ const sidebar = $('#sidebar');
 const sidebarToggle = $('#sidebarToggle');
 const savedSidebarState = localStorage.getItem('serabimu_sidebar_collapsed');
 
-if (savedSidebarState === 'true') {
+if (sidebar && savedSidebarState === 'true') {
   sidebar.classList.add('collapsed');
 }
 
-sidebarToggle.addEventListener('click', () => {
-  sidebar.classList.toggle('collapsed');
-  localStorage.setItem('serabimu_sidebar_collapsed', sidebar.classList.contains('collapsed'));
-});
+if (sidebarToggle) {
+  sidebarToggle.addEventListener('click', () => {
+    sidebar.classList.toggle('collapsed');
+    localStorage.setItem('serabimu_sidebar_collapsed', sidebar.classList.contains('collapsed'));
+  });
+}
 
 // MANAJEMEN TEMA (TUNGGAL DAN SINKRON)
 const savedTheme = localStorage.getItem('serabimu_theme') || 'indigo';
@@ -909,7 +919,7 @@ onSnapshot(query(collection(db, 'posts'), orderBy('createdAt', 'desc')), snap =>
   });
 });
 
-/* ADMIN 3D NEUMORPHISM LOGIN DENGAN ANIMASI GEMBOK TERBUKA */
+/* ADMIN 3D NEUMORPHISM LOGIN DENGAN ANIMASI GEMBOK SVG MULUS */
 const adminModal = $('#adminModal');
 const lockBox = $('#lockBox');
 const adminPinInput = $('#adminPinInput');
@@ -921,19 +931,24 @@ const handleAdminOpen = e => {
   adminModal.classList.add('open'); 
   adminPinInput.focus(); 
 };
-$('#adminLoginTrigger').addEventListener('click', handleAdminOpen);
-$('#mobileAdminTrigger').addEventListener('click', handleAdminOpen);
+
+const adminTrigger = $('#adminLoginTrigger');
+if(adminTrigger) adminTrigger.addEventListener('click', handleAdminOpen);
+
+const mobileAdminTrigger = $('#mobileAdminTrigger');
+if(mobileAdminTrigger) mobileAdminTrigger.addEventListener('click', handleAdminOpen);
+
 $('#cancelPinBtn').addEventListener('click', () => adminModal.classList.remove('open'));
 
 $('#submitPinBtn').addEventListener('click', () => {
   if(adminPinInput.value === atob(ADMIN_PIN_OBF)) {
-    // Animasi Gembok Terbuka Hijau
+    // Animasi Gembok SVG Terbuka Mulus
     lockBox.classList.add('unlocked');
     toast('Akses Diterima! Membuka Admin...');
     sessionStorage.setItem('isAdmin', 'true');
     setTimeout(() => {
       window.location.href = 'admin.html';
-    }, 700); // Jeda transisi animasi mulus
+    }, 750);
   } else { 
     toast('PIN Admin Salah!');
     adminPinInput.style.transform = 'translateX(8px)';
