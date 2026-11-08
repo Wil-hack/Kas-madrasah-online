@@ -11,11 +11,11 @@
 <link rel="preconnect" href="https://firestore.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
-/* 6 TEMA DUAL-TONE (2 WARNA GRADASI MIX) */
+/* 6 TEMA DUAL-TONE: BACKGROUND & KARTU KACA DIBUAT KONTRAS */
 :root[data-theme="aero"] {
-  --bg-gradient: linear-gradient(135deg, #0b1d33 0%, #1d4ed8 100%);
-  --bg: #0b1d33;
-  --glass-bg: rgba(20, 45, 80, 0.6);
+  --bg-gradient: linear-gradient(135deg, #071322 0%, #172554 100%);
+  --bg: #071322;
+  --glass-bg: rgba(15, 32, 60, 0.75);
   --glass-border: rgba(147, 197, 253, 0.4);
   --glass-glow: rgba(56, 189, 248, 0.4);
   --accent: #38bdf8;
@@ -24,9 +24,9 @@
   --muted: #bae6fd;
 }
 :root[data-theme="mint"] {
-  --bg-gradient: linear-gradient(135deg, #06231b 0%, #047857 100%);
-  --bg: #06231b;
-  --glass-bg: rgba(13, 60, 48, 0.6);
+  --bg-gradient: linear-gradient(135deg, #041510 0%, #064e3b 100%);
+  --bg: #041510;
+  --glass-bg: rgba(8, 40, 32, 0.75);
   --glass-border: rgba(110, 231, 183, 0.4);
   --glass-glow: rgba(52, 211, 153, 0.4);
   --accent: #34d399;
@@ -35,9 +35,9 @@
   --muted: #a7f3d0;
 }
 :root[data-theme="sunset"] {
-  --bg-gradient: linear-gradient(135deg, #26150b 0%, #b45309 100%);
-  --bg: #26150b;
-  --glass-bg: rgba(65, 35, 18, 0.6);
+  --bg-gradient: linear-gradient(135deg, #180c05 0%, #78350f 100%);
+  --bg: #180c05;
+  --glass-bg: rgba(45, 22, 10, 0.75);
   --glass-border: rgba(252, 211, 77, 0.4);
   --glass-glow: rgba(251, 191, 36, 0.4);
   --accent: #fbbf24;
@@ -46,9 +46,9 @@
   --muted: #fef08a;
 }
 :root[data-theme="cyber"] {
-  --bg-gradient: linear-gradient(135deg, #180b2e 0%, #7e22ce 100%);
-  --bg: #180b2e;
-  --glass-bg: rgba(45, 20, 80, 0.6);
+  --bg-gradient: linear-gradient(135deg, #0f051d 0%, #581c87 100%);
+  --bg: #0f051d;
+  --glass-bg: rgba(30, 12, 55, 0.75);
   --glass-border: rgba(244, 114, 182, 0.4);
   --glass-glow: rgba(192, 132, 252, 0.4);
   --accent: #f472b6;
@@ -57,9 +57,9 @@
   --muted: #f5d0fe;
 }
 :root[data-theme="oled"] {
-  --bg-gradient: linear-gradient(135deg, #000000 0%, #3f3f46 100%);
+  --bg-gradient: linear-gradient(135deg, #000000 0%, #18181b 100%);
   --bg: #000000;
-  --glass-bg: rgba(24, 24, 27, 0.75);
+  --glass-bg: rgba(18, 18, 20, 0.85);
   --glass-border: rgba(255, 255, 255, 0.25);
   --glass-glow: rgba(255, 255, 255, 0.3);
   --accent: #ffffff;
@@ -68,10 +68,10 @@
   --muted: #a1a1aa;
 }
 :root[data-theme="light"] {
-  --bg-gradient: linear-gradient(135deg, #f1f5f9 0%, #bae6fd 100%);
-  --bg: #f1f5f9;
-  --glass-bg: rgba(255, 255, 255, 0.85);
-  --glass-border: rgba(203, 213, 225, 0.7);
+  --bg-gradient: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%);
+  --bg: #e2e8f0;
+  --glass-bg: rgba(255, 255, 255, 0.9);
+  --glass-border: rgba(203, 213, 225, 0.8);
   --glass-glow: rgba(2, 132, 199, 0.25);
   --accent: #0284c7;
   --soft: #0369a1;
@@ -99,7 +99,6 @@ body {
   transition: color 0.4s ease;
 }
 
-/* LAPISAN BACKGROUND GRADASI MIX YANG TERKUNCI PENUH DI LAYAR HP */
 body::before {
   content: '';
   position: fixed;
@@ -143,7 +142,7 @@ body::before {
   border-radius: var(--radius-md); transition: .3s; border: 1px solid transparent;
 }
 .menu-item:hover, .menu-item.active {
-  color: var(--text); background: rgba(125, 125, 125, 0.1); border-color: var(--glass-border);
+  color: var(--text); background: rgba(125, 125, 125, 0.12); border-color: var(--glass-border);
 }
 .menu-item.active {
   background: linear-gradient(135deg, var(--glass-glow), transparent);
@@ -189,7 +188,7 @@ body::before {
   display: none; align-items: center; justify-content: center; padding: 0 4px;
 }
 
-/* PEMILIH TEMA DUAL-TONE (IKON BELAH 2 WARNA) */
+/* PEMILIH TEMA DUAL-TONE */
 .theme-selector-panel {
   display: flex; gap: 6px; background: var(--glass-bg); border: 1px solid var(--glass-border);
   padding: 5px 8px; border-radius: 99px; backdrop-filter: blur(16px); align-items: center;
@@ -208,7 +207,7 @@ body::before {
   background: var(--glass-bg); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
 }
 .hero-video-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; opacity: 0.35; }
-.hero-overlay { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(0,0,0,0.4) 0%, transparent 100%); z-index: -1; }
+.hero-overlay { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(0,0,0,0.3) 0%, transparent 100%); z-index: -1; }
 .hero-dashboard h1 {
   font-family: var(--font-title); font-size: clamp(26px, 4vw, 40px); font-weight: 700; margin-bottom: 8px;
   background: linear-gradient(180deg, var(--text) 0%, var(--soft) 100%); -webkit-background-clip: text; background-clip: text; color: transparent;
@@ -226,7 +225,7 @@ body::before {
 .chip.active { background: linear-gradient(135deg, var(--glass-glow), transparent); color: var(--soft); font-weight: 700; }
 
 /* KATALOG */
-.section-header { font-family: var(--font-title); font-size: 20px; font-weight: 600; margin-bottom: 14px; display: flex; justify-content: space-between; align-items: center; }
+.section-header { font-family: var(--font-title); font-size: 20px; font-weight: 600; margin-bottom: 14px; display: flex; justify-content: space-between; align-items: center; color: var(--text); }
 .scroll-hint { font-size: 11px; color: var(--soft); font-family: var(--font-body); font-weight: 500; }
 
 .products-scroll-container {
@@ -278,13 +277,13 @@ body::before {
 .post-media-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 4px; background: #000; }
 .post-media-grid img, .post-media-grid video { width: 100%; height: 240px; object-fit: cover; display: block; }
 .post-actions { padding: 10px 18px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--glass-border); font-size: 12px; color: var(--muted); }
-.btn-like { background: rgba(125,125,125,0.1); border: 1px solid var(--glass-border); color: var(--text); padding: 5px 12px; border-radius: 99px; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: .25s; font-family: var(--font-body); }
+.btn-like { background: rgba(125,125,125,0.12); border: 1px solid var(--glass-border); color: var(--text); padding: 5px 12px; border-radius: 99px; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: .25s; font-family: var(--font-body); }
 .btn-like.liked { color: #ff4757; border-color: rgba(255,71,87,0.4); background: rgba(255,71,87,0.15); }
 
 /* CART & MODALS */
 .cart-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.65); backdrop-filter: blur(8px); z-index: 500; opacity: 0; visibility: hidden; transition: .3s; }
 .cart-overlay.open { opacity: 1; visibility: visible; }
-.cart-drawer { position: fixed; top: 0; right: 0; height: 100%; width: min(400px, 90vw); background: var(--bg); backdrop-filter: blur(25px); border-left: 1px solid var(--glass-border); z-index: 501; transform: translateX(100%); transition: transform .4s cubic-bezier(.2,.8,.2,1); display: flex; flex-direction: column; padding: 24px; }
+.cart-drawer { position: fixed; top: 0; right: 0; height: 100%; width: min(400px, 90vw); background: var(--glass-bg); backdrop-filter: blur(25px); border-left: 1px solid var(--glass-border); z-index: 501; transform: translateX(100%); transition: transform .4s cubic-bezier(.2,.8,.2,1); display: flex; flex-direction: column; padding: 24px; color: var(--text); }
 .cart-drawer.open { transform: translateX(0); }
 .cart-body { flex: 1; overflow-y: auto; margin: 15px 0; }
 .cart-item { display: flex; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--glass-border); align-items: center; }
@@ -292,7 +291,7 @@ body::before {
 
 .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.75); backdrop-filter: blur(8px); z-index: 1000; display: none; align-items: center; justify-content: center; padding: 20px; }
 .modal-overlay.open { display: flex; }
-.modal-panel { background: var(--bg); backdrop-filter: blur(25px); border: 1px solid var(--glass-border); border-radius: 20px; width: 100%; max-width: 500px; max-height: 90vh; overflow-y: auto; position: relative; padding: 24px; color: var(--text); }
+.modal-panel { background: var(--glass-bg); backdrop-filter: blur(25px); border: 1px solid var(--glass-border); border-radius: 20px; width: 100%; max-width: 500px; max-height: 90vh; overflow-y: auto; position: relative; padding: 24px; color: var(--text); }
 
 /* RESPONSIVE MOBILE */
 @media (max-width: 850px) {
@@ -316,7 +315,7 @@ body::before {
 
   .mobile-nav { 
     position: fixed; bottom: 0; left: 0; right: 0; height: 60px; 
-    background: var(--bg); backdrop-filter: blur(22px); 
+    background: var(--glass-bg); backdrop-filter: blur(22px); 
     border-top: 1px solid var(--glass-border); display: flex; 
     justify-content: space-around; align-items: center; z-index: 999; 
   }
@@ -367,12 +366,12 @@ body::before {
       </div>
       <div style="display: flex; align-items: center; gap: 8px;">
         <div class="theme-selector-panel">
-          <div class="theme-dot" data-t="aero" style="background:linear-gradient(135deg, #0b1d33 50%, #38bdf8 50%);" title="Aero Blue"></div>
-          <div class="theme-dot" data-t="mint" style="background:linear-gradient(135deg, #06231b 50%, #34d399 50%);" title="Emerald Mint"></div>
-          <div class="theme-dot" data-t="sunset" style="background:linear-gradient(135deg, #26150b 50%, #fbbf24 50%);" title="Sunset Gold"></div>
-          <div class="theme-dot" data-t="cyber" style="background:linear-gradient(135deg, #180b2e 50%, #f472b6 50%);" title="Cyberpunk"></div>
+          <div class="theme-dot" data-t="aero" style="background:linear-gradient(135deg, #071322 50%, #38bdf8 50%);" title="Aero Blue"></div>
+          <div class="theme-dot" data-t="mint" style="background:linear-gradient(135deg, #041510 50%, #34d399 50%);" title="Emerald Mint"></div>
+          <div class="theme-dot" data-t="sunset" style="background:linear-gradient(135deg, #180c05 50%, #fbbf24 50%);" title="Sunset Gold"></div>
+          <div class="theme-dot" data-t="cyber" style="background:linear-gradient(135deg, #0f051d 50%, #f472b6 50%);" title="Cyberpunk"></div>
           <div class="theme-dot" data-t="oled" style="background:linear-gradient(135deg, #000000 50%, #ffffff 50%);" title="Midnight OLED"></div>
-          <div class="theme-dot" data-t="light" style="background:linear-gradient(135deg, #f1f5f9 50%, #0284c7 50%); border:1px solid #cbd5e1;" title="Clean White"></div>
+          <div class="theme-dot" data-t="light" style="background:linear-gradient(135deg, #e2e8f0 50%, #0284c7 50%); border:1px solid #cbd5e1;" title="Clean White"></div>
         </div>
       </div>
     </div>
@@ -384,12 +383,12 @@ body::before {
       </div>
       <div class="topbar-right">
         <div class="theme-selector-panel" style="margin-right: 8px;">
-          <div class="theme-dot" data-t="aero" style="background:linear-gradient(135deg, #0b1d33 50%, #38bdf8 50%);" title="Aero Blue"></div>
-          <div class="theme-dot" data-t="mint" style="background:linear-gradient(135deg, #06231b 50%, #34d399 50%);" title="Emerald Mint"></div>
-          <div class="theme-dot" data-t="sunset" style="background:linear-gradient(135deg, #26150b 50%, #fbbf24 50%);" title="Sunset Gold"></div>
-          <div class="theme-dot" data-t="cyber" style="background:linear-gradient(135deg, #180b2e 50%, #f472b6 50%);" title="Cyberpunk"></div>
+          <div class="theme-dot" data-t="aero" style="background:linear-gradient(135deg, #071322 50%, #38bdf8 50%);" title="Aero Blue"></div>
+          <div class="theme-dot" data-t="mint" style="background:linear-gradient(135deg, #041510 50%, #34d399 50%);" title="Emerald Mint"></div>
+          <div class="theme-dot" data-t="sunset" style="background:linear-gradient(135deg, #180c05 50%, #fbbf24 50%);" title="Sunset Gold"></div>
+          <div class="theme-dot" data-t="cyber" style="background:linear-gradient(135deg, #0f051d 50%, #f472b6 50%);" title="Cyberpunk"></div>
           <div class="theme-dot" data-t="oled" style="background:linear-gradient(135deg, #000000 50%, #ffffff 50%);" title="Midnight OLED"></div>
-          <div class="theme-dot" data-t="light" style="background:linear-gradient(135deg, #f1f5f9 50%, #0284c7 50%); border:1px solid #cbd5e1;" title="Clean White"></div>
+          <div class="theme-dot" data-t="light" style="background:linear-gradient(135deg, #e2e8f0 50%, #0284c7 50%); border:1px solid #cbd5e1;" title="Clean White"></div>
         </div>
 
         <div class="status-badge" id="openBadge">
@@ -455,12 +454,12 @@ body::before {
 <div class="cart-overlay" id="cartOverlay"></div>
 <div class="cart-drawer" id="cartDrawer">
   <div style="display:flex; justify-content:space-between; align-items:center;">
-    <h3 style="font-family:var(--font-title); font-size:20px;">Keranjang</h3>
+    <h3 style="font-family:var(--font-title); font-size:20px; color:var(--text);">Keranjang</h3>
     <button id="cartClose" style="background:none; border:none; color:var(--text); cursor:pointer; font-size:18px;">✕</button>
   </div>
   <div class="cart-body" id="cartBody"></div>
   <div>
-    <div style="display:flex; justify-content:space-between; margin-bottom:14px; font-weight:700;">
+    <div style="display:flex; justify-content:space-between; margin-bottom:14px; font-weight:700; color:var(--text);">
       <span>Total</span><span id="cartTotal" style="color:var(--soft)">Rp 0</span>
     </div>
     <button id="checkoutBtn" style="width:100%; background:var(--accent); color:#fff; border:none; padding:12px; border-radius:12px; font-weight:700; cursor:pointer;">Checkout WhatsApp</button>
@@ -479,27 +478,27 @@ body::before {
 <div id="checkoutModal" class="modal-overlay">
   <div class="modal-panel">
     <button id="checkoutClose" style="float:right; background:none; border:none; color:var(--text); cursor:pointer; font-size:18px;">✕</button>
-    <h3 style="font-family:var(--font-title); font-size:20px; margin-bottom:12px;">Detail Pesanan</h3>
+    <h3 style="font-family:var(--font-title); font-size:20px; margin-bottom:12px; color:var(--text);">Detail Pesanan</h3>
     <form id="checkoutForm">
       <label style="font-size:12px; color:var(--muted);">Nama *</label>
-      <input type="text" id="coName" required style="width:100%; background:rgba(125,125,125,0.1); border:1px solid var(--glass-border); padding:10px; border-radius:8px; color:var(--text); margin-bottom:12px; outline:none;">
+      <input type="text" id="coName" required style="width:100%; background:rgba(125,125,125,0.12); border:1px solid var(--glass-border); padding:10px; border-radius:8px; color:var(--text); margin-bottom:12px; outline:none;">
       
       <label style="font-size:12px; color:var(--muted);">No. HP *</label>
-      <input type="tel" id="coPhone" required style="width:100%; background:rgba(125,125,125,0.1); border:1px solid var(--glass-border); padding:10px; border-radius:8px; color:var(--text); margin-bottom:12px; outline:none;">
+      <input type="tel" id="coPhone" required style="width:100%; background:rgba(125,125,125,0.12); border:1px solid var(--glass-border); padding:10px; border-radius:8px; color:var(--text); margin-bottom:12px; outline:none;">
       
       <label style="font-size:12px; color:var(--muted);">Tipe Pesanan *</label>
-      <select id="coType" style="width:100%; background:var(--bg); border:1px solid var(--glass-border); padding:10px; border-radius:8px; color:var(--text); margin-bottom:12px; outline:none;">
-        <option>Dine-in</option>
-        <option>Take-away</option>
-        <option>Delivery</option>
+      <select id="coType" style="width:100%; background:var(--glass-bg); border:1px solid var(--glass-border); padding:10px; border-radius:8px; color:var(--text); margin-bottom:12px; outline:none;">
+        <option style="background:var(--bg); color:var(--text);">Dine-in</option>
+        <option style="background:var(--bg); color:var(--text);">Take-away</option>
+        <option style="background:var(--bg); color:var(--text);">Delivery</option>
       </select>
       
       <div id="addressField" style="display:none;">
         <label style="font-size:12px; color:var(--muted);">Alamat *</label>
-        <textarea id="coAddress" rows="2" style="width:100%; background:rgba(125,125,125,0.1); border:1px solid var(--glass-border); padding:10px; border-radius:8px; color:var(--text); margin-bottom:12px; outline:none;"></textarea>
+        <textarea id="coAddress" rows="2" style="width:100%; background:rgba(125,125,125,0.12); border:1px solid var(--glass-border); padding:10px; border-radius:8px; color:var(--text); margin-bottom:12px; outline:none;"></textarea>
       </div>
 
-      <div id="checkoutSummary" style="background:rgba(125,125,125,0.1); padding:12px; border-radius:8px; margin-bottom:16px; font-size:13px;"></div>
+      <div id="checkoutSummary" style="background:rgba(125,125,125,0.12); padding:12px; border-radius:8px; margin-bottom:16px; font-size:13px; color:var(--text);"></div>
       <button type="submit" style="width:100%; background:var(--accent); color:#fff; border:none; padding:12px; border-radius:8px; font-weight:700; cursor:pointer;">Kirim ke WhatsApp</button>
     </form>
   </div>
@@ -511,7 +510,7 @@ body::before {
     <button id="cancelPinBtn" style="float:right; background:none; border:none; color:var(--text); cursor:pointer; font-size:18px;">✕</button>
     <h3 style="font-family:var(--font-title); font-size:20px; color:var(--soft); margin-bottom:8px;">Masuk Mode Admin</h3>
     <p style="font-size:12px; color:var(--muted); margin-bottom:16px;">Masukkan PIN Admin</p>
-    <input type="password" id="adminPinInput" placeholder="••••" style="width:140px; text-align:center; letter-spacing:6px; font-size:20px; background:rgba(125,125,125,0.1); border:1px solid var(--glass-border); padding:10px; border-radius:8px; color:var(--text); margin-bottom:16px; outline:none;">
+    <input type="password" id="adminPinInput" placeholder="••••" style="width:140px; text-align:center; letter-spacing:6px; font-size:20px; background:rgba(125,125,125,0.12); border:1px solid var(--glass-border); padding:10px; border-radius:8px; color:var(--text); margin-bottom:16px; outline:none;">
     <br>
     <button id="submitPinBtn" style="background:var(--accent); color:#fff; border:none; padding:10px 24px; border-radius:8px; font-weight:700; cursor:pointer;">Masuk</button>
   </div>
