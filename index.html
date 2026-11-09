@@ -11,13 +11,13 @@
 <link rel="preconnect" href="https://firestore.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
-/* TEMA DENGAN EFEK AERO GLASS WINDOWS 7 */
+/* TEMA AERO GLASS MEWAH & KILAU KACA */
 :root[data-theme="indigo"] {
-  --bg-mesh: radial-gradient(at 0% 0%, #1e1b4b 0px, transparent 50%), radial-gradient(at 100% 100%, #0f172a 0px, transparent 50%), radial-gradient(at 50% 50%, #0369a1 0px, transparent 50%);
+  --bg-mesh: radial-gradient(at 0% 0%, #1e1b4b 0px, transparent 70%), radial-gradient(at 100% 100%, #0f172a 0px, transparent 70%), radial-gradient(at 50% 50%, #0369a1 0px, transparent 70%);
   --bg: #020617;
-  --glass-bg: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.05) 100%);
-  --glass-border: rgba(255, 255, 255, 0.4);
-  --glass-glow: rgba(56, 189, 248, 0.3);
+  --glass-bg: linear-gradient(135deg, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0.05) 100%);
+  --glass-border: rgba(255, 255, 255, 0.45);
+  --glass-glow: rgba(56, 189, 248, 0.35);
   --accent: #38bdf8;
   --soft: #bae6fd;
   --text: #ffffff;
@@ -27,11 +27,11 @@
   --neu-shadow-light: #334155;
 }
 :root[data-theme="forest"] {
-  --bg-mesh: radial-gradient(at 0% 0%, #064e3b 0px, transparent 50%), radial-gradient(at 100% 100%, #022c22 0px, transparent 50%), radial-gradient(at 50% 50%, #047857 0px, transparent 50%);
+  --bg-mesh: radial-gradient(at 0% 0%, #064e3b 0px, transparent 70%), radial-gradient(at 100% 100%, #022c22 0px, transparent 70%), radial-gradient(at 50% 50%, #047857 0px, transparent 70%);
   --bg: #022c22;
-  --glass-bg: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.05) 100%);
-  --glass-border: rgba(255, 255, 255, 0.4);
-  --glass-glow: rgba(52, 211, 153, 0.3);
+  --glass-bg: linear-gradient(135deg, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0.05) 100%);
+  --glass-border: rgba(255, 255, 255, 0.45);
+  --glass-glow: rgba(52, 211, 153, 0.35);
   --accent: #34d399;
   --soft: #a7f3d0;
   --text: #ffffff;
@@ -41,11 +41,11 @@
   --neu-shadow-light: #065f46;
 }
 :root[data-theme="coffee"] {
-  --bg-mesh: radial-gradient(at 0% 0%, #431407 0px, transparent 50%), radial-gradient(at 100% 100%, #1c100b 0px, transparent 50%), radial-gradient(at 50% 50%, #78350f 0px, transparent 50%);
+  --bg-mesh: radial-gradient(at 0% 0%, #431407 0px, transparent 70%), radial-gradient(at 100% 100%, #1c100b 0px, transparent 70%), radial-gradient(at 50% 50%, #78350f 0px, transparent 70%);
   --bg: #1c100b;
-  --glass-bg: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.05) 100%);
-  --glass-border: rgba(255, 255, 255, 0.4);
-  --glass-glow: rgba(251, 191, 36, 0.3);
+  --glass-bg: linear-gradient(135deg, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0.05) 100%);
+  --glass-border: rgba(255, 255, 255, 0.45);
+  --glass-glow: rgba(251, 191, 36, 0.35);
   --accent: #fbbf24;
   --soft: #fde68a;
   --text: #ffffff;
@@ -55,11 +55,11 @@
   --neu-shadow-light: #5c1d0a;
 }
 :root[data-theme="cosmic"] {
-  --bg-mesh: radial-gradient(at 0% 0%, #311042 0px, transparent 50%), radial-gradient(at 100% 100%, #1e1b4b 0px, transparent 50%), radial-gradient(at 50% 50%, #701a75 0px, transparent 50%);
+  --bg-mesh: radial-gradient(at 0% 0%, #311042 0px, transparent 70%), radial-gradient(at 100% 100%, #1e1b4b 0px, transparent 70%), radial-gradient(at 50% 50%, #701a75 0px, transparent 70%);
   --bg: #1e1b4b;
-  --glass-bg: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.05) 100%);
-  --glass-border: rgba(255, 255, 255, 0.4);
-  --glass-glow: rgba(244, 114, 182, 0.3);
+  --glass-bg: linear-gradient(135deg, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0.05) 100%);
+  --glass-border: rgba(255, 255, 255, 0.45);
+  --glass-glow: rgba(244, 114, 182, 0.35);
   --accent: #f472b6;
   --soft: #fbcfe8;
   --text: #ffffff;
@@ -69,11 +69,11 @@
   --neu-shadow-light: #4c1d95;
 }
 :root[data-theme="carbon"] {
-  --bg-mesh: radial-gradient(at 0% 0%, #27272a 0px, transparent 50%), radial-gradient(at 100% 100%, #09090b 0px, transparent 50%), radial-gradient(at 50% 50%, #3f3f46 0px, transparent 50%);
+  --bg-mesh: radial-gradient(at 0% 0%, #27272a 0px, transparent 70%), radial-gradient(at 100% 100%, #09090b 0px, transparent 70%), radial-gradient(at 50% 50%, #3f3f46 0px, transparent 70%);
   --bg: #09090b;
-  --glass-bg: linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.03) 100%);
-  --glass-border: rgba(255, 255, 255, 0.35);
-  --glass-glow: rgba(255, 255, 255, 0.2);
+  --glass-bg: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.03) 100%);
+  --glass-border: rgba(255, 255, 255, 0.4);
+  --glass-glow: rgba(255, 255, 255, 0.25);
   --accent: #ffffff;
   --soft: #e4e4e7;
   --text: #ffffff;
@@ -83,12 +83,11 @@
   --neu-shadow-light: #3f3f46;
 }
 :root[data-theme="ice"] {
-  /* BACKGROUND AERO MESH UNTUK TEMA ICE */
-  --bg-mesh: radial-gradient(at 0% 0%, #0284c7 0px, transparent 50%), radial-gradient(at 100% 100%, #38bdf8 0px, transparent 50%), radial-gradient(at 50% 50%, #bae6fd 0px, transparent 50%);
-  --bg: #e0f2fe;
-  --glass-bg: linear-gradient(135deg, rgba(255, 255, 255, 0.65) 0%, rgba(255, 255, 255, 0.25) 100%);
-  --glass-border: rgba(255, 255, 255, 0.8);
-  --glass-glow: rgba(2, 132, 199, 0.2);
+  --bg-mesh: radial-gradient(at 0% 0%, #0284c7 0px, transparent 70%), radial-gradient(at 100% 100%, #38bdf8 0px, transparent 70%), radial-gradient(at 50% 50%, #bae6fd 0px, transparent 70%);
+  --bg: #90cdf4;
+  --glass-bg: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.6) 100%);
+  --glass-border: rgba(255, 255, 255, 0.95);
+  --glass-glow: rgba(56, 189, 248, 0.4);
   --accent: #0284c7;
   --soft: #0369a1;
   --text: #0f172a;
@@ -117,7 +116,7 @@ body {
   position: relative;
 }
 
-/* BACKGROUND LATAR DINAMIS AGAR EFEK KACA KELIHATAN NYATA */
+/* MESH BACKGROUND DINAMIS */
 body::before {
   content: '';
   position: fixed;
@@ -134,15 +133,16 @@ body::before {
 
 .app-layout { display: flex; min-height: 100vh; position: relative; gap: 16px; padding: 16px; max-width: 1500px; margin: 0 auto; }
 
-/* WINDOWS 7 AERO GLASS KARTU & SIDEBAR */
+/* EFEK KACA MEWAH AERO GLASS */
 .app-sidebar, .glass-card, .feed-post, .hero-dashboard, .cart-drawer, .modal-panel, .status-badge, .icon-btn, .theme-selector-panel, .search-widget input {
   background: var(--glass-bg) !important;
-  backdrop-filter: blur(20px) saturate(180%) !important;
-  -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
-  border: 1px solid var(--glass-border) !important;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15), 
-              inset 0 1px 1px rgba(255, 255, 255, 0.6), 
-              inset 0 -1px 1px rgba(0, 0, 0, 0.1) !important;
+  backdrop-filter: blur(30px) saturate(250%) !important;
+  -webkit-backdrop-filter: blur(30px) saturate(250%) !important;
+  border: 1.5px solid var(--glass-border) !important;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.22), 
+              inset 0 2px 3px rgba(255, 255, 255, 0.9), 
+              inset 0 -2px 3px rgba(0, 0, 0, 0.15),
+              0 0 15px var(--glass-glow) !important;
 }
 
 /* SIDEBAR KIRI */
@@ -181,7 +181,7 @@ body::before {
 
 .sidebar-toggle-btn {
   position: absolute; top: 12px; right: 8px; width: 26px; height: 26px;
-  background: rgba(255, 255, 255, 0.2); border: 1px solid var(--glass-border); border-radius: 50%;
+  background: rgba(255, 255, 255, 0.25); border: 1px solid var(--glass-border); border-radius: 50%;
   color: var(--text); display: flex; align-items: center; justify-content: center;
   cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.15); transition: transform 0.3s ease; z-index: 105;
 }
@@ -202,10 +202,10 @@ body::before {
   border-radius: var(--radius-md); transition: background .3s, border-color .3s, color .3s; border: 1px solid transparent;
 }
 .menu-item:hover, .menu-item.active {
-  color: var(--text); background: rgba(255, 255, 255, 0.25); border-color: var(--glass-border);
+  color: var(--text); background: rgba(255, 255, 255, 0.3); border-color: var(--glass-border);
 }
 .menu-item.active {
-  background: linear-gradient(135deg, rgba(255,255,255,0.4), transparent);
+  background: linear-gradient(135deg, rgba(255,255,255,0.5), transparent);
   border-color: var(--glass-border); font-weight: 700;
 }
 .menu-item svg { width: 16px; height: 16px; flex-shrink: 0; }
@@ -270,14 +270,14 @@ body::before {
 .category-wrapper { display: flex; gap: 8px; overflow-x: auto; margin-bottom: 16px; scrollbar-width: none; }
 .category-wrapper::-webkit-scrollbar { display: none; }
 .chip {
-  background: var(--glass-bg); backdrop-filter: blur(12px); border: 1px solid var(--glass-border);
+  background: var(--glass-bg); backdrop-filter: blur(12px); border: 1.5px solid var(--glass-border);
   color: var(--text); padding: 7px 16px; border-radius: 99px; font-size: 11.5px; font-weight: 600; cursor: pointer; transition: .3s; white-space: nowrap;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.5);
+  box-shadow: 0 6px 15px rgba(0,0,0,0.1), inset 0 1px 2px rgba(255,255,255,0.8);
 }
-.chip:hover, .chip.active { color: var(--text); border-color: var(--accent); }
-.chip.active { background: linear-gradient(135deg, rgba(255,255,255,0.4), transparent); font-weight: 700; }
+.chip:hover, .chip.active { color: var(--text); border-color: #fff; }
+.chip.active { background: linear-gradient(135deg, rgba(255,255,255,0.5), transparent); font-weight: 700; }
 
-/* KATALOG & KARTU PRODUK */
+/* KATALOG & KARTU PRODUK DENGAN EFEK GLOSSY */
 .section-header { font-family: var(--font-title); font-size: 18px; font-weight: 600; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; color: var(--text); }
 .scroll-hint { font-size: 11px; color: var(--soft); font-family: var(--font-body); font-weight: 500; }
 
@@ -293,23 +293,33 @@ body::before {
   overflow: hidden; transition: .35s; display: flex; flex-direction: column; position: relative; cursor: pointer;
   flex-shrink: 0; scroll-snap-align: start;
 }
+/* Efek kilap kaca (specular highlight) khusus kartu */
+.glass-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; height: 40%;
+  background: linear-gradient(180deg, rgba(255,255,255,0.5) 0%, transparent 100%);
+  pointer-events: none;
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  z-index: 3;
+}
 .glass-card:hover { transform: translateY(-4px); border-color: #fff !important; }
 .card-img-wrap { position: relative; height: 125px; overflow: hidden; background: rgba(0,0,0,0.1); }
 .card-img-wrap img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s cubic-bezier(.2,.8,.2,1); }
 .glass-card:hover .card-img-wrap img { transform: scale(1.08); }
-.card-badges { position: absolute; top: 8px; left: 8px; display: flex; flex-direction: column; gap: 4px; z-index: 2; }
+.card-badges { position: absolute; top: 8px; left: 8px; display: flex; flex-direction: column; gap: 4px; z-index: 4; }
 .badge-tag { font-size: 8px; font-weight: 700; letter-spacing: .5px; text-transform: uppercase; padding: 2px 5px; border-radius: 5px; color: #fff; }
 .badge-best { background: linear-gradient(100deg, #ff6b35, #f7c948); }
 .badge-new { background: linear-gradient(100deg, #22c55e, #16a34a); }
 .wishlist-btn {
-  position: absolute; top: 8px; right: 8px; background: rgba(0, 0, 0, 0.3); backdrop-filter: blur(8px);
+  position: absolute; top: 8px; right: 8px; background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(8px);
   border: none; width: 26px; height: 26px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center;
-  color: #fff; font-size: 11px; transition: .25s; z-index: 2;
+  color: #fff; font-size: 11px; transition: .25s; z-index: 4;
 }
-.wishlist-btn:hover { transform: scale(1.1); background: rgba(0,0,0,0.6); }
+.wishlist-btn:hover { transform: scale(1.1); background: rgba(0,0,0,0.7); }
 .wishlist-btn.active { background: #ff4757; }
 
-.card-body { padding: 10px; display: flex; flex-direction: column; flex: 1; }
+.card-body { padding: 10px; display: flex; flex-direction: column; flex: 1; z-index: 2; }
 .card-title { font-family: var(--font-title); font-size: 14px; font-weight: 600; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--text); }
 .card-rating { font-size: 10px; color: var(--soft); margin-bottom: 4px; display: flex; align-items: center; gap: 4px; min-height: 15px; }
 .card-desc { color: var(--muted); font-size: 10.5px; margin-bottom: 8px; flex: 1; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
@@ -329,7 +339,7 @@ body::before {
 .post-media-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 4px; background: rgba(0,0,0,0.1); }
 .post-media-grid img, .post-media-grid video { width: 100%; height: 220px; object-fit: cover; display: block; }
 .post-actions { padding: 8px 16px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--glass-border); font-size: 11.5px; color: var(--muted); }
-.btn-like { background: rgba(255,255,255,0.2); border: 1px solid var(--glass-border); color: var(--text); padding: 4px 10px; border-radius: 99px; cursor: pointer; display: flex; align-items: center; gap: 5px; transition: .25s; font-family: var(--font-body); }
+.btn-like { background: rgba(255,255,255,0.25); border: 1px solid var(--glass-border); color: var(--text); padding: 4px 10px; border-radius: 99px; cursor: pointer; display: flex; align-items: center; gap: 5px; transition: .25s; font-family: var(--font-body); }
 .btn-like.liked { color: #ff4757; border-color: rgba(255,71,87,0.4); background: rgba(255,71,87,0.2); }
 
 /* CART & MODALS */
@@ -501,10 +511,10 @@ body::before {
     <h3 style="font-family:var(--font-title); font-size:18px; margin-bottom:10px; color:var(--text);">Detail Pesanan</h3>
     <form id="checkoutForm">
       <label style="font-size:11.5px; color:var(--muted);">Nama *</label>
-      <input type="text" id="coName" required style="width:100%; background:rgba(255,255,255,0.1); border:1px solid var(--glass-border); padding:8px 10px; border-radius:8px; color:var(--text); margin-bottom:10px; outline:none;">
+      <input type="text" id="coName" required style="width:100%; background:rgba(255,255,255,0.15); border:1px solid var(--glass-border); padding:8px 10px; border-radius:8px; color:var(--text); margin-bottom:10px; outline:none;">
       
       <label style="font-size:11.5px; color:var(--muted);">No. HP *</label>
-      <input type="tel" id="coPhone" required style="width:100%; background:rgba(255,255,255,0.1); border:1px solid var(--glass-border); padding:8px 10px; border-radius:8px; color:var(--text); margin-bottom:10px; outline:none;">
+      <input type="tel" id="coPhone" required style="width:100%; background:rgba(255,255,255,0.15); border:1px solid var(--glass-border); padding:8px 10px; border-radius:8px; color:var(--text); margin-bottom:10px; outline:none;">
       
       <label style="font-size:11.5px; color:var(--muted);">Tipe Pesanan *</label>
       <select id="coType" style="width:100%; background:var(--glass-bg); border:1px solid var(--glass-border); padding:8px 10px; border-radius:8px; color:var(--text); margin-bottom:10px; outline:none;">
@@ -515,10 +525,10 @@ body::before {
       
       <div id="addressField" style="display:none;">
         <label style="font-size:11.5px; color:var(--muted);">Alamat *</label>
-        <textarea id="coAddress" rows="2" style="width:100%; background:rgba(255,255,255,0.1); border:1px solid var(--glass-border); padding:8px 10px; border-radius:8px; color:var(--text); margin-bottom:10px; outline:none;"></textarea>
+        <textarea id="coAddress" rows="2" style="width:100%; background:rgba(255,255,255,0.15); border:1px solid var(--glass-border); padding:8px 10px; border-radius:8px; color:var(--text); margin-bottom:10px; outline:none;"></textarea>
       </div>
 
-      <div id="checkoutSummary" style="background:rgba(255,255,255,0.1); padding:10px; border-radius:8px; margin-bottom:12px; font-size:12.5px; color:var(--text);"></div>
+      <div id="checkoutSummary" style="background:rgba(255,255,255,0.15); padding:10px; border-radius:8px; margin-bottom:12px; font-size:12.5px; color:var(--text);"></div>
       <button type="submit" style="width:100%; background:var(--accent); color:#fff; border:none; padding:10px; border-radius:8px; font-weight:700; cursor:pointer;">Kirim ke WhatsApp</button>
     </form>
   </div>
