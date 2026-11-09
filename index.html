@@ -145,6 +145,7 @@ body::before {
     display: flex !important;
     width: 200px;
     background: var(--glass-bg); backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
     border: 1px solid var(--glass-border);
     border-radius: var(--radius-lg);
     padding: 16px 10px;
@@ -152,20 +153,33 @@ body::before {
     position: sticky; top: 16px;
     height: calc(100vh - 32px);
     z-index: 100;
-    transition: width 0.3s ease;
+    transition: width 0.35s cubic-bezier(0.25, 1, 0.5, 1), padding 0.35s ease;
     flex-shrink: 0;
     box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    overflow: hidden;
   }
   .app-sidebar.collapsed { width: 65px; padding: 16px 8px; }
+  
+  /* Transisi halus teks sidebar */
+  .app-sidebar .brand-sub,
+  .app-sidebar .brand-title,
+  .app-sidebar .menu-item span {
+    opacity: 1; visibility: visible; white-space: nowrap;
+    transition: opacity 0.25s ease 0.1s, visibility 0.25s ease 0.1s;
+  }
   .app-sidebar.collapsed .brand-sub,
   .app-sidebar.collapsed .brand-title,
-  .app-sidebar.collapsed .menu-item span { display: none; }
+  .app-sidebar.collapsed .menu-item span {
+    opacity: 0; visibility: hidden;
+    transition: opacity 0.1s ease, visibility 0.1s ease;
+  }
   .app-sidebar.collapsed .menu-item { justify-content: center; padding: 10px 0; }
+  
   .sidebar-toggle-btn {
     position: absolute; top: 12px; right: 8px; width: 24px; height: 24px;
     background: rgba(255, 255, 255, 0.2); border: 1px solid var(--glass-border); border-radius: 50%;
     color: var(--text); display: flex; align-items: center; justify-content: center;
-    cursor: pointer; z-index: 105; transition: transform 0.3s ease;
+    cursor: pointer; z-index: 105; transition: transform 0.35s ease;
   }
   .app-sidebar.collapsed .sidebar-toggle-btn { right: 20px; }
   .app-sidebar.collapsed .sidebar-toggle-btn svg { transform: rotate(180deg); }
@@ -190,7 +204,7 @@ body::before {
 }
 
 /* SIDEBAR KONTEN */
-.brand-box { margin-bottom: 20px; padding-left: 4px; }
+.brand-box { margin-bottom: 20px; padding-left: 4px; position: relative; }
 .brand-title { font-family: var(--font-title); font-size: 17px; font-weight: 700; color: var(--text); }
 .brand-sub { font-size: 8.5px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-top: 2px; }
 .sidebar-menu { display: flex; flex-direction: column; gap: 6px; flex: 1; }
