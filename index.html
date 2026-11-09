@@ -11,7 +11,7 @@
 <link rel="preconnect" href="https://firestore.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
-/* TEMA DENGAN WARNA AKSEN DAN TEKS TOMBOL YANG KONTRAS */
+/* TEMA DENGAN WARNA AKSEN DAN TEKS TOMBOL KONTRAS */
 :root[data-theme="indigo"] {
   --bg-mesh: radial-gradient(at 0% 0%, #1e1b4b 0px, transparent 70%), radial-gradient(at 100% 100%, #0f172a 0px, transparent 70%);
   --bg: #020617;
@@ -78,7 +78,7 @@
   --glass-bg: rgba(39, 39, 42, 0.75);
   --glass-border: rgba(255, 255, 255, 0.25);
   --glass-glow: rgba(255, 255, 255, 0.15);
-  --accent: #f43f5e; /* Aksen merah mawar agar kontras di tema carbon */
+  --accent: #f43f5e;
   --btn-text: #ffffff;
   --soft: #f43f5e;
   --text: #ffffff;
@@ -90,7 +90,7 @@
 :root[data-theme="ice"] {
   --bg-mesh: radial-gradient(at 0% 0%, #0284c7 0px, transparent 70%), radial-gradient(at 100% 100%, #38bdf8 0px, transparent 70%);
   --bg: #e0f2fe;
-  --glass-bg: rgba(255, 255, 255, 0.7);
+  --glass-bg: rgba(255, 255, 255, 0.75);
   --glass-border: rgba(2, 132, 199, 0.25);
   --glass-glow: rgba(2, 132, 199, 0.15);
   --accent: #0284c7;
@@ -120,7 +120,6 @@ body {
   min-height: 100vh;
   overflow-x: hidden;
   position: relative;
-  padding-bottom: 80px;
 }
 
 body::before {
@@ -137,19 +136,81 @@ body::before {
 
 ::selection { background: var(--soft); color: #fff; }
 
-.app-layout { max-width: 600px; margin: 0 auto; padding: 16px; min-height: 100vh; display: flex; flex-direction: column; }
-.app-sidebar { display: none !important; }
-.app-main { width: 100%; }
+.app-layout { display: flex; min-height: 100vh; position: relative; gap: 16px; padding: 16px; max-width: 1400px; margin: 0 auto; }
+
+/* LAYOUT UNTUK DESKTOP VIEW */
+@media (min-width: 769px) {
+  body { padding-bottom: 0; }
+  .app-sidebar {
+    display: flex !important;
+    width: 200px;
+    background: var(--glass-bg); backdrop-filter: blur(25px);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-lg);
+    padding: 16px 10px;
+    flex-direction: column;
+    position: sticky; top: 16px;
+    height: calc(100vh - 32px);
+    z-index: 100;
+    transition: width 0.3s ease;
+    flex-shrink: 0;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+  }
+  .app-sidebar.collapsed { width: 65px; padding: 16px 8px; }
+  .app-sidebar.collapsed .brand-sub,
+  .app-sidebar.collapsed .brand-title,
+  .app-sidebar.collapsed .menu-item span { display: none; }
+  .app-sidebar.collapsed .menu-item { justify-content: center; padding: 10px 0; }
+  .sidebar-toggle-btn {
+    position: absolute; top: 12px; right: 8px; width: 24px; height: 24px;
+    background: rgba(255, 255, 255, 0.2); border: 1px solid var(--glass-border); border-radius: 50%;
+    color: var(--text); display: flex; align-items: center; justify-content: center;
+    cursor: pointer; z-index: 105; transition: transform 0.3s ease;
+  }
+  .app-sidebar.collapsed .sidebar-toggle-btn { right: 20px; }
+  .app-sidebar.collapsed .sidebar-toggle-btn svg { transform: rotate(180deg); }
+  .mobile-bottom-nav { display: none !important; }
+  .app-main { flex: 1; min-width: 0; }
+}
+
+/* LAYOUT UNTUK MOBILE VIEW */
+@media (max-width: 768px) {
+  body { padding-bottom: 80px; }
+  .app-layout { padding: 12px; max-width: 600px; }
+  .app-sidebar { display: none !important; }
+  .mobile-bottom-nav {
+    display: flex !important;
+    position: fixed; bottom: 12px; left: 16px; right: 16px; max-width: 500px; margin: 0 auto;
+    background: var(--glass-bg); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
+    border: 1px solid var(--glass-border); border-radius: 99px;
+    justify-content: space-around; align-items: center; padding: 8px 16px;
+    z-index: 200; box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+  }
+  .app-main { width: 100%; }
+}
+
+/* SIDEBAR KONTEN */
+.brand-box { margin-bottom: 20px; padding-left: 4px; }
+.brand-title { font-family: var(--font-title); font-size: 17px; font-weight: 700; color: var(--text); }
+.brand-sub { font-size: 8.5px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-top: 2px; }
+.sidebar-menu { display: flex; flex-direction: column; gap: 6px; flex: 1; }
+.menu-item {
+  display: flex; align-items: center; gap: 8px; padding: 9px 10px;
+  color: var(--text); text-decoration: none; font-size: 12px; font-weight: 500;
+  border-radius: var(--radius-md); transition: background .3s, border-color .3s; border: 1px solid transparent;
+}
+.menu-item:hover, .menu-item.active { background: rgba(255, 255, 255, 0.15); border-color: var(--glass-border); }
+.menu-item svg { width: 16px; height: 16px; flex-shrink: 0; }
 
 /* TOPBAR */
 .dashboard-topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; gap: 10px; flex-wrap: wrap; }
-.search-widget { position: relative; flex: 1; min-width: 200px; }
+.search-widget { position: relative; flex: 1; min-width: 180px; }
 .search-widget input {
   width: 100%; background: var(--glass-bg); backdrop-filter: blur(16px);
-  border: 1px solid var(--glass-border); padding: 9px 16px 9px 38px; border-radius: 99px;
-  color: var(--text); font-size: 12.5px; outline: none; box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+  border: 1px solid var(--glass-border); padding: 8px 14px 8px 36px; border-radius: 99px;
+  color: var(--text); font-size: 12px; outline: none; box-shadow: 0 8px 20px rgba(0,0,0,0.1);
 }
-.search-widget svg { position: absolute; left: 13px; top: 50%; transform: translateY(-50%); width: 15px; height: 15px; color: var(--muted); }
+.search-widget svg { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); width: 14px; height: 14px; color: var(--muted); }
 
 .topbar-right { display: flex; align-items: center; gap: 8px; }
 .status-badge {
@@ -159,6 +220,19 @@ body::before {
 }
 .status-badge .dot { width: 6px; height: 6px; border-radius: 50%; background: #22c55e; box-shadow: 0 0 6px #22c55e; }
 .status-badge.closed .dot { background: #ef4444; box-shadow: 0 0 6px #ef4444; }
+
+.icon-btn {
+  background: var(--glass-bg); backdrop-filter: blur(16px); border: 1px solid var(--glass-border);
+  color: var(--text); width: 35px; height: 35px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center; cursor: pointer; position: relative;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+}
+.icon-btn svg { width: 16px; height: 16px; }
+.cart-count {
+  position: absolute; top: -2px; right: -2px; background: #f43f5e; color: #fff;
+  font-size: 9.5px; font-weight: 700; min-width: 15px; height: 15px; border-radius: 8px;
+  display: none; align-items: center; justify-content: center; padding: 0 3px;
+}
 
 /* PEMILIH TEMA */
 .theme-selector-panel {
@@ -173,15 +247,13 @@ body::before {
 .hero-dashboard {
   position: relative; border-radius: var(--radius-lg); overflow: hidden;
   padding: 24px 20px; margin-bottom: 20px; border: 1px solid var(--glass-border);
-  box-shadow: 0 15px 30px rgba(0,0,0,0.15); min-height: 150px;
+  box-shadow: 0 15px 30px rgba(0,0,0,0.15); min-height: 140px;
   display: flex; flex-direction: column; justify-content: center;
   background: var(--glass-bg); backdrop-filter: blur(20px);
 }
 .hero-video-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; opacity: 0.3; }
 .hero-overlay { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(0,0,0,0.3) 0%, transparent 100%); z-index: -1; }
-.hero-dashboard h1 {
-  font-family: var(--font-title); font-size: clamp(22px, 5vw, 30px); font-weight: 700; margin-bottom: 4px; color: var(--text);
-}
+.hero-dashboard h1 { font-family: var(--font-title); font-size: clamp(22px, 4vw, 30px); font-weight: 700; margin-bottom: 4px; color: var(--text); }
 .hero-dashboard p { color: var(--muted); max-width: 400px; font-size: 12px; }
 
 /* CHIPS */
@@ -207,7 +279,7 @@ body::before {
 .products-scroll-container::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 99px; }
 
 .glass-card {
-  min-width: 185px; max-width: 185px; background: var(--glass-bg); backdrop-filter: blur(20px);
+  min-width: 180px; max-width: 180px; background: var(--glass-bg); backdrop-filter: blur(20px);
   border: 1px solid var(--glass-border); border-radius: var(--radius-lg);
   overflow: hidden; display: flex; flex-direction: column; position: relative; cursor: pointer;
   box-shadow: 0 10px 25px rgba(0,0,0,0.15); flex-shrink: 0; scroll-snap-align: start;
@@ -231,11 +303,9 @@ body::before {
 .card-desc { color: var(--muted); font-size: 10px; margin-bottom: 6px; flex: 1; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 .card-footer { display: flex; align-items: center; justify-content: space-between; margin-top: auto; padding-top: 5px; border-top: 1px solid var(--glass-border); }
 .card-price { font-weight: 700; color: var(--soft); font-size: 11.5px; }
-/* Tombol Pesan dengan warna teks kontras */
 .btn-glass-add {
   background: var(--accent); color: var(--btn-text); border: none; padding: 4px 9px; border-radius: 99px; font-size: 9.5px; font-weight: 700; cursor: pointer;
 }
-.btn-glass-add:hover { filter: brightness(1.15); transform: scale(1.04); }
 
 /* FEED / KABAR TOKO */
 .feed-container { display: flex; flex-direction: column; gap: 16px; }
@@ -249,14 +319,7 @@ body::before {
 .btn-like { background: rgba(255,255,255,0.08); border: 1px solid var(--glass-border); color: var(--text); padding: 3px 9px; border-radius: 99px; cursor: pointer; display: flex; align-items: center; gap: 4px; }
 .btn-like.liked { color: #ff4757; border-color: rgba(255,71,87,0.4); background: rgba(255,71,87,0.2); }
 
-/* BOTTOM NAVIGATION BAR */
-.mobile-bottom-nav {
-  position: fixed; bottom: 12px; left: 16px; right: 16px; max-width: 500px; margin: 0 auto;
-  background: var(--glass-bg); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
-  border: 1px solid var(--glass-border); border-radius: 99px;
-  display: flex; justify-content: space-around; align-items: center; padding: 8px 16px;
-  z-index: 200; box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-}
+/* BOTTOM NAV (MOBILE) */
 .nav-item {
   display: flex; flex-direction: column; align-items: center; gap: 2px;
   color: var(--muted); text-decoration: none; font-size: 10px; font-weight: 500; transition: color .2s;
@@ -313,6 +376,32 @@ body::before {
 <body>
 
 <div class="app-layout">
+  <!-- SIDEBAR (OTOMATIS MUNCUL DI DESKTOP VIEW) -->
+  <aside class="app-sidebar" id="sidebar">
+    <button class="sidebar-toggle-btn" id="sidebarToggle" title="Buka/Tutup Sidebar">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>
+    </button>
+    <div class="brand-box">
+      <div class="brand-title">Serabimu</div>
+      <div class="brand-sub">Culinary Dashboard</div>
+    </div>
+    <nav class="sidebar-menu">
+      <a href="#katalog" class="menu-item active">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+        <span>Katalog Menu</span>
+      </a>
+      <a href="#feed" class="menu-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+        <span>Kabar Toko</span>
+      </a>
+      <a href="#" class="menu-item" id="sidebarAdminTrigger">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l-.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06-.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09A1.65 1.65 0 0 0-1.51 1z"/></svg>
+        <span>Panel Admin</span>
+      </a>
+    </nav>
+  </aside>
+
+  <!-- MAIN AREA -->
   <main class="app-main">
     <div class="dashboard-topbar">
       <div class="search-widget">
@@ -333,6 +422,11 @@ body::before {
           <span class="dot"></span>
           <span id="openText">Memuat...</span>
         </div>
+
+        <button class="icon-btn" id="topbarCartBtn" aria-label="Keranjang">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+          <span class="cart-count" id="cartCount">0</span>
+        </button>
       </div>
     </div>
 
@@ -368,7 +462,7 @@ body::before {
   </main>
 </div>
 
-<!-- BOTTOM NAVIGATION BAR -->
+<!-- BOTTOM NAVIGATION BAR (OTOMATIS MUNCUL DI MOBILE VIEW) -->
 <nav class="mobile-bottom-nav">
   <a href="#katalog" class="nav-item active">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
@@ -497,6 +591,15 @@ const toast = msg => {
   setTimeout(() => t.classList.remove('show'), 2500);
 };
 
+// SIDEBAR TOGGLE UNTUK DESKTOP VIEW
+const sidebar = $('#sidebar');
+const sidebarToggle = $('#sidebarToggle');
+if (sidebarToggle && sidebar) {
+  sidebarToggle.addEventListener('click', () => {
+    sidebar.classList.toggle('collapsed');
+  });
+}
+
 // MANAJEMEN TEMA
 const savedTheme = localStorage.getItem('serabimu_theme') || 'indigo';
 document.documentElement.setAttribute('data-theme', savedTheme);
@@ -530,6 +633,15 @@ if(isOpenNow()) {
 let wishlist = new Set(JSON.parse(localStorage.getItem('serabimu_wishlist') || '[]'));
 let cart = JSON.parse(localStorage.getItem('serabimu_cart') || '[]');
 let likedPosts = new Set(JSON.parse(localStorage.getItem('serabimu_liked') || '[]'));
+
+function updateCartBadge() {
+  const qty = cart.reduce((s,i) => s + i.qty, 0);
+  const badgeEl = $('#cartCount');
+  if(badgeEl) {
+    if(qty > 0) { badgeEl.style.display = 'flex'; badgeEl.textContent = qty; }
+    else badgeEl.style.display = 'none';
+  }
+}
 
 let allProducts = [], activeCategory = 'all', searchTerm = '';
 const catalogGrid = $('#catalogGrid');
@@ -654,6 +766,7 @@ function addToCart(p) {
 
 const cartDrawer = $('#cartDrawer'), cartOverlay = $('#cartOverlay'), cartBody = $('#cartBody'), cartTotal = $('#cartTotal');
 function renderCart() {
+  updateCartBadge();
   if(cart.length === 0) {
     cartBody.innerHTML = `<div style="color:var(--muted); font-size:12px; text-align:center; padding:14px;">Keranjang kosong</div>`;
     cartTotal.textContent = 'Rp 0';
@@ -672,7 +785,10 @@ function renderCart() {
 }
 window.removeCart = i => { cart.splice(i,1); localStorage.setItem('serabimu_cart', JSON.stringify(cart)); renderCart(); };
 
-$('#navCartBtn').addEventListener('click', e => { e.preventDefault(); cartDrawer.classList.add('open'); cartOverlay.classList.add('open'); renderCart(); });
+const openCartHandler = e => { if(e) e.preventDefault(); cartDrawer.classList.add('open'); cartOverlay.classList.add('open'); renderCart(); };
+if($('#navCartBtn')) $('#navCartBtn').addEventListener('click', openCartHandler);
+if($('#topbarCartBtn')) $('#topbarCartBtn').addEventListener('click', openCartHandler);
+
 $('#cartClose').addEventListener('click', () => { cartDrawer.classList.remove('open'); cartOverlay.classList.remove('open'); });
 cartOverlay.addEventListener('click', () => { cartDrawer.classList.remove('open'); cartOverlay.classList.remove('open'); });
 
@@ -749,8 +865,8 @@ const handleAdminOpen = e => {
   adminPinInput.focus(); 
 };
 
-const adminTrigger = $('#adminLoginTrigger');
-if(adminTrigger) adminTrigger.addEventListener('click', handleAdminOpen);
+if($('#adminLoginTrigger')) $('#adminLoginTrigger').addEventListener('click', handleAdminOpen);
+if($('#sidebarAdminTrigger')) $('#sidebarAdminTrigger').addEventListener('click', handleAdminOpen);
 
 $('#cancelPinBtn').addEventListener('click', () => adminModal.classList.remove('open'));
 
@@ -774,6 +890,8 @@ $('#submitPinBtn').addEventListener('click', () => {
 adminPinInput.addEventListener('keypress', e => {
   if(e.key === 'Enter') $('#submitPinBtn').click();
 });
+
+updateCartBadge();
 </script>
 </body>
 </html>
