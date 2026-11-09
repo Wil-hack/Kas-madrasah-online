@@ -129,7 +129,7 @@ body::before {
 
 .app-layout { display: flex; min-height: 100vh; position: relative; gap: 16px; padding: 16px; max-width: 1500px; margin: 0 auto; }
 
-/* SIDEBAR KIRI - DIOPTIMALKAN AGAR TIDAK TERPOTONG */
+/* SIDEBAR KIRI - RAPI & TIDAK KELUAR GARIS */
 .app-sidebar {
   width: 200px;
   background: var(--glass-bg);
@@ -146,11 +146,12 @@ body::before {
   z-index: 100;
   box-shadow: 0 20px 40px rgba(0,0,0,0.3);
   transition: width 0.3s cubic-bezier(0.25, 1, 0.5, 1), padding 0.3s ease;
-  overflow: visible;
+  overflow: hidden;
   flex-shrink: 0;
 }
 
 .app-sidebar.collapsed { width: 60px; padding: 16px 6px; }
+
 .app-sidebar .brand-sub,
 .app-sidebar .brand-title,
 .app-sidebar .menu-item span {
@@ -159,21 +160,22 @@ body::before {
 .app-sidebar.collapsed .brand-sub,
 .app-sidebar.collapsed .brand-title,
 .app-sidebar.collapsed .menu-item span {
-  opacity: 0; pointer-events: none; transition: opacity 0.05s ease-in-out;
+  opacity: 0; pointer-events: none; width: 0; overflow: hidden; transition: opacity 0.05s ease-in-out;
 }
 .app-sidebar.collapsed .brand-box { text-align: center; padding-left: 0; margin-bottom: 16px; }
 .app-sidebar.collapsed .brand-box::after {
   content: 'S'; font-family: var(--font-title); font-size: 18px; font-weight: 700; color: var(--soft);
 }
-.app-sidebar.collapsed .menu-item { justify-content: center; padding: 8px; }
+.app-sidebar.collapsed .menu-item { justify-content: center; padding: 10px 0; gap: 0; }
 
-/* TOMBOL TOGGLE */
+/* TOMBOL TOGGLE DI DALAM GARIS AMAN */
 .sidebar-toggle-btn {
-  position: absolute; top: 14px; right: -12px; width: 30px; height: 30px;
-  background: var(--glass-bg); border: 2px solid var(--glass-border); border-radius: 50%;
+  position: absolute; top: 12px; right: 8px; width: 26px; height: 26px;
+  background: rgba(255, 255, 255, 0.1); border: 1px solid var(--glass-border); border-radius: 50%;
   color: var(--text); display: flex; align-items: center; justify-content: center;
-  cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.4); transition: transform 0.3s ease; z-index: 105;
+  cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.3); transition: transform 0.3s ease; z-index: 105;
 }
+.app-sidebar.collapsed .sidebar-toggle-btn { right: 17px; }
 .app-sidebar.collapsed .sidebar-toggle-btn svg { transform: rotate(180deg); }
 
 .brand-box { margin-bottom: 20px; padding-left: 4px; position: relative; }
