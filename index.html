@@ -11,7 +11,7 @@
 <link rel="preconnect" href="https://firestore.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
-/* TEMA KACA MODERN YANG LEBIH TIPIS & ELEGAN */
+/* TEMA DENGAN WARNA AKSEN DAN TEKS TOMBOL YANG KONTRAS */
 :root[data-theme="indigo"] {
   --bg-mesh: radial-gradient(at 0% 0%, #1e1b4b 0px, transparent 70%), radial-gradient(at 100% 100%, #0f172a 0px, transparent 70%);
   --bg: #020617;
@@ -19,6 +19,7 @@
   --glass-border: rgba(56, 189, 248, 0.25);
   --glass-glow: rgba(56, 189, 248, 0.2);
   --accent: #38bdf8;
+  --btn-text: #020617;
   --soft: #bae6fd;
   --text: #ffffff;
   --muted: #cbd5e1;
@@ -33,6 +34,7 @@
   --glass-border: rgba(52, 211, 153, 0.25);
   --glass-glow: rgba(52, 211, 153, 0.2);
   --accent: #34d399;
+  --btn-text: #022c22;
   --soft: #a7f3d0;
   --text: #ffffff;
   --muted: #a7f3d0;
@@ -47,6 +49,7 @@
   --glass-border: rgba(251, 191, 36, 0.25);
   --glass-glow: rgba(251, 191, 36, 0.2);
   --accent: #fbbf24;
+  --btn-text: #1c100b;
   --soft: #fde68a;
   --text: #ffffff;
   --muted: #fde68a;
@@ -61,6 +64,7 @@
   --glass-border: rgba(244, 114, 182, 0.25);
   --glass-glow: rgba(244, 114, 182, 0.2);
   --accent: #f472b6;
+  --btn-text: #1e1b4b;
   --soft: #fbcfe8;
   --text: #ffffff;
   --muted: #fbcfe8;
@@ -71,11 +75,12 @@
 :root[data-theme="carbon"] {
   --bg-mesh: radial-gradient(at 0% 0%, #27272a 0px, transparent 70%), radial-gradient(at 100% 100%, #09090b 0px, transparent 70%);
   --bg: #09090b;
-  --glass-bg: rgba(39, 39, 42, 0.65);
+  --glass-bg: rgba(39, 39, 42, 0.75);
   --glass-border: rgba(255, 255, 255, 0.25);
   --glass-glow: rgba(255, 255, 255, 0.15);
-  --accent: #ffffff;
-  --soft: #e4e4e7;
+  --accent: #f43f5e; /* Aksen merah mawar agar kontras di tema carbon */
+  --btn-text: #ffffff;
+  --soft: #f43f5e;
   --text: #ffffff;
   --muted: #a1a1aa;
   --neu-bg: #27272a;
@@ -89,6 +94,7 @@
   --glass-border: rgba(2, 132, 199, 0.25);
   --glass-glow: rgba(2, 132, 199, 0.15);
   --accent: #0284c7;
+  --btn-text: #ffffff;
   --soft: #0369a1;
   --text: #0f172a;
   --muted: #475569;
@@ -114,7 +120,7 @@ body {
   min-height: 100vh;
   overflow-x: hidden;
   position: relative;
-  padding-bottom: 80px; /* Ruang untuk bottom nav */
+  padding-bottom: 80px;
 }
 
 body::before {
@@ -132,11 +138,7 @@ body::before {
 ::selection { background: var(--soft); color: #fff; }
 
 .app-layout { max-width: 600px; margin: 0 auto; padding: 16px; min-height: 100vh; display: flex; flex-direction: column; }
-
-/* HAPUS SIDEBAR SAMPING, SEMBUNYIKAN */
 .app-sidebar { display: none !important; }
-
-/* MAIN CONTENT */
 .app-main { width: 100%; }
 
 /* TOPBAR */
@@ -158,19 +160,6 @@ body::before {
 .status-badge .dot { width: 6px; height: 6px; border-radius: 50%; background: #22c55e; box-shadow: 0 0 6px #22c55e; }
 .status-badge.closed .dot { background: #ef4444; box-shadow: 0 0 6px #ef4444; }
 
-.icon-btn {
-  background: var(--glass-bg); backdrop-filter: blur(16px); border: 1px solid var(--glass-border);
-  color: var(--text); width: 35px; height: 35px; border-radius: 50%;
-  display: flex; align-items: center; justify-content: center; cursor: pointer; position: relative;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-}
-.icon-btn svg { width: 16px; height: 16px; }
-.cart-count {
-  position: absolute; top: -2px; right: -2px; background: #f43f5e; color: #fff;
-  font-size: 9.5px; font-weight: 700; min-width: 15px; height: 15px; border-radius: 8px;
-  display: none; align-items: center; justify-content: center; padding: 0 3px;
-}
-
 /* PEMILIH TEMA */
 .theme-selector-panel {
   display: flex; gap: 4px; background: var(--glass-bg); border: 1px solid var(--glass-border);
@@ -191,8 +180,7 @@ body::before {
 .hero-video-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; opacity: 0.3; }
 .hero-overlay { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(0,0,0,0.3) 0%, transparent 100%); z-index: -1; }
 .hero-dashboard h1 {
-  font-family: var(--font-title); font-size: clamp(22px, 5vw, 30px); font-weight: 700; margin-bottom: 4px;
-  color: var(--text);
+  font-family: var(--font-title); font-size: clamp(22px, 5vw, 30px); font-weight: 700; margin-bottom: 4px; color: var(--text);
 }
 .hero-dashboard p { color: var(--muted); max-width: 400px; font-size: 12px; }
 
@@ -243,15 +231,17 @@ body::before {
 .card-desc { color: var(--muted); font-size: 10px; margin-bottom: 6px; flex: 1; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 .card-footer { display: flex; align-items: center; justify-content: space-between; margin-top: auto; padding-top: 5px; border-top: 1px solid var(--glass-border); }
 .card-price { font-weight: 700; color: var(--soft); font-size: 11.5px; }
+/* Tombol Pesan dengan warna teks kontras */
 .btn-glass-add {
-  background: var(--accent); color: #fff; border: none; padding: 4px 8px; border-radius: 99px; font-size: 9.5px; font-weight: 700; cursor: pointer;
+  background: var(--accent); color: var(--btn-text); border: none; padding: 4px 9px; border-radius: 99px; font-size: 9.5px; font-weight: 700; cursor: pointer;
 }
+.btn-glass-add:hover { filter: brightness(1.15); transform: scale(1.04); }
 
 /* FEED / KABAR TOKO */
 .feed-container { display: flex; flex-direction: column; gap: 16px; }
 .feed-post { background: var(--glass-bg); backdrop-filter: blur(20px); border: 1px solid var(--glass-border); border-radius: var(--radius-lg); overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.15); }
 .post-head { display: flex; align-items: center; gap: 9px; padding: 12px 14px 6px; }
-.avatar { width: 30px; height: 30px; border-radius: 50%; background: var(--accent); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-family: var(--font-title); font-size: 12px; }
+.avatar { width: 30px; height: 30px; border-radius: 50%; background: var(--accent); color: var(--btn-text); display: flex; align-items: center; justify-content: center; font-weight: 700; font-family: var(--font-title); font-size: 12px; }
 .post-caption { padding: 0 14px 8px; font-size: 12px; color: var(--text); white-space: pre-wrap; word-break: break-word; }
 .post-media-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 3px; background: rgba(0,0,0,0.1); }
 .post-media-grid img, .post-media-grid video { width: 100%; height: 200px; object-fit: cover; display: block; }
@@ -259,7 +249,7 @@ body::before {
 .btn-like { background: rgba(255,255,255,0.08); border: 1px solid var(--glass-border); color: var(--text); padding: 3px 9px; border-radius: 99px; cursor: pointer; display: flex; align-items: center; gap: 4px; }
 .btn-like.liked { color: #ff4757; border-color: rgba(255,71,87,0.4); background: rgba(255,71,87,0.2); }
 
-/* BOTTOM NAVIGATION BAR (TOOLBAR BAWAH MOBILE) */
+/* BOTTOM NAVIGATION BAR */
 .mobile-bottom-nav {
   position: fixed; bottom: 12px; left: 16px; right: 16px; max-width: 500px; margin: 0 auto;
   background: var(--glass-bg); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
@@ -323,7 +313,6 @@ body::before {
 <body>
 
 <div class="app-layout">
-  <!-- MAIN AREA -->
   <main class="app-main">
     <div class="dashboard-topbar">
       <div class="search-widget">
@@ -331,7 +320,6 @@ body::before {
         <input type="text" id="searchInput" placeholder="Cari serabi, cireng, kuah...">
       </div>
       <div class="topbar-right">
-        <!-- PEMILIH TEMA -->
         <div class="theme-selector-panel">
           <div class="theme-dot" data-t="indigo" style="background:linear-gradient(135deg, #020617 50%, #38bdf8 50%);" title="Midnight Indigo"></div>
           <div class="theme-dot" data-t="forest" style="background:linear-gradient(135deg, #022c22 50%, #34d399 50%);" title="Deep Forest"></div>
@@ -380,7 +368,7 @@ body::before {
   </main>
 </div>
 
-<!-- BOTTOM NAVIGATION BAR (NAVIGASI BAWAH) -->
+<!-- BOTTOM NAVIGATION BAR -->
 <nav class="mobile-bottom-nav">
   <a href="#katalog" class="nav-item active">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
@@ -412,7 +400,7 @@ body::before {
     <div style="display:flex; justify-content:space-between; margin-bottom:10px; font-weight:700; color:var(--text); font-size:13px;">
       <span>Total</span><span id="cartTotal" style="color:var(--soft)">Rp 0</span>
     </div>
-    <button id="checkoutBtn" style="width:100%; background:var(--accent); color:#fff; border:none; padding:9px; border-radius:9px; font-weight:700; cursor:pointer; font-size:12.5px;">Checkout WhatsApp</button>
+    <button id="checkoutBtn" style="width:100%; background:var(--accent); color:var(--btn-text); border:none; padding:9px; border-radius:9px; font-weight:700; cursor:pointer; font-size:12.5px;">Checkout WhatsApp</button>
   </div>
 </div>
 
@@ -449,7 +437,7 @@ body::before {
       </div>
 
       <div id="checkoutSummary" style="background:rgba(255,255,255,0.08); padding:8px; border-radius:7px; margin-bottom:10px; font-size:12px; color:var(--text);"></div>
-      <button type="submit" style="width:100%; background:var(--accent); color:#fff; border:none; padding:9px; border-radius:7px; font-weight:700; cursor:pointer; font-size:12px;">Kirim ke WhatsApp</button>
+      <button type="submit" style="width:100%; background:var(--accent); color:var(--btn-text); border:none; padding:9px; border-radius:7px; font-weight:700; cursor:pointer; font-size:12px;">Kirim ke WhatsApp</button>
     </form>
   </div>
 </div>
@@ -542,11 +530,6 @@ if(isOpenNow()) {
 let wishlist = new Set(JSON.parse(localStorage.getItem('serabimu_wishlist') || '[]'));
 let cart = JSON.parse(localStorage.getItem('serabimu_cart') || '[]');
 let likedPosts = new Set(JSON.parse(localStorage.getItem('serabimu_liked') || '[]'));
-
-function updateCartBadge() {
-  const qty = cart.reduce((s,i) => s + i.qty, 0);
-  // Bisa tambahkan indikator badge jika perlu di navbar bawah
-}
 
 let allProducts = [], activeCategory = 'all', searchTerm = '';
 const catalogGrid = $('#catalogGrid');
@@ -652,7 +635,7 @@ function openProductModal(id) {
     <div style="font-size:11px; color:var(--soft); margin-bottom:5px;">${avg > 0 ? '★ '+avg.toFixed(1) : 'Belum ada rating'}</div>
     <p style="font-size:11.5px; color:var(--muted); margin-bottom:10px;">${esc(p.description||'')}</p>
     <div style="font-size:15px; font-weight:700; color:var(--soft); margin-bottom:10px;">${price}</div>
-    <button id="pmAddCart" style="width:100%; background:var(--accent); color:#fff; border:none; padding:9px; border-radius:7px; font-weight:700; cursor:pointer; font-size:12px;">+ Keranjang</button>
+    <button id="pmAddCart" style="width:100%; background:var(--accent); color:var(--btn-text); border:none; padding:9px; border-radius:7px; font-weight:700; cursor:pointer; font-size:12px;">+ Keranjang</button>
   `;
   productModal.classList.add('open');
   productModalBody.querySelector('#pmAddCart').addEventListener('click', () => { addToCart(p); productModal.classList.remove('open'); });
